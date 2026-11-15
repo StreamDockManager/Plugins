@@ -1,0 +1,5014 @@
+{
+    "battery-power": {
+        "actions": {
+            "app.streamdockmanager.plugins.battery-power.status": null
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Battery \u0026 Power",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": null,
+        "refresh": {
+            "app.streamdockmanager.plugins.battery-power.status": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "counter-tally": {
+        "actions": {
+            "app.streamdockmanager.plugins.counter-tally.decrement": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "step",
+                    "label": "Adjustment step",
+                    "type": "number",
+                    "default": 1,
+                    "min": -1000000,
+                    "max": 1000000
+                }
+            ],
+            "app.streamdockmanager.plugins.counter-tally.increment": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "step",
+                    "label": "Adjustment step",
+                    "type": "number",
+                    "default": 1,
+                    "min": -1000000,
+                    "max": 1000000
+                }
+            ],
+            "app.streamdockmanager.plugins.counter-tally.reset": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "reset",
+                    "label": "Reset value",
+                    "type": "number",
+                    "default": 0,
+                    "min": -1000000000000,
+                    "max": 1000000000000
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Counter \u0026 Tally",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": null,
+        "refresh": {},
+        "speedtest": false,
+        "version": 1
+    },
+    "home-assistant": {
+        "actions": {
+            "app.streamdockmanager.plugins.home-assistant.brightness": [
+                {
+                    "key": "entity",
+                    "label": "Entity",
+                    "type": "device",
+                    "default": ""
+                },
+                {
+                    "key": "step",
+                    "label": "Brightness percent per dial tick",
+                    "type": "number",
+                    "default": 5,
+                    "min": 0.1,
+                    "max": 25
+                }
+            ],
+            "app.streamdockmanager.plugins.home-assistant.off": [
+                {
+                    "key": "entity",
+                    "label": "Entity",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.home-assistant.on": [
+                {
+                    "key": "entity",
+                    "label": "Entity",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.home-assistant.refresh": null,
+            "app.streamdockmanager.plugins.home-assistant.scene": [
+                {
+                    "key": "entity",
+                    "label": "Entity",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.home-assistant.state": [
+                {
+                    "key": "entity",
+                    "label": "Entity",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.home-assistant.toggle": [
+                {
+                    "key": "entity",
+                    "label": "Entity",
+                    "type": "device",
+                    "default": ""
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Home Assistant",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": [
+            {
+                "key": "url",
+                "label": "Server URL",
+                "type": "text",
+                "default": "http://homeassistant.local:8123"
+            },
+            {
+                "key": "token",
+                "label": "Long-lived access token (or ${ENV_NAME})",
+                "type": "text",
+                "default": "",
+                "sensitive": true
+            }
+        ],
+        "refresh": {
+            "app.streamdockmanager.plugins.home-assistant.brightness": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.home-assistant.off": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.home-assistant.on": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.home-assistant.refresh": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.home-assistant.scene": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.home-assistant.state": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.home-assistant.toggle": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "http-webhooks": {
+        "actions": {
+            "app.streamdockmanager.plugins.http-webhooks.cancel": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "method",
+                    "label": "HTTP method",
+                    "type": "select",
+                    "default": "GET",
+                    "options": ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+                },
+                {
+                    "key": "url",
+                    "label": "Request URL",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "headers",
+                    "label": "Headers (environment references supported)",
+                    "type": "pairs"
+                },
+                {
+                    "key": "body",
+                    "label": "Request body",
+                    "type": "textarea"
+                },
+                {
+                    "key": "timeout",
+                    "label": "Timeout seconds",
+                    "type": "number",
+                    "default": 10,
+                    "min": 0.1,
+                    "max": 120
+                },
+                {
+                    "key": "fields",
+                    "label": "Named response fields → extraction paths",
+                    "type": "pairs"
+                },
+                {
+                    "key": "field",
+                    "label": "Displayed field name",
+                    "type": "text",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.http-webhooks.duration": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "method",
+                    "label": "HTTP method",
+                    "type": "select",
+                    "default": "GET",
+                    "options": ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+                },
+                {
+                    "key": "url",
+                    "label": "Request URL",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "headers",
+                    "label": "Headers (environment references supported)",
+                    "type": "pairs"
+                },
+                {
+                    "key": "body",
+                    "label": "Request body",
+                    "type": "textarea"
+                },
+                {
+                    "key": "timeout",
+                    "label": "Timeout seconds",
+                    "type": "number",
+                    "default": 10,
+                    "min": 0.1,
+                    "max": 120
+                },
+                {
+                    "key": "fields",
+                    "label": "Named response fields → extraction paths",
+                    "type": "pairs"
+                },
+                {
+                    "key": "field",
+                    "label": "Displayed field name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "update_interval_ms",
+                    "label": "Automatic read interval in milliseconds (0 loads once)",
+                    "type": "number",
+                    "default": 0,
+                    "min": 0,
+                    "max": 86400000
+                }
+            ],
+            "app.streamdockmanager.plugins.http-webhooks.field": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "method",
+                    "label": "HTTP method",
+                    "type": "select",
+                    "default": "GET",
+                    "options": ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+                },
+                {
+                    "key": "url",
+                    "label": "Request URL",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "headers",
+                    "label": "Headers (environment references supported)",
+                    "type": "pairs"
+                },
+                {
+                    "key": "body",
+                    "label": "Request body",
+                    "type": "textarea"
+                },
+                {
+                    "key": "timeout",
+                    "label": "Timeout seconds",
+                    "type": "number",
+                    "default": 10,
+                    "min": 0.1,
+                    "max": 120
+                },
+                {
+                    "key": "fields",
+                    "label": "Named response fields → extraction paths",
+                    "type": "pairs"
+                },
+                {
+                    "key": "field",
+                    "label": "Displayed field name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "update_interval_ms",
+                    "label": "Automatic read interval in milliseconds (0 loads once)",
+                    "type": "number",
+                    "default": 0,
+                    "min": 0,
+                    "max": 86400000
+                }
+            ],
+            "app.streamdockmanager.plugins.http-webhooks.request": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "method",
+                    "label": "HTTP method",
+                    "type": "select",
+                    "default": "GET",
+                    "options": ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+                },
+                {
+                    "key": "url",
+                    "label": "Request URL",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "headers",
+                    "label": "Headers (environment references supported)",
+                    "type": "pairs"
+                },
+                {
+                    "key": "body",
+                    "label": "Request body",
+                    "type": "textarea"
+                },
+                {
+                    "key": "timeout",
+                    "label": "Timeout seconds",
+                    "type": "number",
+                    "default": 10,
+                    "min": 0.1,
+                    "max": 120
+                },
+                {
+                    "key": "fields",
+                    "label": "Named response fields → extraction paths",
+                    "type": "pairs"
+                },
+                {
+                    "key": "field",
+                    "label": "Displayed field name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "update_interval_ms",
+                    "label": "Automatic read interval in milliseconds (0 loads once)",
+                    "type": "number",
+                    "default": 0,
+                    "min": 0,
+                    "max": 86400000
+                }
+            ],
+            "app.streamdockmanager.plugins.http-webhooks.status": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "method",
+                    "label": "HTTP method",
+                    "type": "select",
+                    "default": "GET",
+                    "options": ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+                },
+                {
+                    "key": "url",
+                    "label": "Request URL",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "headers",
+                    "label": "Headers (environment references supported)",
+                    "type": "pairs"
+                },
+                {
+                    "key": "body",
+                    "label": "Request body",
+                    "type": "textarea"
+                },
+                {
+                    "key": "timeout",
+                    "label": "Timeout seconds",
+                    "type": "number",
+                    "default": 10,
+                    "min": 0.1,
+                    "max": 120
+                },
+                {
+                    "key": "fields",
+                    "label": "Named response fields → extraction paths",
+                    "type": "pairs"
+                },
+                {
+                    "key": "field",
+                    "label": "Displayed field name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "update_interval_ms",
+                    "label": "Automatic read interval in milliseconds (0 loads once)",
+                    "type": "number",
+                    "default": 0,
+                    "min": 0,
+                    "max": 86400000
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "HTTP \u0026 Webhooks",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": null,
+        "refresh": {
+            "app.streamdockmanager.plugins.http-webhooks.duration": {
+                "default_ms": 0,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.http-webhooks.field": {
+                "default_ms": 0,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.http-webhooks.request": {
+                "default_ms": 0,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.http-webhooks.status": {
+                "default_ms": 0,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "internet-speed-test": {
+        "actions": {
+            "app.streamdockmanager.plugins.internet-speed-test.cancel": null,
+            "app.streamdockmanager.plugins.internet-speed-test.download": null,
+            "app.streamdockmanager.plugins.internet-speed-test.latency": null,
+            "app.streamdockmanager.plugins.internet-speed-test.run": null,
+            "app.streamdockmanager.plugins.internet-speed-test.upload": null
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Internet Speed Test",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": [
+            {
+                "key": "server_mode",
+                "label": "Server selection",
+                "type": "select",
+                "default": "auto",
+                "options": ["auto", "manual"],
+                "option_labels": {
+                    "auto": "Detect server (lowest nearby ping)",
+                    "manual": "Choose a server"
+                }
+            },
+            {
+                "key": "server",
+                "label": "Speed-test server ID",
+                "type": "text",
+                "default": ""
+            }
+        ],
+        "refresh": {},
+        "speedtest": true,
+        "version": 1
+    },
+    "make": {
+        "actions": {
+            "app.streamdockmanager.plugins.make.activate": [
+                {
+                    "key": "scenario",
+                    "label": "Scenario ID",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.make.deactivate": [
+                {
+                    "key": "scenario",
+                    "label": "Scenario ID",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.make.execution": [
+                {
+                    "key": "scenario",
+                    "label": "Scenario ID",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.make.run": [
+                {
+                    "key": "scenario",
+                    "label": "Scenario ID",
+                    "type": "device",
+                    "default": ""
+                },
+                {
+                    "key": "inputs",
+                    "label": "Scenario JSON inputs",
+                    "type": "text",
+                    "default": "{}"
+                }
+            ],
+            "app.streamdockmanager.plugins.make.status": [
+                {
+                    "key": "scenario",
+                    "label": "Scenario ID",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.make.webhook": [
+                {
+                    "key": "webhook",
+                    "label": "Custom webhook HTTPS URL (or ${ENV_NAME})",
+                    "type": "text",
+                    "default": "",
+                    "sensitive": true
+                },
+                {
+                    "key": "inputs",
+                    "label": "JSON payload",
+                    "type": "text",
+                    "default": "{}"
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Make",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": [
+            {
+                "key": "region",
+                "label": "Make API region",
+                "type": "select",
+                "default": "eu1",
+                "options": ["eu1", "eu2", "us1", "us2"]
+            },
+            {
+                "key": "team_id",
+                "label": "Make team ID",
+                "type": "text",
+                "default": ""
+            },
+            {
+                "key": "token",
+                "label": "Make API token (or ${ENV_NAME})",
+                "type": "text",
+                "default": "",
+                "sensitive": true
+            }
+        ],
+        "refresh": {
+            "app.streamdockmanager.plugins.make.activate": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.make.deactivate": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.make.execution": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.make.run": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.make.status": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.make.webhook": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "microphone-controls": {
+        "actions": {
+            "app.streamdockmanager.plugins.microphone-controls.mute": [
+                {
+                    "key": "device",
+                    "label": "Microphone",
+                    "type": "device",
+                    "default": "default"
+                }
+            ],
+            "app.streamdockmanager.plugins.microphone-controls.toggle": [
+                {
+                    "key": "device",
+                    "label": "Microphone",
+                    "type": "device",
+                    "default": "default"
+                }
+            ],
+            "app.streamdockmanager.plugins.microphone-controls.unmute": [
+                {
+                    "key": "device",
+                    "label": "Microphone",
+                    "type": "device",
+                    "default": "default"
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": true,
+        "name": "Microphone Controls",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": null,
+        "refresh": {
+            "app.streamdockmanager.plugins.microphone-controls.mute": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.microphone-controls.toggle": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.microphone-controls.unmute": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "mqtt": {
+        "actions": {
+            "app.streamdockmanager.plugins.mqtt.publish": [
+                {
+                    "key": "topic",
+                    "label": "MQTT topic",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "qos",
+                    "label": "QoS",
+                    "type": "select",
+                    "default": "0",
+                    "options": ["0", "1", "2"]
+                },
+                {
+                    "key": "payload",
+                    "label": "Payload",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "retain",
+                    "label": "Retain published message",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
+            "app.streamdockmanager.plugins.mqtt.status": null,
+            "app.streamdockmanager.plugins.mqtt.text": [
+                {
+                    "key": "topic",
+                    "label": "MQTT topic",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "qos",
+                    "label": "QoS",
+                    "type": "select",
+                    "default": "0",
+                    "options": ["0", "1", "2"]
+                },
+                {
+                    "key": "json_path",
+                    "label": "JSON field path (empty displays text)",
+                    "type": "text",
+                    "default": ""
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "MQTT",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": [
+            {
+                "key": "broker",
+                "label": "Broker URL (tcp:// or tls://)",
+                "type": "text",
+                "default": "tcp://127.0.0.1:1883"
+            },
+            {
+                "key": "client_id",
+                "label": "Client ID (empty generates a process ID)",
+                "type": "text",
+                "default": ""
+            },
+            {
+                "key": "username",
+                "label": "Username (or ${ENV_NAME})",
+                "type": "text",
+                "default": ""
+            },
+            {
+                "key": "password",
+                "label": "Password (or ${ENV_NAME})",
+                "type": "text",
+                "default": "",
+                "sensitive": true
+            },
+            {
+                "path_picker": "file",
+                "key": "ca_file",
+                "label": "CA certificate file (optional PEM)",
+                "type": "path",
+                "default": ""
+            },
+            {
+                "path_picker": "file",
+                "key": "client_cert",
+                "label": "Client certificate file (optional PEM)",
+                "type": "path",
+                "default": ""
+            },
+            {
+                "path_picker": "file",
+                "key": "client_key",
+                "label": "Client key file (optional PEM)",
+                "type": "path",
+                "default": ""
+            }
+        ],
+        "refresh": {
+            "app.streamdockmanager.plugins.mqtt.publish": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.mqtt.status": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.mqtt.text": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "network-vpn": {
+        "actions": {
+            "app.streamdockmanager.plugins.network-vpn.interfaces": null,
+            "app.streamdockmanager.plugins.network-vpn.reachability": [
+                {
+                    "key": "address",
+                    "label": "TCP host:port",
+                    "type": "text",
+                    "default": "1.1.1.1:443"
+                }
+            ],
+            "app.streamdockmanager.plugins.network-vpn.vpn": null
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Network \u0026 VPN Status",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": null,
+        "refresh": {
+            "app.streamdockmanager.plugins.network-vpn.interfaces": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.network-vpn.reachability": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.network-vpn.vpn": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "obs-studio": {
+        "actions": {
+            "app.streamdockmanager.plugins.obs-studio.mute": [
+                {
+                    "key": "input",
+                    "label": "Input",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.obs-studio.record-pause": null,
+            "app.streamdockmanager.plugins.obs-studio.record-resume": null,
+            "app.streamdockmanager.plugins.obs-studio.record-start": null,
+            "app.streamdockmanager.plugins.obs-studio.record-stop": null,
+            "app.streamdockmanager.plugins.obs-studio.save-replay": null,
+            "app.streamdockmanager.plugins.obs-studio.scene": [
+                {
+                    "key": "scene",
+                    "label": "Scene",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.obs-studio.status": null,
+            "app.streamdockmanager.plugins.obs-studio.toggle-mute": [
+                {
+                    "key": "input",
+                    "label": "Input",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.obs-studio.unmute": [
+                {
+                    "key": "input",
+                    "label": "Input",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.obs-studio.volume": [
+                {
+                    "key": "input",
+                    "label": "Input",
+                    "type": "device",
+                    "default": ""
+                },
+                {
+                    "key": "step",
+                    "label": "Volume percent per dial tick",
+                    "type": "number",
+                    "default": 2,
+                    "min": 0.1,
+                    "max": 25
+                }
+            ],
+            "app.streamdockmanager.plugins.obs-studio.volume-display": [
+                {
+                    "key": "input",
+                    "label": "Input",
+                    "type": "device",
+                    "default": ""
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "OBS Studio",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": [
+            {
+                "key": "url",
+                "label": "WebSocket URL",
+                "type": "text",
+                "default": "ws://127.0.0.1:4455"
+            },
+            {
+                "key": "password",
+                "label": "WebSocket password (or ${ENV_NAME})",
+                "type": "text",
+                "default": "",
+                "sensitive": true
+            }
+        ],
+        "refresh": {
+            "app.streamdockmanager.plugins.obs-studio.mute": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.obs-studio.record-pause": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.obs-studio.record-resume": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.obs-studio.record-start": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.obs-studio.record-stop": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.obs-studio.save-replay": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.obs-studio.scene": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.obs-studio.status": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.obs-studio.toggle-mute": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.obs-studio.unmute": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.obs-studio.volume": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.obs-studio.volume-display": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "osrs-hiscores": {
+        "actions": {
+            "app.streamdockmanager.plugins.osrs-hiscores.activity": [
+                {
+                    "key": "username",
+                    "label": "Player name",
+                    "type": "text",
+                    "default": "",
+                    "required": true
+                },
+                {
+                    "key": "board",
+                    "label": "Hiscores board",
+                    "type": "select",
+                    "default": "normal",
+                    "options": ["normal", "ironman", "hardcore", "ultimate"],
+                    "option_labels": {
+                        "hardcore": "Hardcore Ironman",
+                        "ironman": "Ironman",
+                        "normal": "Normal",
+                        "ultimate": "Ultimate Ironman"
+                    }
+                },
+                {
+                    "key": "activity",
+                    "label": "Activity ID",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.osrs-hiscores.overall": [
+                {
+                    "key": "username",
+                    "label": "Player name",
+                    "type": "text",
+                    "default": "",
+                    "required": true
+                },
+                {
+                    "key": "board",
+                    "label": "Hiscores board",
+                    "type": "select",
+                    "default": "normal",
+                    "options": ["normal", "ironman", "hardcore", "ultimate"],
+                    "option_labels": {
+                        "hardcore": "Hardcore Ironman",
+                        "ironman": "Ironman",
+                        "normal": "Normal",
+                        "ultimate": "Ultimate Ironman"
+                    }
+                }
+            ],
+            "app.streamdockmanager.plugins.osrs-hiscores.refresh": [
+                {
+                    "key": "username",
+                    "label": "Player name",
+                    "type": "text",
+                    "default": "",
+                    "required": true
+                },
+                {
+                    "key": "board",
+                    "label": "Hiscores board",
+                    "type": "select",
+                    "default": "normal",
+                    "options": ["normal", "ironman", "hardcore", "ultimate"],
+                    "option_labels": {
+                        "hardcore": "Hardcore Ironman",
+                        "ironman": "Ironman",
+                        "normal": "Normal",
+                        "ultimate": "Ultimate Ironman"
+                    }
+                }
+            ],
+            "app.streamdockmanager.plugins.osrs-hiscores.reset-baseline": [
+                {
+                    "key": "username",
+                    "label": "Player name",
+                    "type": "text",
+                    "default": "",
+                    "required": true
+                },
+                {
+                    "key": "board",
+                    "label": "Hiscores board",
+                    "type": "select",
+                    "default": "normal",
+                    "options": ["normal", "ironman", "hardcore", "ultimate"],
+                    "option_labels": {
+                        "hardcore": "Hardcore Ironman",
+                        "ironman": "Ironman",
+                        "normal": "Normal",
+                        "ultimate": "Ultimate Ironman"
+                    }
+                },
+                {
+                    "key": "skill",
+                    "label": "Skill",
+                    "type": "select",
+                    "default": "0",
+                    "options": [
+                        "0",
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12",
+                        "13",
+                        "14",
+                        "15",
+                        "16",
+                        "17",
+                        "18",
+                        "19",
+                        "20",
+                        "21",
+                        "22",
+                        "23",
+                        "24"
+                    ],
+                    "option_labels": {
+                        "0": "Overall",
+                        "1": "Attack",
+                        "10": "Fletching",
+                        "11": "Fishing",
+                        "12": "Firemaking",
+                        "13": "Crafting",
+                        "14": "Smithing",
+                        "15": "Mining",
+                        "16": "Herblore",
+                        "17": "Agility",
+                        "18": "Thieving",
+                        "19": "Slayer",
+                        "2": "Defence",
+                        "20": "Farming",
+                        "21": "Runecraft",
+                        "22": "Hunter",
+                        "23": "Construction",
+                        "24": "Sailing",
+                        "3": "Strength",
+                        "4": "Hitpoints",
+                        "5": "Ranged",
+                        "6": "Prayer",
+                        "7": "Magic",
+                        "8": "Cooking",
+                        "9": "Woodcutting"
+                    }
+                }
+            ],
+            "app.streamdockmanager.plugins.osrs-hiscores.skill": [
+                {
+                    "key": "username",
+                    "label": "Player name",
+                    "type": "text",
+                    "default": "",
+                    "required": true
+                },
+                {
+                    "key": "board",
+                    "label": "Hiscores board",
+                    "type": "select",
+                    "default": "normal",
+                    "options": ["normal", "ironman", "hardcore", "ultimate"],
+                    "option_labels": {
+                        "hardcore": "Hardcore Ironman",
+                        "ironman": "Ironman",
+                        "normal": "Normal",
+                        "ultimate": "Ultimate Ironman"
+                    }
+                },
+                {
+                    "key": "skill",
+                    "label": "Skill",
+                    "type": "select",
+                    "default": "0",
+                    "options": [
+                        "0",
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12",
+                        "13",
+                        "14",
+                        "15",
+                        "16",
+                        "17",
+                        "18",
+                        "19",
+                        "20",
+                        "21",
+                        "22",
+                        "23",
+                        "24"
+                    ],
+                    "option_labels": {
+                        "0": "Overall",
+                        "1": "Attack",
+                        "10": "Fletching",
+                        "11": "Fishing",
+                        "12": "Firemaking",
+                        "13": "Crafting",
+                        "14": "Smithing",
+                        "15": "Mining",
+                        "16": "Herblore",
+                        "17": "Agility",
+                        "18": "Thieving",
+                        "19": "Slayer",
+                        "2": "Defence",
+                        "20": "Farming",
+                        "21": "Runecraft",
+                        "22": "Hunter",
+                        "23": "Construction",
+                        "24": "Sailing",
+                        "3": "Strength",
+                        "4": "Hitpoints",
+                        "5": "Ranged",
+                        "6": "Prayer",
+                        "7": "Magic",
+                        "8": "Cooking",
+                        "9": "Woodcutting"
+                    }
+                },
+                {
+                    "key": "metric",
+                    "label": "Value",
+                    "type": "select",
+                    "default": "level",
+                    "options": ["level", "xp", "rank", "all"],
+                    "option_labels": {
+                        "all": "Level, XP and rank",
+                        "level": "Level",
+                        "rank": "Rank",
+                        "xp": "Experience"
+                    }
+                }
+            ],
+            "app.streamdockmanager.plugins.osrs-hiscores.xp-change": [
+                {
+                    "key": "username",
+                    "label": "Player name",
+                    "type": "text",
+                    "default": "",
+                    "required": true
+                },
+                {
+                    "key": "board",
+                    "label": "Hiscores board",
+                    "type": "select",
+                    "default": "normal",
+                    "options": ["normal", "ironman", "hardcore", "ultimate"],
+                    "option_labels": {
+                        "hardcore": "Hardcore Ironman",
+                        "ironman": "Ironman",
+                        "normal": "Normal",
+                        "ultimate": "Ultimate Ironman"
+                    }
+                },
+                {
+                    "key": "skill",
+                    "label": "Skill",
+                    "type": "select",
+                    "default": "0",
+                    "options": [
+                        "0",
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12",
+                        "13",
+                        "14",
+                        "15",
+                        "16",
+                        "17",
+                        "18",
+                        "19",
+                        "20",
+                        "21",
+                        "22",
+                        "23",
+                        "24"
+                    ],
+                    "option_labels": {
+                        "0": "Overall",
+                        "1": "Attack",
+                        "10": "Fletching",
+                        "11": "Fishing",
+                        "12": "Firemaking",
+                        "13": "Crafting",
+                        "14": "Smithing",
+                        "15": "Mining",
+                        "16": "Herblore",
+                        "17": "Agility",
+                        "18": "Thieving",
+                        "19": "Slayer",
+                        "2": "Defence",
+                        "20": "Farming",
+                        "21": "Runecraft",
+                        "22": "Hunter",
+                        "23": "Construction",
+                        "24": "Sailing",
+                        "3": "Strength",
+                        "4": "Hitpoints",
+                        "5": "Ranged",
+                        "6": "Prayer",
+                        "7": "Magic",
+                        "8": "Cooking",
+                        "9": "Woodcutting"
+                    }
+                }
+            ]
+        },
+        "hiscores": true,
+        "location": false,
+        "microphones": false,
+        "name": "OSRS Hiscores",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": [],
+        "refresh": {
+            "app.streamdockmanager.plugins.osrs-hiscores.activity": {
+                "default_ms": 300000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.osrs-hiscores.overall": {
+                "default_ms": 300000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.osrs-hiscores.refresh": {
+                "default_ms": 300000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.osrs-hiscores.reset-baseline": {
+                "default_ms": 300000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.osrs-hiscores.skill": {
+                "default_ms": 300000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.osrs-hiscores.xp-change": {
+                "default_ms": 300000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "random-meme": {
+        "actions": {
+            "app.streamdockmanager.plugins.random-meme.copy": [
+                {
+                    "key": "shared_id",
+                    "label": "Meme group (match Fetch, Copy, and Paste)",
+                    "type": "text",
+                    "default": "memes"
+                }
+            ],
+            "app.streamdockmanager.plugins.random-meme.fetch": [
+                {
+                    "key": "shared_id",
+                    "label": "Meme group (match Fetch, Copy, and Paste)",
+                    "type": "text",
+                    "default": "memes"
+                },
+                {
+                    "key": "subreddit",
+                    "label": "Subreddit (optional, without r/)",
+                    "type": "text",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.random-meme.send": [
+                {
+                    "key": "shared_id",
+                    "label": "Meme group (match Fetch, Copy, and Paste)",
+                    "type": "text",
+                    "default": "memes"
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Random Meme",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": [
+            {
+                "key": "allow_nsfw",
+                "label": "Allow NSFW images",
+                "type": "checkbox",
+                "default": false
+            }
+        ],
+        "refresh": {},
+        "speedtest": false,
+        "version": 1
+    },
+    "randomizer-dice": {
+        "actions": {
+            "app.streamdockmanager.plugins.randomizer-dice.dice": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name (match Draw and Reset)",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "sides",
+                    "label": "Sides",
+                    "type": "number",
+                    "default": 6,
+                    "min": 2,
+                    "max": 1000000
+                }
+            ],
+            "app.streamdockmanager.plugins.randomizer-dice.draw": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name (match Draw and Reset)",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "items",
+                    "label": "Items (one per line; empty uses a 52-card deck)",
+                    "type": "textarea"
+                }
+            ],
+            "app.streamdockmanager.plugins.randomizer-dice.list": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name (match Draw and Reset)",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "items",
+                    "label": "Items (one per line)",
+                    "type": "textarea",
+                    "required": true
+                }
+            ],
+            "app.streamdockmanager.plugins.randomizer-dice.range": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name (match Draw and Reset)",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "min",
+                    "label": "Minimum",
+                    "type": "number",
+                    "default": 1,
+                    "min": -1000000000,
+                    "max": 1000000000
+                },
+                {
+                    "key": "max",
+                    "label": "Maximum",
+                    "type": "number",
+                    "default": 100,
+                    "min": -1000000000,
+                    "max": 1000000000
+                }
+            ],
+            "app.streamdockmanager.plugins.randomizer-dice.reset": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name (match Draw and Reset)",
+                    "type": "text",
+                    "default": ""
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Randomizer \u0026 Dice",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": null,
+        "refresh": {},
+        "speedtest": false,
+        "version": 1
+    },
+    "retroachievements": {
+        "actions": {
+            "app.streamdockmanager.plugins.retroachievements.completion": [
+                {
+                    "key": "mode",
+                    "label": "Progress mode",
+                    "type": "select",
+                    "default": "hardcore",
+                    "options": ["hardcore", "softcore"]
+                },
+                {
+                    "key": "game_id",
+                    "label": "Game ID (empty = latest game reported by API)",
+                    "type": "text",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.retroachievements.points": [
+                {
+                    "key": "mode",
+                    "label": "Progress mode",
+                    "type": "select",
+                    "default": "hardcore",
+                    "options": ["hardcore", "softcore"]
+                }
+            ],
+            "app.streamdockmanager.plugins.retroachievements.recent": [
+                {
+                    "key": "mode",
+                    "label": "Progress mode",
+                    "type": "select",
+                    "default": "hardcore",
+                    "options": ["hardcore", "softcore"]
+                }
+            ],
+            "app.streamdockmanager.plugins.retroachievements.refresh": [
+                {
+                    "key": "mode",
+                    "label": "Progress mode",
+                    "type": "select",
+                    "default": "hardcore",
+                    "options": ["hardcore", "softcore"]
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "RetroAchievements",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": [
+            {
+                "key": "username",
+                "label": "RetroAchievements username or ULID",
+                "type": "text",
+                "default": ""
+            },
+            {
+                "key": "api_key",
+                "label": "Web API key (or ${ENV_NAME})",
+                "type": "text",
+                "default": "",
+                "sensitive": true
+            }
+        ],
+        "refresh": {
+            "app.streamdockmanager.plugins.retroachievements.completion": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.retroachievements.points": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.retroachievements.recent": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.retroachievements.refresh": {
+                "default_ms": 60000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "runescape-hiscores": {
+        "actions": {
+            "app.streamdockmanager.plugins.runescape-hiscores.activity": [
+                {
+                    "key": "username",
+                    "label": "Player name",
+                    "type": "text",
+                    "default": "",
+                    "required": true
+                },
+                {
+                    "key": "board",
+                    "label": "Hiscores board",
+                    "type": "select",
+                    "default": "normal",
+                    "options": ["normal", "ironman", "hardcore"],
+                    "option_labels": {
+                        "hardcore": "Hardcore Ironman",
+                        "ironman": "Ironman",
+                        "normal": "Normal",
+                        "ultimate": "Ultimate Ironman"
+                    }
+                },
+                {
+                    "key": "activity",
+                    "label": "Activity ID",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.runescape-hiscores.overall": [
+                {
+                    "key": "username",
+                    "label": "Player name",
+                    "type": "text",
+                    "default": "",
+                    "required": true
+                },
+                {
+                    "key": "board",
+                    "label": "Hiscores board",
+                    "type": "select",
+                    "default": "normal",
+                    "options": ["normal", "ironman", "hardcore"],
+                    "option_labels": {
+                        "hardcore": "Hardcore Ironman",
+                        "ironman": "Ironman",
+                        "normal": "Normal",
+                        "ultimate": "Ultimate Ironman"
+                    }
+                }
+            ],
+            "app.streamdockmanager.plugins.runescape-hiscores.refresh": [
+                {
+                    "key": "username",
+                    "label": "Player name",
+                    "type": "text",
+                    "default": "",
+                    "required": true
+                },
+                {
+                    "key": "board",
+                    "label": "Hiscores board",
+                    "type": "select",
+                    "default": "normal",
+                    "options": ["normal", "ironman", "hardcore"],
+                    "option_labels": {
+                        "hardcore": "Hardcore Ironman",
+                        "ironman": "Ironman",
+                        "normal": "Normal",
+                        "ultimate": "Ultimate Ironman"
+                    }
+                }
+            ],
+            "app.streamdockmanager.plugins.runescape-hiscores.reset-baseline": [
+                {
+                    "key": "username",
+                    "label": "Player name",
+                    "type": "text",
+                    "default": "",
+                    "required": true
+                },
+                {
+                    "key": "board",
+                    "label": "Hiscores board",
+                    "type": "select",
+                    "default": "normal",
+                    "options": ["normal", "ironman", "hardcore"],
+                    "option_labels": {
+                        "hardcore": "Hardcore Ironman",
+                        "ironman": "Ironman",
+                        "normal": "Normal",
+                        "ultimate": "Ultimate Ironman"
+                    }
+                },
+                {
+                    "key": "skill",
+                    "label": "Skill",
+                    "type": "select",
+                    "default": "0",
+                    "options": [
+                        "0",
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12",
+                        "13",
+                        "14",
+                        "15",
+                        "16",
+                        "17",
+                        "18",
+                        "19",
+                        "20",
+                        "21",
+                        "22",
+                        "23",
+                        "24",
+                        "25",
+                        "26",
+                        "27",
+                        "28",
+                        "29"
+                    ],
+                    "option_labels": {
+                        "0": "Overall",
+                        "1": "Attack",
+                        "10": "Fletching",
+                        "11": "Fishing",
+                        "12": "Firemaking",
+                        "13": "Crafting",
+                        "14": "Smithing",
+                        "15": "Mining",
+                        "16": "Herblore",
+                        "17": "Agility",
+                        "18": "Thieving",
+                        "19": "Slayer",
+                        "2": "Defence",
+                        "20": "Farming",
+                        "21": "Runecrafting",
+                        "22": "Hunter",
+                        "23": "Construction",
+                        "24": "Summoning",
+                        "25": "Dungeoneering",
+                        "26": "Divination",
+                        "27": "Invention",
+                        "28": "Archaeology",
+                        "29": "Necromancy",
+                        "3": "Strength",
+                        "4": "Constitution",
+                        "5": "Ranged",
+                        "6": "Prayer",
+                        "7": "Magic",
+                        "8": "Cooking",
+                        "9": "Woodcutting"
+                    }
+                }
+            ],
+            "app.streamdockmanager.plugins.runescape-hiscores.skill": [
+                {
+                    "key": "username",
+                    "label": "Player name",
+                    "type": "text",
+                    "default": "",
+                    "required": true
+                },
+                {
+                    "key": "board",
+                    "label": "Hiscores board",
+                    "type": "select",
+                    "default": "normal",
+                    "options": ["normal", "ironman", "hardcore"],
+                    "option_labels": {
+                        "hardcore": "Hardcore Ironman",
+                        "ironman": "Ironman",
+                        "normal": "Normal",
+                        "ultimate": "Ultimate Ironman"
+                    }
+                },
+                {
+                    "key": "skill",
+                    "label": "Skill",
+                    "type": "select",
+                    "default": "0",
+                    "options": [
+                        "0",
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12",
+                        "13",
+                        "14",
+                        "15",
+                        "16",
+                        "17",
+                        "18",
+                        "19",
+                        "20",
+                        "21",
+                        "22",
+                        "23",
+                        "24",
+                        "25",
+                        "26",
+                        "27",
+                        "28",
+                        "29"
+                    ],
+                    "option_labels": {
+                        "0": "Overall",
+                        "1": "Attack",
+                        "10": "Fletching",
+                        "11": "Fishing",
+                        "12": "Firemaking",
+                        "13": "Crafting",
+                        "14": "Smithing",
+                        "15": "Mining",
+                        "16": "Herblore",
+                        "17": "Agility",
+                        "18": "Thieving",
+                        "19": "Slayer",
+                        "2": "Defence",
+                        "20": "Farming",
+                        "21": "Runecrafting",
+                        "22": "Hunter",
+                        "23": "Construction",
+                        "24": "Summoning",
+                        "25": "Dungeoneering",
+                        "26": "Divination",
+                        "27": "Invention",
+                        "28": "Archaeology",
+                        "29": "Necromancy",
+                        "3": "Strength",
+                        "4": "Constitution",
+                        "5": "Ranged",
+                        "6": "Prayer",
+                        "7": "Magic",
+                        "8": "Cooking",
+                        "9": "Woodcutting"
+                    }
+                },
+                {
+                    "key": "metric",
+                    "label": "Value",
+                    "type": "select",
+                    "default": "level",
+                    "options": ["level", "xp", "rank", "all"],
+                    "option_labels": {
+                        "all": "Level, XP and rank",
+                        "level": "Level",
+                        "rank": "Rank",
+                        "xp": "Experience"
+                    }
+                }
+            ],
+            "app.streamdockmanager.plugins.runescape-hiscores.xp-change": [
+                {
+                    "key": "username",
+                    "label": "Player name",
+                    "type": "text",
+                    "default": "",
+                    "required": true
+                },
+                {
+                    "key": "board",
+                    "label": "Hiscores board",
+                    "type": "select",
+                    "default": "normal",
+                    "options": ["normal", "ironman", "hardcore"],
+                    "option_labels": {
+                        "hardcore": "Hardcore Ironman",
+                        "ironman": "Ironman",
+                        "normal": "Normal",
+                        "ultimate": "Ultimate Ironman"
+                    }
+                },
+                {
+                    "key": "skill",
+                    "label": "Skill",
+                    "type": "select",
+                    "default": "0",
+                    "options": [
+                        "0",
+                        "1",
+                        "2",
+                        "3",
+                        "4",
+                        "5",
+                        "6",
+                        "7",
+                        "8",
+                        "9",
+                        "10",
+                        "11",
+                        "12",
+                        "13",
+                        "14",
+                        "15",
+                        "16",
+                        "17",
+                        "18",
+                        "19",
+                        "20",
+                        "21",
+                        "22",
+                        "23",
+                        "24",
+                        "25",
+                        "26",
+                        "27",
+                        "28",
+                        "29"
+                    ],
+                    "option_labels": {
+                        "0": "Overall",
+                        "1": "Attack",
+                        "10": "Fletching",
+                        "11": "Fishing",
+                        "12": "Firemaking",
+                        "13": "Crafting",
+                        "14": "Smithing",
+                        "15": "Mining",
+                        "16": "Herblore",
+                        "17": "Agility",
+                        "18": "Thieving",
+                        "19": "Slayer",
+                        "2": "Defence",
+                        "20": "Farming",
+                        "21": "Runecrafting",
+                        "22": "Hunter",
+                        "23": "Construction",
+                        "24": "Summoning",
+                        "25": "Dungeoneering",
+                        "26": "Divination",
+                        "27": "Invention",
+                        "28": "Archaeology",
+                        "29": "Necromancy",
+                        "3": "Strength",
+                        "4": "Constitution",
+                        "5": "Ranged",
+                        "6": "Prayer",
+                        "7": "Magic",
+                        "8": "Cooking",
+                        "9": "Woodcutting"
+                    }
+                }
+            ]
+        },
+        "hiscores": true,
+        "location": false,
+        "microphones": false,
+        "name": "RuneScape Hiscores",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": [],
+        "refresh": {
+            "app.streamdockmanager.plugins.runescape-hiscores.activity": {
+                "default_ms": 300000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.runescape-hiscores.overall": {
+                "default_ms": 300000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.runescape-hiscores.refresh": {
+                "default_ms": 300000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.runescape-hiscores.reset-baseline": {
+                "default_ms": 300000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.runescape-hiscores.skill": {
+                "default_ms": 300000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.runescape-hiscores.xp-change": {
+                "default_ms": 300000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "screenshot-tools": {
+        "actions": {
+            "app.streamdockmanager.plugins.screenshot-tools.clipboard": null,
+            "app.streamdockmanager.plugins.screenshot-tools.display": [
+                {
+                    "path_picker": "save",
+                    "key": "path",
+                    "label": "Output file",
+                    "type": "path",
+                    "default": ""
+                },
+                {
+                    "key": "format",
+                    "label": "Image format",
+                    "type": "select",
+                    "default": "png",
+                    "options": ["png", "jpg"]
+                }
+            ],
+            "app.streamdockmanager.plugins.screenshot-tools.region": [
+                {
+                    "path_picker": "save",
+                    "key": "path",
+                    "label": "Output file",
+                    "type": "path",
+                    "default": ""
+                },
+                {
+                    "key": "format",
+                    "label": "Image format",
+                    "type": "select",
+                    "default": "png",
+                    "options": ["png", "jpg"]
+                }
+            ],
+            "app.streamdockmanager.plugins.screenshot-tools.window": [
+                {
+                    "path_picker": "save",
+                    "key": "path",
+                    "label": "Output file",
+                    "type": "path",
+                    "default": ""
+                },
+                {
+                    "key": "format",
+                    "label": "Image format",
+                    "type": "select",
+                    "default": "png",
+                    "options": ["png", "jpg"]
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Screenshot Tools",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": null,
+        "refresh": {},
+        "speedtest": false,
+        "version": 1
+    },
+    "service-monitor": {
+        "actions": {
+            "app.streamdockmanager.plugins.service-monitor.http": [
+                {
+                    "key": "timeout",
+                    "label": "Timeout seconds",
+                    "type": "number",
+                    "default": 5,
+                    "min": 0.1,
+                    "max": 120
+                },
+                {
+                    "key": "url",
+                    "label": "HTTP check URL",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "update_interval_ms",
+                    "label": "Automatic read interval in milliseconds (0 loads once)",
+                    "type": "number",
+                    "default": 30000,
+                    "min": 0,
+                    "max": 86400000
+                }
+            ],
+            "app.streamdockmanager.plugins.service-monitor.refresh": [
+                {
+                    "key": "timeout",
+                    "label": "Timeout seconds",
+                    "type": "number",
+                    "default": 5,
+                    "min": 0.1,
+                    "max": 120
+                }
+            ],
+            "app.streamdockmanager.plugins.service-monitor.service": [
+                {
+                    "key": "timeout",
+                    "label": "Timeout seconds",
+                    "type": "number",
+                    "default": 5,
+                    "min": 0.1,
+                    "max": 120
+                },
+                {
+                    "key": "service",
+                    "label": "Service name",
+                    "type": "device",
+                    "default": ""
+                },
+                {
+                    "key": "update_interval_ms",
+                    "label": "Automatic read interval in milliseconds (0 loads once)",
+                    "type": "number",
+                    "default": 30000,
+                    "min": 0,
+                    "max": 86400000
+                }
+            ],
+            "app.streamdockmanager.plugins.service-monitor.tcp": [
+                {
+                    "key": "timeout",
+                    "label": "Timeout seconds",
+                    "type": "number",
+                    "default": 5,
+                    "min": 0.1,
+                    "max": 120
+                },
+                {
+                    "key": "address",
+                    "label": "TCP host:port",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "update_interval_ms",
+                    "label": "Automatic read interval in milliseconds (0 loads once)",
+                    "type": "number",
+                    "default": 30000,
+                    "min": 0,
+                    "max": 86400000
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Service Monitor",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": null,
+        "refresh": {
+            "app.streamdockmanager.plugins.service-monitor.http": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.service-monitor.service": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.service-monitor.tcp": {
+                "default_ms": 30000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "spotify": {
+        "actions": {
+            "app.streamdockmanager.plugins.spotify.next": null,
+            "app.streamdockmanager.plugins.spotify.previous": null,
+            "app.streamdockmanager.plugins.spotify.progress": null,
+            "app.streamdockmanager.plugins.spotify.seek": [
+                {
+                    "key": "step",
+                    "label": "Seconds per dial tick",
+                    "type": "number",
+                    "default": 5,
+                    "min": 0.1,
+                    "max": 3600
+                }
+            ],
+            "app.streamdockmanager.plugins.spotify.status": null,
+            "app.streamdockmanager.plugins.spotify.toggle": null,
+            "app.streamdockmanager.plugins.spotify.track-info": null,
+            "app.streamdockmanager.plugins.spotify.volume": [
+                {
+                    "key": "step",
+                    "label": "Volume percent per dial tick",
+                    "type": "number",
+                    "default": 1,
+                    "min": 1,
+                    "max": 100
+                }
+            ],
+            "app.streamdockmanager.plugins.spotify.volume-display": null
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Spotify",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": null,
+        "refresh": {
+            "app.streamdockmanager.plugins.spotify.next": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.spotify.previous": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.spotify.progress": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.spotify.seek": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.spotify.status": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.spotify.toggle": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.spotify.track-info": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.spotify.volume": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.spotify.volume-display": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "steam-library": {
+        "actions": {
+            "app.streamdockmanager.plugins.steam-library.favorite": [
+                {
+                    "key": "app_id",
+                    "label": "Steam application ID",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.steam-library.launch": [
+                {
+                    "key": "app_id",
+                    "label": "Steam application ID (empty uses selection)",
+                    "type": "device",
+                    "default": ""
+                },
+                {
+                    "key": "favorites_only",
+                    "label": "Navigate favorites only",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
+            "app.streamdockmanager.plugins.steam-library.next": [
+                {
+                    "key": "app_id",
+                    "label": "Steam application ID (empty uses selection)",
+                    "type": "device",
+                    "default": ""
+                },
+                {
+                    "key": "favorites_only",
+                    "label": "Navigate favorites only",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
+            "app.streamdockmanager.plugins.steam-library.playtime": [
+                {
+                    "key": "app_id",
+                    "label": "Steam application ID",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.steam-library.previous": [
+                {
+                    "key": "app_id",
+                    "label": "Steam application ID (empty uses selection)",
+                    "type": "device",
+                    "default": ""
+                },
+                {
+                    "key": "favorites_only",
+                    "label": "Navigate favorites only",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
+            "app.streamdockmanager.plugins.steam-library.refresh": null
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Steam Library",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": [
+            {
+                "path_picker": "folder",
+                "key": "steam_path",
+                "label": "Steam installation folder",
+                "type": "path",
+                "default": ""
+            },
+            {
+                "key": "account",
+                "label": "Local account ID (optional)",
+                "type": "text",
+                "default": ""
+            }
+        ],
+        "refresh": {},
+        "speedtest": false,
+        "version": 1
+    },
+    "system-monitor": {
+        "actions": {
+            "app.streamdockmanager.plugins.system-monitor.cpu": null,
+            "app.streamdockmanager.plugins.system-monitor.disk": [
+                {
+                    "path_picker": "folder",
+                    "key": "path",
+                    "label": "Disk folder or mount point",
+                    "type": "path",
+                    "default": "/"
+                }
+            ],
+            "app.streamdockmanager.plugins.system-monitor.memory": null,
+            "app.streamdockmanager.plugins.system-monitor.network": null
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "System Monitor",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": null,
+        "refresh": {
+            "app.streamdockmanager.plugins.system-monitor.cpu": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.system-monitor.disk": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.system-monitor.memory": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.system-monitor.network": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "tailscale": {
+        "actions": {
+            "app.streamdockmanager.plugins.tailscale.clear-exit-node": null,
+            "app.streamdockmanager.plugins.tailscale.connect": null,
+            "app.streamdockmanager.plugins.tailscale.disconnect": null,
+            "app.streamdockmanager.plugins.tailscale.exit-node": [
+                {
+                    "key": "exit_node",
+                    "label": "Advertised exit node",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.tailscale.peer": [
+                {
+                    "key": "peer",
+                    "label": "Peer ID or DNS name",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.tailscale.status": null,
+            "app.streamdockmanager.plugins.tailscale.toggle": null
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Tailscale",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": [
+            {
+                "path_picker": "file",
+                "key": "tailscale",
+                "label": "Tailscale executable",
+                "type": "path",
+                "default": "tailscale"
+            }
+        ],
+        "refresh": {
+            "app.streamdockmanager.plugins.tailscale.clear-exit-node": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.tailscale.connect": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.tailscale.disconnect": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.tailscale.exit-node": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.tailscale.peer": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.tailscale.status": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.tailscale.toggle": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "timers-pomodoro": {
+        "actions": {
+            "app.streamdockmanager.plugins.timers-pomodoro.adjust": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "step",
+                    "label": "Adjustment seconds",
+                    "type": "number",
+                    "default": 60,
+                    "min": -604800,
+                    "max": 604800
+                }
+            ],
+            "app.streamdockmanager.plugins.timers-pomodoro.countdown": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "seconds",
+                    "label": "Duration in seconds",
+                    "type": "number",
+                    "default": 300,
+                    "min": 1,
+                    "max": 604800
+                }
+            ],
+            "app.streamdockmanager.plugins.timers-pomodoro.pomodoro": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "focus_minutes",
+                    "label": "Focus minutes",
+                    "type": "number",
+                    "default": 25,
+                    "min": 0.02,
+                    "max": 10080
+                },
+                {
+                    "key": "break_minutes",
+                    "label": "Break minutes",
+                    "type": "number",
+                    "default": 5,
+                    "min": 0.02,
+                    "max": 10080
+                }
+            ],
+            "app.streamdockmanager.plugins.timers-pomodoro.reset": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name",
+                    "type": "text",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.timers-pomodoro.stopwatch": [
+                {
+                    "key": "shared_id",
+                    "label": "Shared state name",
+                    "type": "text",
+                    "default": ""
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "Timers \u0026 Pomodoro",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": null,
+        "refresh": {},
+        "speedtest": false,
+        "version": 1
+    },
+    "vlc": {
+        "actions": {
+            "app.streamdockmanager.plugins.vlc.audio-track": [
+                {
+                    "key": "audio_track",
+                    "label": "Audio stream ID",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.vlc.next": null,
+            "app.streamdockmanager.plugins.vlc.playlist": [
+                {
+                    "key": "playlist_item",
+                    "label": "Playlist item",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.vlc.previous": null,
+            "app.streamdockmanager.plugins.vlc.progress": null,
+            "app.streamdockmanager.plugins.vlc.seek": [
+                {
+                    "key": "step",
+                    "label": "Seconds per tick",
+                    "type": "number",
+                    "default": 5,
+                    "min": 0.1,
+                    "max": 3600
+                }
+            ],
+            "app.streamdockmanager.plugins.vlc.stop": null,
+            "app.streamdockmanager.plugins.vlc.subtitle-track": [
+                {
+                    "key": "subtitle_track",
+                    "label": "Subtitle stream ID (-1 disables)",
+                    "type": "device",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.vlc.toggle": null,
+            "app.streamdockmanager.plugins.vlc.track-info": null,
+            "app.streamdockmanager.plugins.vlc.volume": [
+                {
+                    "key": "step",
+                    "label": "Volume percent per tick",
+                    "type": "number",
+                    "default": 1,
+                    "min": 1,
+                    "max": 100
+                }
+            ],
+            "app.streamdockmanager.plugins.vlc.volume-display": null
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "VLC",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": [
+            {
+                "key": "endpoint",
+                "label": "VLC HTTP address",
+                "type": "text",
+                "default": "http://127.0.0.1:8080"
+            },
+            {
+                "key": "password",
+                "label": "VLC HTTP password (or ${ENV_NAME})",
+                "type": "text",
+                "default": "",
+                "sensitive": true
+            }
+        ],
+        "refresh": {
+            "app.streamdockmanager.plugins.vlc.audio-track": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.vlc.next": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.vlc.playlist": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.vlc.previous": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.vlc.progress": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.vlc.seek": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.vlc.stop": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.vlc.subtitle-track": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.vlc.toggle": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.vlc.track-info": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.vlc.volume": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.vlc.volume-display": {
+                "default_ms": 5000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    },
+    "weather": {
+        "actions": {
+            "app.streamdockmanager.plugins.weather.conditions": [
+                {
+                    "key": "latitude",
+                    "label": "Latitude",
+                    "type": "number",
+                    "default": 0,
+                    "min": -90,
+                    "max": 90
+                },
+                {
+                    "key": "longitude",
+                    "label": "Longitude",
+                    "type": "number",
+                    "default": 0,
+                    "min": -180,
+                    "max": 180
+                },
+                {
+                    "key": "units",
+                    "label": "Temperature units",
+                    "type": "select",
+                    "default": "celsius",
+                    "options": ["celsius", "fahrenheit"]
+                },
+                {
+                    "key": "endpoint",
+                    "label": "HTTPS service endpoint",
+                    "type": "text",
+                    "default": "https://api.open-meteo.com/v1/forecast"
+                },
+                {
+                    "key": "noncommercial",
+                    "label": "Confirm noncommercial Open-Meteo use",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
+            "app.streamdockmanager.plugins.weather.forecast": [
+                {
+                    "key": "latitude",
+                    "label": "Latitude",
+                    "type": "number",
+                    "default": 0,
+                    "min": -90,
+                    "max": 90
+                },
+                {
+                    "key": "longitude",
+                    "label": "Longitude",
+                    "type": "number",
+                    "default": 0,
+                    "min": -180,
+                    "max": 180
+                },
+                {
+                    "key": "units",
+                    "label": "Temperature units",
+                    "type": "select",
+                    "default": "celsius",
+                    "options": ["celsius", "fahrenheit"]
+                },
+                {
+                    "key": "endpoint",
+                    "label": "HTTPS service endpoint",
+                    "type": "text",
+                    "default": "https://api.open-meteo.com/v1/forecast"
+                },
+                {
+                    "key": "noncommercial",
+                    "label": "Confirm noncommercial Open-Meteo use",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
+            "app.streamdockmanager.plugins.weather.sun": [
+                {
+                    "key": "latitude",
+                    "label": "Latitude",
+                    "type": "number",
+                    "default": 0,
+                    "min": -90,
+                    "max": 90
+                },
+                {
+                    "key": "longitude",
+                    "label": "Longitude",
+                    "type": "number",
+                    "default": 0,
+                    "min": -180,
+                    "max": 180
+                },
+                {
+                    "key": "units",
+                    "label": "Temperature units",
+                    "type": "select",
+                    "default": "celsius",
+                    "options": ["celsius", "fahrenheit"]
+                },
+                {
+                    "key": "endpoint",
+                    "label": "HTTPS service endpoint",
+                    "type": "text",
+                    "default": "https://api.open-meteo.com/v1/forecast"
+                },
+                {
+                    "key": "noncommercial",
+                    "label": "Confirm noncommercial Open-Meteo use",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": true,
+        "microphones": false,
+        "name": "Weather",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": [
+            {
+                "key": "geocoding_endpoint",
+                "label": "Nominatim search endpoint (HTTPS)",
+                "type": "text",
+                "default": "https://nominatim.openstreetmap.org/search"
+            },
+            {
+                "key": "geocoding_postal_only",
+                "label": "Postal-only service (shared public Nominatim broker)",
+                "type": "checkbox",
+                "default": false
+            }
+        ],
+        "refresh": {
+            "app.streamdockmanager.plugins.weather.conditions": {
+                "default_ms": 3600000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.weather.forecast": {
+                "default_ms": 3600000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
+            "app.streamdockmanager.plugins.weather.sun": {
+                "default_ms": 3600000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            }
+        },
+        "speedtest": false,
+        "version": 1
+    }
+}

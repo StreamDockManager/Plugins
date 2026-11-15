@@ -1,0 +1,153 @@
+{
+    "version": 1,
+    "palettes": {
+        "dark": {
+            "default": {
+                "surface": "#121212",
+                "ink": "#fafafa",
+                "muted": "#ababab",
+                "accent": "#c61e32",
+                "meter": "#fafafa",
+                "border": "#303030",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#080808\"/><stop offset=\"1\" stop-color=\"#1a1a1a\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#c61e32\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "midnight": {
+                "surface": "#172138",
+                "ink": "#edf3ff",
+                "muted": "#b1bdd6",
+                "accent": "#edf3ff",
+                "meter": "#edf3ff",
+                "border": "#354461",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#0e1526\"/><stop offset=\"1\" stop-color=\"#1d2a45\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#3963ab\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "deep-teal": {
+                "surface": "#122729",
+                "ink": "#e5f6f3",
+                "muted": "#aac5bf",
+                "accent": "#e5f6f3",
+                "meter": "#e5f6f3",
+                "border": "#355154",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#0b1b1c\"/><stop offset=\"1\" stop-color=\"#193133\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#27736a\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "plum": {
+                "surface": "#271d31",
+                "ink": "#f6edfc",
+                "muted": "#cbb6d3",
+                "accent": "#f6edfc",
+                "meter": "#f6edfc",
+                "border": "#503e5d",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#1b1422\"/><stop offset=\"1\" stop-color=\"#30243c\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#79478f\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "graphite": {
+                "surface": "#1f2226",
+                "ink": "#f5f6f8",
+                "muted": "#c3c7ce",
+                "accent": "#6e7581",
+                "meter": "#f5f6f8",
+                "border": "#3d424a",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#16181b\"/><stop offset=\"1\" stop-color=\"#25282d\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#6e7581\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "hot-pink": {
+                "surface": "#231727",
+                "ink": "#fff2fa",
+                "muted": "#e2bdd3",
+                "accent": "#d42883",
+                "meter": "#fff2fa",
+                "border": "#523950",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#170f18\"/><stop offset=\"1\" stop-color=\"#2b1d2e\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#d42883\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "ember": {
+                "surface": "#2b1e19",
+                "ink": "#fff2e8",
+                "muted": "#e0bdab",
+                "accent": "#a66240",
+                "meter": "#fff2e8",
+                "border": "#594035",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#201511\"/><stop offset=\"1\" stop-color=\"#30221b\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#a66240\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "dusk-rose": {
+                "surface": "#2d1c26",
+                "ink": "#fff0f7",
+                "muted": "#dbbdce",
+                "accent": "#a45d80",
+                "meter": "#fff0f7",
+                "border": "#5a3d50",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#21151c\"/><stop offset=\"1\" stop-color=\"#32202b\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#a45d80\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            }
+        },
+        "light": {
+            "default": {
+                "surface": "#ffffff",
+                "ink": "#181b24",
+                "muted": "#525968",
+                "accent": "#b51e36",
+                "meter": "#b51e36",
+                "border": "#d4d8e0",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#f4f5f7\"/><stop offset=\"1\" stop-color=\"#f8f9fb\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#b51e36\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "mist-blue": {
+                "surface": "#ffffff",
+                "ink": "#15283c",
+                "muted": "#486078",
+                "accent": "#235b9c",
+                "meter": "#235b9c",
+                "border": "#c6d5e5",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#edf3f9\"/><stop offset=\"1\" stop-color=\"#f2f7fc\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#235b9c\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "sage": {
+                "surface": "#fcfefa",
+                "ink": "#1d3026",
+                "muted": "#455f50",
+                "accent": "#2e664c",
+                "meter": "#2e664c",
+                "border": "#c9d9c8",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#eef4ec\"/><stop offset=\"1\" stop-color=\"#f2f7ef\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#2e664c\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "sandstone": {
+                "surface": "#fffaf3",
+                "ink": "#3a291d",
+                "muted": "#6a5240",
+                "accent": "#8a5027",
+                "meter": "#8a5027",
+                "border": "#e1cdbc",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#f8f1e8\"/><stop offset=\"1\" stop-color=\"#faf2e7\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#8a5027\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "lavender": {
+                "surface": "#fffcff",
+                "ink": "#322345",
+                "muted": "#604f72",
+                "accent": "#67448f",
+                "meter": "#67448f",
+                "border": "#cfc1e0",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#f2eef9\"/><stop offset=\"1\" stop-color=\"#f7f2fc\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#67448f\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "rosewater": {
+                "surface": "#fffbfc",
+                "ink": "#3e2331",
+                "muted": "#6c4c5d",
+                "accent": "#953b60",
+                "meter": "#953b60",
+                "border": "#e4c6d3",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#faeff2\"/><stop offset=\"1\" stop-color=\"#fcf3f6\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#953b60\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "sea-glass": {
+                "surface": "#fbffff",
+                "ink": "#183737",
+                "muted": "#416361",
+                "accent": "#14666c",
+                "meter": "#14666c",
+                "border": "#c2d9d7",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#e9f4f3\"/><stop offset=\"1\" stop-color=\"#eff9f8\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#14666c\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            },
+            "honey": {
+                "surface": "#fffdf5",
+                "ink": "#382e16",
+                "muted": "#655832",
+                "accent": "#795715",
+                "meter": "#795715",
+                "border": "#e0d3a9",
+                "wallpaper": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 200 100\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"wash\" x2=\"100%\" y2=\"100%\"><stop stop-color=\"#f9f3dd\"/><stop offset=\"1\" stop-color=\"#fbf7e6\"/></linearGradient></defs><path fill=\"url(#wash)\" d=\"M0 0h200v100H0z\"/><path fill=\"#795715\" opacity=\".08\" d=\"M122 100 200 22v78z\"/></svg>"
+            }
+        }
+    }
+}

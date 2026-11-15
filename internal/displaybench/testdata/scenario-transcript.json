@@ -1,0 +1,1921 @@
+{
+    "schema_version": 1,
+    "scope": "plugin_engine_sdk_scenarios",
+    "surfaces": 14,
+    "transcript_sha256": "a1faf771ef2f703cb0f42526fdd34ea264763d2c456337b21788024afc57539e",
+    "steps": [
+        {
+            "step": "multi_field_burst",
+            "events": [
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 0
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 1
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 2
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 3
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 4
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 5
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 6
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 7
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 8
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 9
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 10
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 11
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 12
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 13
+                    }
+                }
+            ]
+        },
+        {
+            "step": "unchanged",
+            "events": []
+        },
+        {
+            "step": "single_field",
+            "events": [
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 title"
+                    }
+                }
+            ]
+        },
+        {
+            "step": "alert_then_normal",
+            "events": [
+                {
+                    "event": "showAlert",
+                    "context": "fixture-0-surface-00",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "showAlert",
+                    "context": "fixture-1-surface-01",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "showAlert",
+                    "context": "fixture-0-surface-02",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "showAlert",
+                    "context": "fixture-1-surface-03",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "showAlert",
+                    "context": "fixture-0-surface-04",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "showAlert",
+                    "context": "fixture-1-surface-05",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "showAlert",
+                    "context": "fixture-0-surface-06",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "showAlert",
+                    "context": "fixture-1-surface-07",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "showAlert",
+                    "context": "fixture-0-surface-08",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "showAlert",
+                    "context": "fixture-1-surface-09",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "showAlert",
+                    "context": "fixture-0-surface-10",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "showAlert",
+                    "context": "fixture-1-surface-11",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "showAlert",
+                    "context": "fixture-0-surface-12",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "showAlert",
+                    "context": "fixture-1-surface-13",
+                    "payload": {}
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                }
+            ]
+        },
+        {
+            "step": "removed_context",
+            "lifecycle": [
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-00",
+                    "streamDockManager": {
+                        "control_id": "key-0",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-01",
+                    "streamDockManager": {
+                        "control_id": "key-1",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-02",
+                    "streamDockManager": {
+                        "control_id": "key-2",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-03",
+                    "streamDockManager": {
+                        "control_id": "key-3",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-04",
+                    "streamDockManager": {
+                        "control_id": "key-4",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-05",
+                    "streamDockManager": {
+                        "control_id": "key-5",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-06",
+                    "streamDockManager": {
+                        "control_id": "key-6",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-07",
+                    "streamDockManager": {
+                        "control_id": "key-7",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-08",
+                    "streamDockManager": {
+                        "control_id": "key-8",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-09",
+                    "streamDockManager": {
+                        "control_id": "key-9",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-10",
+                    "streamDockManager": {
+                        "control_id": "touch-0",
+                        "width": 200,
+                        "height": 100,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-11",
+                    "streamDockManager": {
+                        "control_id": "touch-1",
+                        "width": 200,
+                        "height": 100,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-12",
+                    "streamDockManager": {
+                        "control_id": "touch-2",
+                        "width": 200,
+                        "height": 100,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willDisappear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-13",
+                    "streamDockManager": {
+                        "control_id": "touch-3",
+                        "width": 200,
+                        "height": 100,
+                        "feedback_target": ""
+                    }
+                }
+            ],
+            "events": []
+        },
+        {
+            "step": "rebound_context",
+            "lifecycle": [
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-00",
+                    "streamDockManager": {
+                        "control_id": "key-0",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-01",
+                    "streamDockManager": {
+                        "control_id": "key-1",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-02",
+                    "streamDockManager": {
+                        "control_id": "key-2",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-03",
+                    "streamDockManager": {
+                        "control_id": "key-3",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-04",
+                    "streamDockManager": {
+                        "control_id": "key-4",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-05",
+                    "streamDockManager": {
+                        "control_id": "key-5",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-06",
+                    "streamDockManager": {
+                        "control_id": "key-6",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-07",
+                    "streamDockManager": {
+                        "control_id": "key-7",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-08",
+                    "streamDockManager": {
+                        "control_id": "key-8",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-09",
+                    "streamDockManager": {
+                        "control_id": "key-9",
+                        "width": 112,
+                        "height": 112,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-10",
+                    "streamDockManager": {
+                        "control_id": "touch-0",
+                        "width": 200,
+                        "height": 100,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-11",
+                    "streamDockManager": {
+                        "control_id": "touch-1",
+                        "width": 200,
+                        "height": 100,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-0",
+                    "context": "fixture-0-surface-12",
+                    "streamDockManager": {
+                        "control_id": "touch-2",
+                        "width": 200,
+                        "height": 100,
+                        "feedback_target": ""
+                    }
+                },
+                {
+                    "event": "willAppear",
+                    "action": "fixture.action-1",
+                    "context": "fixture-1-surface-13",
+                    "streamDockManager": {
+                        "control_id": "touch-3",
+                        "width": 200,
+                        "height": 100,
+                        "feedback_target": ""
+                    }
+                }
+            ],
+            "events": [
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 0
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 1
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 2
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 3
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 4
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 5
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 6
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 7
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 8
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 9
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 10
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 11
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 12
+                    }
+                },
+                {
+                    "event": "setFeedbackLayout",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "layout": "display/fixture-0.json"
+                    }
+                },
+                {
+                    "event": "setState",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "state": 0
+                    }
+                },
+                {
+                    "event": "setImage",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "image": "icons/fixture-0.svg",
+                        "target": 0
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "cycle": 0,
+                        "surface": 13
+                    }
+                }
+            ]
+        },
+        {
+            "step": "sustained_update",
+            "events": [
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-00",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-01",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-02",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-03",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-04",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-05",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-06",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-07",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-08",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-09",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-10",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-11",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-0-surface-12",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                },
+                {
+                    "event": "setTitle",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "target": 0,
+                        "title": "Cycle 0000 normal sustained"
+                    }
+                },
+                {
+                    "event": "setFeedback",
+                    "context": "fixture-1-surface-13",
+                    "payload": {
+                        "update": "sustained"
+                    }
+                }
+            ]
+        }
+    ]
+}

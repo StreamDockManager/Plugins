@@ -1,0 +1,23 @@
+{
+    "event": "willAppear",
+    "action": "app.streamdockmanager.plugins.counter-tally.increment",
+    "context": "fixture:binding",
+    "device": "fixture-device",
+    "payload": {
+        "settings": {
+            "step": 2
+        },
+        "controller": "Keypad",
+        "coordinates": {
+            "column": 0,
+            "row": 0
+        }
+    },
+    "streamDockManager": {
+        "contract_version": 1,
+        "control_id": "key-1",
+        "width": 72,
+        "height": 72,
+        "feedback_target": "key-1"
+    }
+}

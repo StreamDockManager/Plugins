@@ -1,0 +1,331 @@
+name: native Plugins validation
+on:
+    push:
+        branches: [test-build]
+    workflow_dispatch:
+        inputs:
+            plugins_commit:
+                description: 'Exact 40-character commit in StreamDockManager/Plugins'
+                required: true
+                type: string
+permissions:
+    contents: read
+concurrency:
+    group: plugins-native-validation-${{ github.ref }}-${{ inputs.plugins_commit }}
+    cancel-in-progress: true
+jobs:
+    native:
+        if: github.ref == 'refs/heads/test-build' && ((github.event_name == 'push' && !github.event.created) || (github.event_name == 'workflow_dispatch' && inputs.plugins_commit == github.sha))
+        name: Plugins native validation (${{ matrix.os }})
+        strategy:
+            fail-fast: false
+            max-parallel: 3
+            matrix:
+                include:
+                    - os: linux
+                      arch: amd64
+                      runner_variable: LINUX_RUNNER_LABELS
+                      default_labels: '["self-hosted","Linux","X64"]'
+                    - os: windows
+                      arch: amd64
+                      runner_variable: WINDOWS_RUNNER_LABELS
+                      default_labels: '["self-hosted","Windows","X64"]'
+                    - os: darwin
+                      arch: arm64
+                      runner_variable: MACOS_ARM64_RUNNER_LABELS
+                      default_labels: '["self-hosted","macOS","ARM64"]'
+        runs-on: ${{ fromJSON(vars[matrix.runner_variable] || matrix.default_labels) }}
+        timeout-minutes: 90
+        defaults:
+            run:
+                shell: bash
+                working-directory: plugins
+        env:
+            # Let the selected Go executable resolve its own toolchain root
+            GOROOT: ''
+            GOENV: 'off'
+            PLUGINS_COMMIT: ${{ inputs.plugins_commit || github.sha }}
+            EXPECTED_OS: ${{ matrix.os }}
+            EXPECTED_ARCH: ${{ matrix.arch }}
+            EVIDENCE_DIR: ../validation-evidence/${{ github.run_id }}-${{ github.run_attempt }}/${{ matrix.os }}
+            GOMAXPROCS: '4'
+        steps:
+            - name: Use Git for Windows Bash
+              if: runner.os == 'Windows'
+              shell: powershell
+              working-directory: .
+              run: |
+                  $gitDirectory = Split-Path (Get-Command git.exe -ErrorAction Stop).Source -Parent
+                  $gitBash = Join-Path $gitDirectory '..\bin\bash.exe'
+                  if (!(Test-Path -LiteralPath $gitBash)) { throw 'Git for Windows Bash is required; the WSL bash launcher cannot run native Windows checks.' }
+                  $bashDirectory = Split-Path (Resolve-Path -LiteralPath $gitBash).Path -Parent
+                  $bashDirectory | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+            - name: Validate immutable source input
+              working-directory: .
+              run: |
+                  if [[ ! "$PLUGINS_COMMIT" =~ ^[0-9a-f]{40}$ ]]; then
+                    echo 'plugins_commit must be an exact lowercase 40-character Git commit.' >&2
+                    exit 1
+                  fi
+            - uses: actions/checkout@v7.0.1
+              with:
+                  repository: StreamDockManager/Plugins
+                  ref: ${{ inputs.plugins_commit || github.sha }}
+                  path: plugins
+                  persist-credentials: false
+            - uses: actions/setup-go@v7.0.0
+              with:
+                  go-version: '1.27.4'
+                  cache-dependency-path: plugins/go.sum
+            - uses: actions/setup-python@v7.1.0
+              if: runner.os == 'Linux' || runner.environment != 'self-hosted'
+              with:
+                  python-version: '3.12'
+            - name: Prepare isolated self-hosted macOS Python
+              if: runner.os == 'macOS' && runner.environment == 'self-hosted'
+              run: |
+                  python3 -c 'import sys; print(sys.version); sys.exit(0 if sys.version_info >= (3, 12) else "Install Python 3.12 or newer on this runner.")'
+                  python3 -m venv --clear --without-pip "$RUNNER_TEMP/native-plugins-python"
+                  echo "$RUNNER_TEMP/native-plugins-python/bin" >> "$GITHUB_PATH"
+            - name: Prepare isolated self-hosted Windows Python
+              if: runner.os == 'Windows' && runner.environment == 'self-hosted'
+              shell: powershell
+              run: |
+                  $python = Get-Command python.exe -ErrorAction SilentlyContinue | Where-Object { $_.Source -notlike '*\WindowsApps\*' } | Select-Object -First 1
+                  $pythonArgs = @()
+                  if (!$python) {
+                    $python = Get-Command py.exe -ErrorAction SilentlyContinue | Where-Object { $_.Source -notlike '*\WindowsApps\*' } | Select-Object -First 1
+                    $pythonArgs = @('-3')
+                  }
+                  if (!$python) { throw 'Install Python 3.12 or newer on this runner PATH.' }
+                  & $python.Source @pythonArgs -c 'import sys; print(sys.version); sys.exit(int(sys.version_info < (3, 12)))'
+                  if ($LASTEXITCODE -ne 0) { throw 'Python 3.12 or newer is required.' }
+                  $venv = Join-Path $env:RUNNER_TEMP 'native-plugins-python'
+                  & $python.Source @pythonArgs -m venv --clear --without-pip $venv
+                  if ($LASTEXITCODE -ne 0) { throw 'Could not prepare the isolated Python environment.' }
+                  (Join-Path $venv 'Scripts') | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+            - uses: actions/setup-node@v7.1.0
+              with:
+                  node-version: '26'
+            - run: npm install --global npm@12.2.2
+            - name: Configure SDK module access
+              run: python scripts/go_modules.py --github-env "$GITHUB_ENV"
+            - name: Bind source and actual native host
+              id: provenance
+              env:
+                  WORKFLOW_COMMIT: ${{ github.sha }}
+                  WORKFLOW_REF: ${{ github.workflow_ref }}
+                  RUNNER_ENVIRONMENT: ${{ runner.environment }}
+              run: |
+                  python - <<'PY'
+                  import datetime, hashlib, json, os, pathlib, platform, subprocess, sys
+                  out = pathlib.Path(os.environ['EVIDENCE_DIR'])
+                  out.mkdir(parents=True, exist_ok=False)
+                  # Capture checked command output for the native provenance report
+                  def command(*args):
+                      return subprocess.check_output(args, text=True).strip()
+                  head = command('git', 'rev-parse', 'HEAD')
+                  status = command('git', 'status', '--porcelain')
+                  go = json.loads(command('go', 'env', '-json', 'GOHOSTOS', 'GOHOSTARCH', 'GOOS', 'GOARCH', 'GOVERSION', 'GOROOT', 'GOTOOLDIR', 'CGO_ENABLED', 'CC', 'GOFLAGS'))
+                  compiler = command('go', 'tool', 'compile', '-V')
+                  report = {
+                      'observed_at': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                      'repository': 'StreamDockManager/Plugins',
+                      'requested_commit': os.environ['PLUGINS_COMMIT'], 'source_commit': head,
+                      'source_tree': command('git', 'rev-parse', 'HEAD^{tree}'), 'source_status_before': status,
+                      'workflow_repository': os.environ['GITHUB_REPOSITORY'],
+                      'workflow_commit': os.environ['WORKFLOW_COMMIT'], 'workflow_ref': os.environ['WORKFLOW_REF'],
+                      'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+                      'runner': {key: os.environ.get(key) for key in ['RUNNER_NAME', 'RUNNER_OS', 'RUNNER_ARCH', 'RUNNER_ENVIRONMENT']},
+                      'host': {'platform': platform.platform(), 'machine': platform.machine(), 'python': sys.version,
+                               'linux_release': platform.freedesktop_os_release() if sys.platform == 'linux' else None},
+                      'go': go, 'compiler': compiler, 'node': command('node', '--version'),
+                      'source_ci_sha256': hashlib.sha256(pathlib.Path('.github/workflows/ci.yml').read_bytes()).hexdigest(),
+                      'scope': 'Native validation for this recorded host; cross-compilation does not qualify other hosts. No release, tag, readiness or Pages operation.'
+                  }
+                  (out / 'provenance.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+                  assert head == os.environ['PLUGINS_COMMIT'] and not status, 'Checkout is not the exact clean requested source'
+                  assert go['GOVERSION'] in compiler, 'Go executable and compiler versions disagree'
+                  expected = os.environ['EXPECTED_OS']
+                  assert go['GOHOSTOS'] == go['GOOS'] == expected, 'Go host/target OS does not match this native job'
+                  assert go['GOHOSTARCH'] == go['GOARCH'] == os.environ['EXPECTED_ARCH'], 'Go host/target architecture does not match this native job'
+                  assert (sys.platform == 'win32') == (expected == 'windows'), 'Python and Go disagree about the native host'
+                  assert os.environ['RUNNER_ENVIRONMENT'] == 'self-hosted', 'Expected the configured self-hosted runner'
+                  print(json.dumps(report, indent=2))
+                  PY
+            - name: Find an existing native Windows race compiler
+              id: windows_compiler
+              if: runner.os == 'Windows'
+              # Compiler requirements: https://go.dev/doc/articles/race_detector#Requirements
+              run: |
+                  python - <<'PY'
+                  import json, os, pathlib, shutil, subprocess
+                  out = pathlib.Path(os.environ['EVIDENCE_DIR'])
+                  candidates = [pathlib.Path(p.strip('"')) / 'gcc.exe' for p in os.environ['PATH'].split(os.pathsep) if p]
+                  drive = os.environ.get('SystemDrive', 'C:')
+                  candidates += [pathlib.Path(drive + suffix) for suffix in ['/msys64/ucrt64/bin/gcc.exe', '/msys64/mingw64/bin/gcc.exe', '/mingw64/bin/gcc.exe']]
+                  report = {'native_tools': {name: shutil.which(name) for name in ['go', 'python', 'bash']}, 'candidates': [], 'selected': None}
+                  for compiler in dict.fromkeys(candidates):
+                      if not compiler.is_file():
+                          continue
+                      entry = {'path': str(compiler)}
+                      try:
+                          # Read compiler metadata without aborting discovery for an unusable candidate
+                          def query(*args):
+                              return subprocess.check_output([str(compiler), *args], text=True, stderr=subprocess.STDOUT, timeout=10).strip()
+                          entry.update(target=query('-dumpmachine'), version=query('--version'), synchronization=query('--print-file-name', 'libsynchronization.a'))
+                          library = pathlib.Path(entry['synchronization'])
+                          entry['suitable'] = entry['target'] == 'x86_64-w64-mingw32' and library.is_absolute() and library.is_file()
+                      except (OSError, subprocess.SubprocessError) as error:
+                          entry.update(suitable=False, error=str(error))
+                      report['candidates'].append(entry)
+                      if entry['suitable']:
+                          report['selected'] = str(compiler.resolve())
+                          break
+                  (out / 'windows-compiler-discovery.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+                  with open(os.environ['GITHUB_OUTPUT'], 'a', encoding='utf-8') as stream:
+                      stream.write('found=' + str(report['selected'] is not None).lower() + '\n')
+                  print(json.dumps(report, indent=2))
+                  PY
+            - name: Provision isolated pinned MSYS2 compiler when needed
+              id: msys2
+              if: runner.os == 'Windows' && steps.windows_compiler.outputs.found != 'true'
+              # v2.33.0 pins and checks the 2026-09-27 base installer SHA-256
+              # No database refresh: retain that archive's package selection, fail if unavailable
+              uses: msys2/setup-msys2@ec48f7c5447b3140e2b088413ae3a55687bccb6e
+              with:
+                  location: ${{ runner.temp }}/plugins-race-${{ github.run_id }}-${{ github.run_attempt }}
+                  msystem: UCRT64
+                  release: true
+                  update: false
+                  cache: false
+                  path-type: minimal
+                  install: mingw-w64-ucrt-x86_64-gcc
+            - name: Verify Windows compiler and execute race runtime preflight
+              id: windows_race
+              if: runner.os == 'Windows'
+              env:
+                  MSYS2_LOCATION: ${{ steps.msys2.outputs.msys2-location }}
+              run: |
+                  python - <<'PY'
+                  import hashlib, json, os, pathlib, shutil, subprocess, tempfile
+                  out = pathlib.Path(os.environ['EVIDENCE_DIR'])
+                  discovery = json.loads((out / 'windows-compiler-discovery.json').read_text())
+                  for name, before in discovery['native_tools'].items():
+                      assert before and pathlib.Path(shutil.which(name) or '') == pathlib.Path(before), name + ' changed after compiler setup'
+                  installed = pathlib.Path(os.environ['MSYS2_LOCATION']) if os.environ.get('MSYS2_LOCATION') else None
+                  compiler = pathlib.Path(discovery['selected']) if discovery['selected'] else installed / 'ucrt64/bin/gcc.exe'
+                  compiler = compiler.resolve(strict=True)
+                  # Run bounded compiler checks and surface captured output before raising failures
+                  def command(*args, **kwargs):
+                      result = subprocess.run(args, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=180, **kwargs)
+                      if result.returncode:
+                          print(result.stdout, flush=True)
+                      result.check_returncode()
+                      return result.stdout.strip()
+                  target = command(str(compiler), '-dumpmachine')
+                  library = pathlib.Path(command(str(compiler), '--print-file-name', 'libsynchronization.a'))
+                  assert target == 'x86_64-w64-mingw32' and library.is_absolute() and library.is_file(), 'Go race needs native amd64 MinGW-w64 runtime 8 or later'
+                  cc = json.dumps(compiler.as_posix(), ensure_ascii=False)
+                  env = {**os.environ, 'CGO_ENABLED': '1', 'CC': cc, 'GOWORK': 'off'}
+                  env['PATH'] += os.pathsep + str(compiler.parent)
+                  report = {'source': 'existing' if discovery['selected'] else 'isolated-msys2', 'compiler': str(compiler),
+                            'compiler_sha256': hashlib.sha256(compiler.read_bytes()).hexdigest(), 'target': target,
+                            'version': command(str(compiler), '--version'), 'synchronization_library': str(library),
+                            'synchronization_sha256': hashlib.sha256(library.read_bytes()).hexdigest(),
+                            'race_go_env': json.loads(command('go', 'env', '-json', 'CGO_ENABLED', 'CC', 'GOHOSTOS', 'GOHOSTARCH', 'GOOS', 'GOARCH', env=env)),
+                            'runtime_preflight_passed': False}
+                  if installed:
+                      report['setup_action'] = 'msys2/setup-msys2@ec48f7c5447b3140e2b088413ae3a55687bccb6e'
+                      report['installer_sha256'] = 'ad336cccfda47758b5e15cda993fbba421115cb0b126697daef1ee4dfe37209f'
+                      report['installed_packages'] = command(str(installed / 'usr/bin/pacman.exe'), '-Q').splitlines()
+                  report_path = out / 'windows-race-toolchain.json'
+                  report_path.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+                  with tempfile.TemporaryDirectory(prefix='plugins-race-probe-', dir=os.environ['RUNNER_TEMP']) as directory:
+                      source = pathlib.Path(directory) / 'main.go'
+                      source.write_text('package main\nimport "fmt"\nfunc main() { fmt.Println("race-runtime-ok") }\n', encoding='utf-8')
+                      assert command('go', 'run', '-race', str(source), cwd=directory, env=env) == 'race-runtime-ok'
+                  report['runtime_preflight_passed'] = True
+                  report_path.write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+                  with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as stream:
+                      stream.write('WINDOWS_RACE_CC=' + cc + '\nWINDOWS_RACE_BIN=' + compiler.parent.as_posix() + '\n')
+                  print(json.dumps(report, indent=2))
+                  PY
+            - name: Module integrity
+              id: modules
+              run: go mod verify 2>&1 | tee "$EVIDENCE_DIR/modules.log"
+            - name: Dependency security
+              id: security
+              run: go run golang.org/x/vuln/cmd/govulncheck@latest ./... 2>&1 | tee "$EVIDENCE_DIR/security.log"
+            - name: Source version
+              id: version
+              run: python scripts/release.py version 2>&1 | tee "$EVIDENCE_DIR/version.log"
+            - name: Python syntax checks
+              id: python
+              run: python -m compileall -q scripts 2>&1 | tee "$EVIDENCE_DIR/python.log"
+            - name: Go formatting
+              id: format
+              run: |
+                  files=$(git ls-files --cached --others --exclude-standard -- '*.go')
+                  unformatted=$(printf '%s\n' "$files" | while IFS= read -r file; do [ -z "$file" ] || gofmt -l "$file"; done)
+                  printf '%s' "$unformatted" | tee "$EVIDENCE_DIR/format.log"
+                  test -z "$unformatted"
+            - name: Go vet
+              id: vet
+              run: go vet ./... 2>&1 | tee "$EVIDENCE_DIR/vet.log"
+            - name: Native compilation
+              id: compile
+              env:
+                  CGO_ENABLED: '1'
+              run: |
+                  if [ "$RUNNER_OS" = Windows ]; then
+                    export CC="$WINDOWS_RACE_CC"
+                    export PATH="$PATH:$(cygpath -u "$WINDOWS_RACE_BIN")"
+                  fi
+                  go env -json CGO_ENABLED CC GOHOSTOS GOHOSTARCH GOOS GOARCH > "$EVIDENCE_DIR/compile-environment.json"
+                  go build ./... 2>&1 | tee "$EVIDENCE_DIR/compile.log"
+            - name: Supported target cross-compilation
+              id: cross
+              run: go run ./tools/pluginbuild cross 2>&1 | tee "$EVIDENCE_DIR/cross.log"
+            - name: Native packages
+              id: packages
+              run: go run ./tools/pluginbuild package 2>&1 | tee "$EVIDENCE_DIR/packages.log"
+            - name: Native package validation
+              id: validation
+              run: python scripts/validate_packages.py 2>&1 | tee "$EVIDENCE_DIR/validation.log"
+            - name: Retain final source and output inventory
+              id: inventory
+              if: always() && steps.provenance.outcome == 'success'
+              env:
+                  STEP_RESULTS: >-
+                      {"windows_compiler":"${{ steps.windows_compiler.outcome }}","msys2":"${{ steps.msys2.outcome }}","windows_race":"${{ steps.windows_race.outcome }}","modules":"${{ steps.modules.outcome }}","security":"${{ steps.security.outcome }}","version":"${{ steps.version.outcome }}","python":"${{ steps.python.outcome }}","format":"${{ steps.format.outcome }}","vet":"${{ steps.vet.outcome }}","compile":"${{ steps.compile.outcome }}","cross":"${{ steps.cross.outcome }}","packages":"${{ steps.packages.outcome }}","validation":"${{ steps.validation.outcome }}"}
+              run: |
+                  python - <<'PY'
+                  import hashlib, json, os, pathlib, subprocess
+                  out = pathlib.Path(os.environ['EVIDENCE_DIR'])
+                  head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+                  status = subprocess.check_output(['git', 'status', '--porcelain'], text=True).strip()
+                  files = sorted(pathlib.Path('dist').glob('catalog-*.json')) + sorted(pathlib.Path('dist/packages').rglob('*'))
+                  inventory = [{'path': p.as_posix(), 'size': p.stat().st_size, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()} for p in files if p.is_file()]
+                  report = {'source_commit_after': head, 'source_status_after': status, 'steps': json.loads(os.environ['STEP_RESULTS']), 'outputs': inventory}
+                  (out / 'result.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
+                  evidence = sorted(p for p in out.iterdir() if p.is_file() and p.name != 'SHA256SUMS')
+                  (out / 'SHA256SUMS').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest() + '  ' + p.name + '\n' for p in evidence), encoding='utf-8')
+                  assert head == os.environ['PLUGINS_COMMIT'] and not status, 'Observed source changed during validation'
+                  PY
+            - name: Upload native validation evidence
+              if: always()
+              uses: actions/upload-artifact@v7.0.2
+              with:
+                  name: plugins-validation-${{ matrix.os }}-${{ inputs.plugins_commit }}-${{ github.run_attempt }}
+                  path: validation-evidence/${{ github.run_id }}-${{ github.run_attempt }}/${{ matrix.os }}
+                  if-no-files-found: error
+            - name: Upload validated native packages
+              if: success() && steps.validation.outcome == 'success' && steps.inventory.outcome == 'success'
+              uses: actions/upload-artifact@v7.0.2
+              with:
+                  name: plugins-packages-${{ matrix.os }}-${{ inputs.plugins_commit }}-${{ github.run_attempt }}
+                  path: |
+                      plugins/dist/catalog-*.json
+                      plugins/dist/packages
+                  if-no-files-found: error

@@ -1,0 +1,668 @@
+{
+    "retrieved": "2026-10-30",
+    "copyright": "Game artwork \u00a9 Jagex Limited. Wiki file pages identify image provenance.",
+    "notice": "Created using intellectual property belonging to Jagex Limited under the terms of Jagex's Fan Content Policy. This content is not endorsed by or affiliated with Jagex.",
+    "policy": "https://legal.jagex.com/docs/policies/fan-content-policy",
+    "images": [
+        {
+            "asset": "osrs/cape-overall.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Max_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Max_cape_detail.png/132px-Max_cape_detail.png?4f67e",
+            "sha256": "2bb33e6577323c2294fde958bf5be4d1aa8c56c2e841c5e1493df9a506b4cb21"
+        },
+        {
+            "asset": "osrs/icon-overall.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Stats_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Stats_icon.png?1b467",
+            "sha256": "68be48eab3e6ad81640fa36de873007a58f741ddc346b9906235931acc9b1fd2"
+        },
+        {
+            "asset": "osrs/cape-attack.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Attack_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Attack_cape_detail.png/131px-Attack_cape_detail.png?14110",
+            "sha256": "b70cb9455906035eb6142511f56b08d275774b13d45a8ca6bf311046fbd7212c"
+        },
+        {
+            "asset": "osrs/icon-attack.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Attack_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Attack_icon.png?b4bce",
+            "sha256": "b47da9bb7314fd305d0bb55b0a8a859c1f8f9a2aa452d7a5ad92dcd675d03f67"
+        },
+        {
+            "asset": "osrs/cape-defence.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Defence_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Defence_cape_detail.png/131px-Defence_cape_detail.png?c8ebd",
+            "sha256": "a4fb6a3f53dd96625f851abc7d14957f6a356138288cafcc2f92d249da9a5258"
+        },
+        {
+            "asset": "osrs/icon-defence.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Defence_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Defence_icon.png?ca0cd",
+            "sha256": "851486643e06dddcc9eb73737f253b339486d3b58ff35a82853e9c655f0a461d"
+        },
+        {
+            "asset": "osrs/cape-strength.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Strength_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Strength_cape_detail.png/131px-Strength_cape_detail.png?21398",
+            "sha256": "e2e8b6021a7ddd686619506e80f1c9e730892c0a4cc1886f078e8c9d77fd14cc"
+        },
+        {
+            "asset": "osrs/icon-strength.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Strength_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Strength_icon.png?e6e0c",
+            "sha256": "7a3e398e90053b46701f5056652dd3cdc7a2099a4e63a092e87328f69c559fd6"
+        },
+        {
+            "asset": "osrs/cape-hitpoints.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Hitpoints_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Hitpoints_cape_detail.png/131px-Hitpoints_cape_detail.png?5d20a",
+            "sha256": "e70a6ed0ec717688d500a72440db652688cd4662a432c3c4bbc2fb091596d8aa"
+        },
+        {
+            "asset": "osrs/icon-hitpoints.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Hitpoints_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Hitpoints_icon.png?a4819",
+            "sha256": "2bc12756fd370bde1d28261175878afe7034a095e2879165a99ee2466396a41f"
+        },
+        {
+            "asset": "osrs/cape-ranged.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Ranging_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Ranging_cape_detail.png/131px-Ranging_cape_detail.png?e421a",
+            "sha256": "90dbcd7ef17982075f05bac83ea0007c6128049c3bd5c88eab2839752e694f9d"
+        },
+        {
+            "asset": "osrs/icon-ranged.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Ranged_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Ranged_icon.png?01b0e",
+            "sha256": "ad58292d271d6d7a8def02e931a2f9fc5ed5f0c5da5ece4656a537806a6d44c6"
+        },
+        {
+            "asset": "osrs/cape-prayer.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Prayer_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Prayer_cape_detail.png/131px-Prayer_cape_detail.png?1adec",
+            "sha256": "29f717ac4437fad3397e990de7b5e3781f69a271808eb1e2b9587b1fd4cdb043"
+        },
+        {
+            "asset": "osrs/icon-prayer.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Prayer_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Prayer_icon.png?7e70b",
+            "sha256": "72c78b560e612f6c0c88901b0caae8ae2edee01f25e8f82113e063b67ca44cd2"
+        },
+        {
+            "asset": "osrs/cape-magic.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Magic_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Magic_cape_detail.png/131px-Magic_cape_detail.png?56ccc",
+            "sha256": "ec9d1581abc9139ca8efe34bc6437694da48432e575f65d9d406d29627f4be30"
+        },
+        {
+            "asset": "osrs/icon-magic.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Magic_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Magic_icon.png?334cf",
+            "sha256": "410d7768300a1cd4244c3cefd4a4d39e4806266df317fca3a974b52c4535c915"
+        },
+        {
+            "asset": "osrs/cape-cooking.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Cooking_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Cooking_cape_detail.png/131px-Cooking_cape_detail.png?9a324",
+            "sha256": "432bd293f95a2f024b1ab2e1b06b6af6ce2a974c4479c15c48d97d3743ad4226"
+        },
+        {
+            "asset": "osrs/icon-cooking.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Cooking_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Cooking_icon.png?a0156",
+            "sha256": "818ae16d632dc18ca8e8592511f1c27ad7d8c93f7da98637fc6828c51162767d"
+        },
+        {
+            "asset": "osrs/cape-woodcutting.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Woodcutting_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Woodcutting_cape_detail.png/131px-Woodcutting_cape_detail.png?bea25",
+            "sha256": "b5e94ec505f17974b292e7b125bd5cb66f448b48f2cf78e4ee652fdeeac2fdd6"
+        },
+        {
+            "asset": "osrs/icon-woodcutting.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Woodcutting_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Woodcutting_icon.png?6ead4",
+            "sha256": "1da03c900c253b420d65688a80dd974f4e37b0da25a34603483a2ff19fac5462"
+        },
+        {
+            "asset": "osrs/cape-fletching.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Fletching_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Fletching_cape_detail.png/131px-Fletching_cape_detail.png?c7fb9",
+            "sha256": "d6ac8672246de11ec792c9edc3e28d67aa8bfd34fd6ba729b95d65dbd45108f8"
+        },
+        {
+            "asset": "osrs/icon-fletching.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Fletching_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Fletching_icon.png?15cda",
+            "sha256": "ff506613c0b95014668b71424422ff9c19f0804061b69cc2ec2d209f0cca72cf"
+        },
+        {
+            "asset": "osrs/cape-fishing.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Fishing_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Fishing_cape_detail.png/131px-Fishing_cape_detail.png?1859f",
+            "sha256": "1df7930cab55239fdd19390d39b22fb35b070150539e4af6e5c160cc1b1bf011"
+        },
+        {
+            "asset": "osrs/icon-fishing.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Fishing_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Fishing_icon.png?15a98",
+            "sha256": "ceaae4754e78b56d78400b2267810bba1b72464d475cadd3f0f55c10cf837a3b"
+        },
+        {
+            "asset": "osrs/cape-firemaking.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Firemaking_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Firemaking_cape_detail.png/131px-Firemaking_cape_detail.png?50003",
+            "sha256": "7742cf6227ced33093b0dde37d710f3bfa4e6a3852a06a67fcecfb22e96ecdeb"
+        },
+        {
+            "asset": "osrs/icon-firemaking.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Firemaking_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Firemaking_icon.png?45ea0",
+            "sha256": "a3a94d449c92e858806000258cb1f4aca1091cbe161a811606146a22dd5bd63f"
+        },
+        {
+            "asset": "osrs/cape-crafting.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Crafting_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Crafting_cape_detail.png/131px-Crafting_cape_detail.png?404ee",
+            "sha256": "c6ec7726579f33929767c23d2cb652019c88d74db4eabe6b4a36f02fa0956a0c"
+        },
+        {
+            "asset": "osrs/icon-crafting.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Crafting_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Crafting_icon.png?a1f71",
+            "sha256": "514900a03b5560990dd34facef3ac03398fb16d0e146df67e3c02bd68ce9863b"
+        },
+        {
+            "asset": "osrs/cape-smithing.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Smithing_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Smithing_cape_detail.png/131px-Smithing_cape_detail.png?e02d2",
+            "sha256": "f33f8a7b04fb4851857c2403b3b39a902eb037fb81f57f93fdfdaecac00a67dc"
+        },
+        {
+            "asset": "osrs/icon-smithing.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Smithing_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Smithing_icon.png?d26c5",
+            "sha256": "7f13b2f409bbe20e5f1d6b4433e82c3e4f15bf6a4908660a8fc19a0949fdf3b3"
+        },
+        {
+            "asset": "osrs/cape-mining.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Mining_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Mining_cape_detail.png/131px-Mining_cape_detail.png?9ec12",
+            "sha256": "25993bfe46c82ae140b32740470ff316429006cf1661567c4dc98ff35e335ba0"
+        },
+        {
+            "asset": "osrs/icon-mining.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Mining_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Mining_icon.png?00870",
+            "sha256": "c7b37164184461532b764ef0a336dc7360e5eb83a0049a583d1c03b41765fea8"
+        },
+        {
+            "asset": "osrs/cape-herblore.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Herblore_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Herblore_cape_detail.png/131px-Herblore_cape_detail.png?15b63",
+            "sha256": "bfe9720d6d3025ba32150010bffa54e40734137a0322b73c20c82da885c04163"
+        },
+        {
+            "asset": "osrs/icon-herblore.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Herblore_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Herblore_icon.png?ffa9e",
+            "sha256": "80675995ba6ef164d763e4961a6a61880e9d9c6b35cb0cca8100b913bf0e683f"
+        },
+        {
+            "asset": "osrs/cape-agility.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Agility_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Agility_cape_detail.png/131px-Agility_cape_detail.png?dbaa1",
+            "sha256": "0a89c58fde3ebdeda1122281171483999011844e249e4dfacbeb47cc9cce5daa"
+        },
+        {
+            "asset": "osrs/icon-agility.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Agility_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Agility_icon.png?389e0",
+            "sha256": "8d6bc1503c50a914913affce9cb71f824ab64d3797c30a150a2f10bdd66d31cd"
+        },
+        {
+            "asset": "osrs/cape-thieving.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Thieving_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Thieving_cape_detail.png/131px-Thieving_cape_detail.png?8d340",
+            "sha256": "24050de77102aee94c58b75f300d7c8602adf6502094e65a52648ba0f47a78a8"
+        },
+        {
+            "asset": "osrs/icon-thieving.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Thieving_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Thieving_icon.png?973fe",
+            "sha256": "45edfa33ab53b1484c1becad93564ae5edefbf0e5edc965e6cc1f4e1b4f08d05"
+        },
+        {
+            "asset": "osrs/cape-slayer.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Slayer_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Slayer_cape_detail.png/131px-Slayer_cape_detail.png?17a9e",
+            "sha256": "70c7cbf546e3293a5ac36249f3b1f9af0853aa444853b4058fe66b2fec171c5c"
+        },
+        {
+            "asset": "osrs/icon-slayer.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Slayer_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Slayer_icon.png?cd34f",
+            "sha256": "ae1fbab5e1a60e8e102a014a10e6bd2f9f3d80d504eaa802fa1615773fa34ac8"
+        },
+        {
+            "asset": "osrs/cape-farming.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Farming_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Farming_cape_detail.png/131px-Farming_cape_detail.png?357e6",
+            "sha256": "f6e2fcd8d15bee715d8478adc5f7a24b6fa4c2ff1b2a5ae44cba9db04b0e470e"
+        },
+        {
+            "asset": "osrs/icon-farming.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Farming_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Farming_icon.png?558fa",
+            "sha256": "71edf3fedbf360b26d1bdd34913d787145ae22271026b5b583018977a1016ff0"
+        },
+        {
+            "asset": "osrs/cape-runecraft.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Runecraft_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Runecraft_cape_detail.png/131px-Runecraft_cape_detail.png?eeef1",
+            "sha256": "5a698fa31c099c4d0812854eaa79a595c1e82a783f34e6ea02aaa186bd65ef95"
+        },
+        {
+            "asset": "osrs/icon-runecraft.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Runecraft_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Runecraft_icon.png?c278c",
+            "sha256": "63eec535f90cd53c485a36bd24aa1f33e0cef681aa53b570079d8641baa5d317"
+        },
+        {
+            "asset": "osrs/cape-hunter.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Hunter_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Hunter_cape_detail.png/131px-Hunter_cape_detail.png?6adc5",
+            "sha256": "0f13f51e48b9c55eca38a7f1b39afc16d09be869521288eda229c5a96485caad"
+        },
+        {
+            "asset": "osrs/icon-hunter.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Hunter_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Hunter_icon.png?8762f",
+            "sha256": "2cf0cbaacdd54af5f5231682e79ab187677c9566270c1d41fbd44579bb73bd43"
+        },
+        {
+            "asset": "osrs/cape-construction.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Construct._cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Construct._cape_detail.png/131px-Construct._cape_detail.png?3d8ce",
+            "sha256": "0d088a5d94b5acac9bf6a8515bf0159d82d93fdbae18db5b2cbce3bc5d89b34f"
+        },
+        {
+            "asset": "osrs/icon-construction.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Construction_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Construction_icon.png?f9bf7",
+            "sha256": "e35396cd9d60edc4fb68eff3229456c81e1f1ee25b57eed8357b4ba0ca8fa359"
+        },
+        {
+            "asset": "osrs/cape-sailing.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Sailing_cape_detail.png",
+            "download": "https://oldschool.runescape.wiki/images/thumb/Sailing_cape_detail.png/131px-Sailing_cape_detail.png?d2c06",
+            "sha256": "bdec4782b852780cd0296750fa45d5a9e8577d1dacfe0b8d0e94740d37f10463"
+        },
+        {
+            "asset": "osrs/icon-sailing.png",
+            "source": "https://oldschool.runescape.wiki/w/File:Sailing_icon.png",
+            "download": "https://oldschool.runescape.wiki/images/Sailing_icon.png?ebfec",
+            "sha256": "a72b62176592246c3404efa217d9c4aa7fc03d5b8be2a91aa23c39a1673d9f83"
+        },
+        {
+            "asset": "runescape/cape-overall.png",
+            "source": "https://runescape.wiki/w/File:Max_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Max_cape_detail.png/175px-Max_cape_detail.png?d4497",
+            "sha256": "57108630739e7d7203605799305cb8bc05e1711c891d500f343005cc49b753b8"
+        },
+        {
+            "asset": "runescape/icon-overall.png",
+            "source": "https://runescape.wiki/w/File:Skills_icon.png",
+            "download": "https://runescape.wiki/images/Skills_icon.png?11bf7",
+            "sha256": "cc7bff99762f6db30e92f0ca6b7cde3a1421d845491a1402bd965097b38b7f8e"
+        },
+        {
+            "asset": "runescape/cape-attack.png",
+            "source": "https://runescape.wiki/w/File:Attack_master_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Attack_master_cape_detail.png/134px-Attack_master_cape_detail.png?7b375",
+            "sha256": "06b212fc4c3bd3fcbe1bb075ccf6dc971cabd71d00435c7653a0b180c453367c"
+        },
+        {
+            "asset": "runescape/icon-attack.png",
+            "source": "https://runescape.wiki/w/File:Attack.png",
+            "download": "https://runescape.wiki/images/Attack.png?cfcab",
+            "sha256": "e58249ebf81bbd50e083349f1210385d7a388b63f3e2b01c07a541431fb54758"
+        },
+        {
+            "asset": "runescape/cape-defence.png",
+            "source": "https://runescape.wiki/w/File:Defence_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Defence_cape_detail.png/133px-Defence_cape_detail.png?924ef",
+            "sha256": "1f5af14c9baab85b54bfab070d87ed550cc8c85d8618d00b7bacb0410afa331d"
+        },
+        {
+            "asset": "runescape/icon-defence.png",
+            "source": "https://runescape.wiki/w/File:Defence.png",
+            "download": "https://runescape.wiki/images/Defence.png?1090f",
+            "sha256": "e0b08eb45c8bf10b5efab110e90716940933a8194cda9ca72ec586aadb1df30e"
+        },
+        {
+            "asset": "runescape/cape-strength.png",
+            "source": "https://runescape.wiki/w/File:Strength_master_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Strength_master_cape_detail.png/134px-Strength_master_cape_detail.png?7b375",
+            "sha256": "b138b8f22cf412b216430d32796a7c44a473e57672c3ec1fb979e0a1dfe6ce98"
+        },
+        {
+            "asset": "runescape/icon-strength.png",
+            "source": "https://runescape.wiki/w/File:Strength.png",
+            "download": "https://runescape.wiki/images/Strength.png?57827",
+            "sha256": "6a7f2c11d1892f101062e827d82e7354cf4e72f9600a55437572f9ffc2f30f0e"
+        },
+        {
+            "asset": "runescape/cape-constitution.png",
+            "source": "https://runescape.wiki/w/File:Constitution_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Constitution_cape_detail.png/133px-Constitution_cape_detail.png?a6ee2",
+            "sha256": "cb3b6acc86b89cae0b7178c95c872e5bc8a26c3ed643758336f2e9652dee4457"
+        },
+        {
+            "asset": "runescape/icon-constitution.png",
+            "source": "https://runescape.wiki/w/File:Constitution.png",
+            "download": "https://runescape.wiki/images/Constitution.png?8f15d",
+            "sha256": "83b5354dd0a242fefdec194c0adeb5284c558cad79c94090233ddbd159c9f664"
+        },
+        {
+            "asset": "runescape/cape-ranged.png",
+            "source": "https://runescape.wiki/w/File:Ranged_master_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Ranged_master_cape_detail.png/134px-Ranged_master_cape_detail.png?7b375",
+            "sha256": "c056b6e822ebb63f8da041f5f8ac393277d4e92b958d730cc51782c6a9fd9273"
+        },
+        {
+            "asset": "runescape/icon-ranged.png",
+            "source": "https://runescape.wiki/w/File:Ranged.png",
+            "download": "https://runescape.wiki/images/Ranged.png?23a9f",
+            "sha256": "17be1ac7630067f3d5f2ebc5d54058ec08e6da43c1c61ef934a20b561b0f005a"
+        },
+        {
+            "asset": "runescape/cape-prayer.png",
+            "source": "https://runescape.wiki/w/File:Prayer_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Prayer_cape_detail.png/133px-Prayer_cape_detail.png?a6ee2",
+            "sha256": "217733aa6083cc6cb528b42349f8d3b6b93cf8cad88671d485ee15d7cff4203f"
+        },
+        {
+            "asset": "runescape/icon-prayer.png",
+            "source": "https://runescape.wiki/w/File:Prayer.png",
+            "download": "https://runescape.wiki/images/Prayer.png?236ad",
+            "sha256": "21810ebac269372390664967628edfa7f7ca88f2c68ab8c90389ee1f383f134c"
+        },
+        {
+            "asset": "runescape/cape-magic.png",
+            "source": "https://runescape.wiki/w/File:Magic_master_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Magic_master_cape_detail.png/134px-Magic_master_cape_detail.png?7b375",
+            "sha256": "979efcc76eca55cfa3632626ef38788b13c8b186ffb102f9c10520257ab1a81a"
+        },
+        {
+            "asset": "runescape/icon-magic.png",
+            "source": "https://runescape.wiki/w/File:Magic.png",
+            "download": "https://runescape.wiki/images/Magic.png?b0aca",
+            "sha256": "7ff6912c0253f82bab84250ea12953699d8878afda80fd394b0c8fbb1c62ce06"
+        },
+        {
+            "asset": "runescape/cape-cooking.png",
+            "source": "https://runescape.wiki/w/File:Cooking_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Cooking_cape_detail.png/133px-Cooking_cape_detail.png?aabf0",
+            "sha256": "f5040d0994159ac15020b99f25c8b911c0cacaccbbbb0b9efa2779f17dc29bcd"
+        },
+        {
+            "asset": "runescape/icon-cooking.png",
+            "source": "https://runescape.wiki/w/File:Cooking.png",
+            "download": "https://runescape.wiki/images/Cooking.png?4cc75",
+            "sha256": "d99d8b2be7e5e451cf3122a9c94cfc25b8e3ae666b9d69b163442c29b4c86484"
+        },
+        {
+            "asset": "runescape/cape-woodcutting.png",
+            "source": "https://runescape.wiki/w/File:Woodcutting_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Woodcutting_cape_detail.png/133px-Woodcutting_cape_detail.png?266ef",
+            "sha256": "1d15bd0b7f9b3969cced1e645c7b59e1d9aa530539f0ea7f6ce2d449fe0469d8"
+        },
+        {
+            "asset": "runescape/icon-woodcutting.png",
+            "source": "https://runescape.wiki/w/File:Woodcutting.png",
+            "download": "https://runescape.wiki/images/Woodcutting.png?8f66e",
+            "sha256": "06f616540b3f7a5091471ad7542b2baaea329ae3512bec2e6273eb73fe75cddd"
+        },
+        {
+            "asset": "runescape/cape-fletching.png",
+            "source": "https://runescape.wiki/w/File:Fletching_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Fletching_cape_detail.png/133px-Fletching_cape_detail.png?266ef",
+            "sha256": "4e45a9563041b9b51a05e8b847cdc778e302024c52f00038e33391667ff30495"
+        },
+        {
+            "asset": "runescape/icon-fletching.png",
+            "source": "https://runescape.wiki/w/File:Fletching.png",
+            "download": "https://runescape.wiki/images/Fletching.png?856d8",
+            "sha256": "1e1f0cccf1f9d782e96c736823e3dd0f07d4adb6c5b535a1131847cde665956d"
+        },
+        {
+            "asset": "runescape/cape-fishing.png",
+            "source": "https://runescape.wiki/w/File:Fishing_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Fishing_cape_detail.png/133px-Fishing_cape_detail.png?924ef",
+            "sha256": "7609d803937581cbd3d24430c3299c74695b48d757e96558b1ab983c6cf8cc4c"
+        },
+        {
+            "asset": "runescape/icon-fishing.png",
+            "source": "https://runescape.wiki/w/File:Fishing.png",
+            "download": "https://runescape.wiki/images/Fishing.png?8387c",
+            "sha256": "3f7fbb2e7e78f13ab006d45e89b2ef6d3437743f676b0602653a121a1095510c"
+        },
+        {
+            "asset": "runescape/cape-firemaking.png",
+            "source": "https://runescape.wiki/w/File:Firemaking_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Firemaking_cape_detail.png/133px-Firemaking_cape_detail.png?aabf0",
+            "sha256": "9702d89f1ab86aa1faf1959ee7ee293f3fd5f77e61f28960541ab1caeef3c2ac"
+        },
+        {
+            "asset": "runescape/icon-firemaking.png",
+            "source": "https://runescape.wiki/w/File:Firemaking.png",
+            "download": "https://runescape.wiki/images/Firemaking.png?21a63",
+            "sha256": "89f57e03dc0eba453b6bd84a38800df0cb0b626c690ec5667ce13b23f2b97546"
+        },
+        {
+            "asset": "runescape/cape-crafting.png",
+            "source": "https://runescape.wiki/w/File:Crafting_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Crafting_cape_detail.png/133px-Crafting_cape_detail.png?aabf0",
+            "sha256": "2534ee41f4c8f971b063aab4ff6df0eea3590ddc7ceb076fe81245325e903a2b"
+        },
+        {
+            "asset": "runescape/icon-crafting.png",
+            "source": "https://runescape.wiki/w/File:Crafting.png",
+            "download": "https://runescape.wiki/images/Crafting.png?b2692",
+            "sha256": "74aec81e9fc09d35f7041c5ac23896494470e181a26b4b872d2f6e3f4ecf6237"
+        },
+        {
+            "asset": "runescape/cape-smithing.png",
+            "source": "https://runescape.wiki/w/File:Smithing_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Smithing_cape_detail.png/133px-Smithing_cape_detail.png?87626",
+            "sha256": "830406cb0ab12734aca1bf4f6adb8aa8b8ca236f2ae5bf959b5ed6930b8db505"
+        },
+        {
+            "asset": "runescape/icon-smithing.png",
+            "source": "https://runescape.wiki/w/File:Smithing.png",
+            "download": "https://runescape.wiki/images/Smithing.png?11060",
+            "sha256": "18f25f1e54e3c762d2fd2ea502d29e1c0ed6738877c1608ff384e0a6d07da149"
+        },
+        {
+            "asset": "runescape/cape-mining.png",
+            "source": "https://runescape.wiki/w/File:Mining_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Mining_cape_detail.png/133px-Mining_cape_detail.png?1e3c3",
+            "sha256": "955b3da10117d027a794fb417be8fb08c8ab39c7481c79bc0e4f1266f3a7f776"
+        },
+        {
+            "asset": "runescape/icon-mining.png",
+            "source": "https://runescape.wiki/w/File:Mining.png",
+            "download": "https://runescape.wiki/images/Mining.png?ac311",
+            "sha256": "fc3fbf322730638957cad2db4803e1363efb64a93fd1ee5acb31edddb72341c5"
+        },
+        {
+            "asset": "runescape/cape-herblore.png",
+            "source": "https://runescape.wiki/w/File:Herblore_master_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Herblore_master_cape_detail.png/134px-Herblore_master_cape_detail.png?96aef",
+            "sha256": "05a2bac76befe43be2d94646aeb47c7af992230f1f29185ae301c1d5f3f408e8"
+        },
+        {
+            "asset": "runescape/icon-herblore.png",
+            "source": "https://runescape.wiki/w/File:Herblore.png",
+            "download": "https://runescape.wiki/images/Herblore.png?47894",
+            "sha256": "7cf7a64a3746b8be36f34398ae079d3afc95d2dd0b437eecc1eaef4240d66966"
+        },
+        {
+            "asset": "runescape/cape-agility.png",
+            "source": "https://runescape.wiki/w/File:Agility_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Agility_cape_detail.png/133px-Agility_cape_detail.png?4e20f",
+            "sha256": "368677a1d994890cd9d6004359239800d252ba2a96927ec407e0ba0224b74e51"
+        },
+        {
+            "asset": "runescape/icon-agility.png",
+            "source": "https://runescape.wiki/w/File:Agility.png",
+            "download": "https://runescape.wiki/images/Agility.png?8836e",
+            "sha256": "34c9f706e85655be27ef3f499e9e3e608b3227ffc62cd779d64c5c0fe90238b6"
+        },
+        {
+            "asset": "runescape/cape-thieving.png",
+            "source": "https://runescape.wiki/w/File:Thieving_master_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Thieving_master_cape_detail.png/134px-Thieving_master_cape_detail.png?96aef",
+            "sha256": "4c4f3ad989ac9752a724238ae0517fae3476b40e3c78c621386191329161406d"
+        },
+        {
+            "asset": "runescape/icon-thieving.png",
+            "source": "https://runescape.wiki/w/File:Thieving.png",
+            "download": "https://runescape.wiki/images/Thieving.png?219e1",
+            "sha256": "39aabcf5c702ff673504086852e6da9fdbbb4d4bd133d347b79072e59d4eadd6"
+        },
+        {
+            "asset": "runescape/cape-slayer.png",
+            "source": "https://runescape.wiki/w/File:Slayer_master_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Slayer_master_cape_detail.png/134px-Slayer_master_cape_detail.png?96062",
+            "sha256": "db9ee3c7b952bb32ad5693eb9961b7b3a0a1851826be81ef7095ea60b2c447db"
+        },
+        {
+            "asset": "runescape/icon-slayer.png",
+            "source": "https://runescape.wiki/w/File:Slayer.png",
+            "download": "https://runescape.wiki/images/Slayer.png?23b82",
+            "sha256": "881e40ae195486efab1fdc4196b3d38279079befc43910a52c96107190cbf5bc"
+        },
+        {
+            "asset": "runescape/cape-farming.png",
+            "source": "https://runescape.wiki/w/File:Farming_master_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Farming_master_cape_detail.png/134px-Farming_master_cape_detail.png?a2534",
+            "sha256": "9f3394018e8475b32fe1e880c7932ef79ff5f9eaaebb6b093df9e4cf0ce5bd7e"
+        },
+        {
+            "asset": "runescape/icon-farming.png",
+            "source": "https://runescape.wiki/w/File:Farming.png",
+            "download": "https://runescape.wiki/images/Farming.png?fa1cf",
+            "sha256": "d34b0cc81b8b4fd69bda67c93de9b79bbf0090ea57d8f326559b53e620f0eed0"
+        },
+        {
+            "asset": "runescape/cape-runecrafting.png",
+            "source": "https://runescape.wiki/w/File:Runecrafting_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Runecrafting_cape_detail.png/133px-Runecrafting_cape_detail.png?a6ee2",
+            "sha256": "674071377376b31a96e82af885c13e6d42058934f8f21eefafd7d3280de53060"
+        },
+        {
+            "asset": "runescape/icon-runecrafting.png",
+            "source": "https://runescape.wiki/w/File:Runecrafting.png",
+            "download": "https://runescape.wiki/images/Runecrafting.png?427a1",
+            "sha256": "6e0de1a058c8db45ccd4243269d65d379b0733906541e40d9d1cb8804b55f312"
+        },
+        {
+            "asset": "runescape/cape-hunter.png",
+            "source": "https://runescape.wiki/w/File:Hunter_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Hunter_cape_detail.png/133px-Hunter_cape_detail.png?22b03",
+            "sha256": "80a2e82fb2a6ea92bdbd47a2db3bd9e0940a6994884295d8e4e2ffbcfc67eadb"
+        },
+        {
+            "asset": "runescape/icon-hunter.png",
+            "source": "https://runescape.wiki/w/File:Hunter.png",
+            "download": "https://runescape.wiki/images/Hunter.png?969bd",
+            "sha256": "2adeb713c8710a4309957447de8ef92e238ff41f18c31d1e2b7984dce324520e"
+        },
+        {
+            "asset": "runescape/cape-construction.png",
+            "source": "https://runescape.wiki/w/File:Construction_master_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Construction_master_cape_detail.png/134px-Construction_master_cape_detail.png?7b375",
+            "sha256": "8b29b709b9a556e55198092492e17fb443683ebba1c0833cc75a5f9135466393"
+        },
+        {
+            "asset": "runescape/icon-construction.png",
+            "source": "https://runescape.wiki/w/File:Construction.png",
+            "download": "https://runescape.wiki/images/Construction.png?3563c",
+            "sha256": "bbb2e458b38035cd2ae299a1a2cd19cfb519dabb0b102c03785ea50bfa33bd11"
+        },
+        {
+            "asset": "runescape/cape-summoning.png",
+            "source": "https://runescape.wiki/w/File:Summoning_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Summoning_cape_detail.png/133px-Summoning_cape_detail.png?feb06",
+            "sha256": "1dee04fbb4ae28804c07ed4e3cef14792b11cbc37f0b5b3764ffcdf59c977f11"
+        },
+        {
+            "asset": "runescape/icon-summoning.png",
+            "source": "https://runescape.wiki/w/File:Summoning.png",
+            "download": "https://runescape.wiki/images/Summoning.png?96774",
+            "sha256": "d5d6220e33424c937957fc1fa48d6ab3168eb0746267ecb111f39ef0800b3f69"
+        },
+        {
+            "asset": "runescape/cape-dungeoneering.png",
+            "source": "https://runescape.wiki/w/File:Dungeoneering_master_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Dungeoneering_master_cape_detail.png/130px-Dungeoneering_master_cape_detail.png?4d505",
+            "sha256": "58749ae1e7213fe2f6f269f86b7833eabab45734ca74b218c9fd493999b588da"
+        },
+        {
+            "asset": "runescape/icon-dungeoneering.png",
+            "source": "https://runescape.wiki/w/File:Dungeoneering.png",
+            "download": "https://runescape.wiki/images/Dungeoneering.png?7bb0a",
+            "sha256": "900d9edbf897829475e2cf08f0cec641deb441dd62196c51d873825b6790b782"
+        },
+        {
+            "asset": "runescape/cape-divination.png",
+            "source": "https://runescape.wiki/w/File:Divination_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Divination_cape_detail.png/133px-Divination_cape_detail.png?d249c",
+            "sha256": "2400e4c94699155afada76e650249223348b5763cb3fba6569285a93111db6d5"
+        },
+        {
+            "asset": "runescape/icon-divination.png",
+            "source": "https://runescape.wiki/w/File:Divination.png",
+            "download": "https://runescape.wiki/images/Divination.png?c2f92",
+            "sha256": "02e5c923ea3e9ab7b474394478b955ee8081eb153406995d5be82d006d7a1181"
+        },
+        {
+            "asset": "runescape/cape-invention.png",
+            "source": "https://runescape.wiki/w/File:Invention_master_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Invention_master_cape_detail.png/134px-Invention_master_cape_detail.png?a2534",
+            "sha256": "92dc94806feb81329aa7233a42af3868c5e41af2a17796647f899f947e3f4f78"
+        },
+        {
+            "asset": "runescape/icon-invention.png",
+            "source": "https://runescape.wiki/w/File:Invention.png",
+            "download": "https://runescape.wiki/images/Invention.png?b4132",
+            "sha256": "c550eca7ca01dff6ac1138c44e8f47cb1043f84ef489b96377e51c313cccd779"
+        },
+        {
+            "asset": "runescape/cape-archaeology.png",
+            "source": "https://runescape.wiki/w/File:Archaeology_master_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Archaeology_master_cape_detail.png/134px-Archaeology_master_cape_detail.png?a2534",
+            "sha256": "4f7d3b8836fb4c23233b6f9c32092e949270a707f82d1c56274402000ed31298"
+        },
+        {
+            "asset": "runescape/icon-archaeology.png",
+            "source": "https://runescape.wiki/w/File:Archaeology.png",
+            "download": "https://runescape.wiki/images/Archaeology.png?cbe21",
+            "sha256": "e7a237b4c3da3e4ee2367148e504862e420b0c389b580df923e5de2de30b6441"
+        },
+        {
+            "asset": "runescape/cape-necromancy.png",
+            "source": "https://runescape.wiki/w/File:Necromancy_master_cape_detail.png",
+            "download": "https://runescape.wiki/images/thumb/Necromancy_master_cape_detail.png/134px-Necromancy_master_cape_detail.png?efab6",
+            "sha256": "73389a3c6459dac0ec15a76a31efc511ffb96aa7602e8678fe915203aecc24a3"
+        },
+        {
+            "asset": "runescape/icon-necromancy.png",
+            "source": "https://runescape.wiki/w/File:Necromancy.png",
+            "download": "https://runescape.wiki/images/Necromancy.png?fa83b",
+            "sha256": "550216fdb3f113282b6ee3d603d813d464b4a8b158772027b980d5df6a55f3a3"
+        }
+    ]
+}

@@ -1,0 +1,31 @@
+name: validate and package plugins
+on:
+    push:
+        branches: [package-build, release]
+    workflow_dispatch:
+        inputs:
+            macos_intel:
+                description: Include optional Intel macOS plugin packages
+                type: boolean
+                default: false
+permissions:
+    contents: read
+concurrency:
+    group: plugins-delivery-${{ github.ref }}
+    cancel-in-progress: ${{ github.ref == 'refs/heads/package-build' }}
+jobs:
+    checks:
+        if: github.ref == 'refs/heads/release' && (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && !github.event.created))
+        uses: ./.github/workflows/ci.yml
+        with:
+            release_checks: true
+            commit: ${{ github.sha }}
+            macos_intel: ${{ inputs.macos_intel || false }}
+    packages:
+        needs: checks
+        if: ${{ !cancelled() && (github.ref == 'refs/heads/package-build' || github.ref == 'refs/heads/release') && (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && !github.event.created)) && (github.ref == 'refs/heads/package-build' || needs.checks.result == 'success') }}
+        uses: ./.github/workflows/packages.yml
+        with:
+            commit: ${{ github.sha }}
+            mode: build-only
+            macos_intel: ${{ inputs.macos_intel || false }}

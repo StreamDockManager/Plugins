@@ -1,0 +1,2 @@
+# Keep formatter input identical on every checkout, including Windows CI.
+* text=auto eol=lf

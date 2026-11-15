@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="stylesheet" href="inspector.css" />
+        <title>Plugin settings</title>
+    </head>
+    <body>
+        <header class="inspector-heading">
+            <h1 id="title">Settings</h1>
+            <p id="runtime">Enabled plugins start automatically when configuring them.</p>
+        </header>
+        <form id="form">
+            <section id="saved-weather-locations" hidden aria-label="Saved weather locations">
+                <h2>Saved locations</h2>
+                <label id="weather-location-choice-label">
+                    Location for this action
+                    <select id="weather-location-choice">
+                        <option value="">Custom location</option>
+                    </select>
+                </label>
+                <p id="weather-location-warning" role="status" hidden></p>
+                <details>
+                    <summary>Manage shared locations</summary>
+                    <label>
+                        Saved location
+                        <select id="saved-location-list">
+                            <option value="">New location</option>
+                        </select>
+                    </label>
+                    <label>
+                        Location name
+                        <input id="saved-location-name" maxlength="128" />
+                    </label>
+                    <label>
+                        Saved latitude
+                        <input
+                            id="saved-location-latitude"
+                            type="number"
+                            min="-90"
+                            max="90"
+                            step="any"
+                        />
+                    </label>
+                    <label>
+                        Saved longitude
+                        <input
+                            id="saved-location-longitude"
+                            type="number"
+                            min="-180"
+                            max="180"
+                            step="any"
+                        />
+                    </label>
+                    <div class="buttons">
+                        <button id="saved-location-save" type="button">
+                            Save location to draft
+                        </button>
+                        <button id="saved-location-new" type="button">New location</button>
+                        <button id="saved-location-remove" type="button">Remove location</button>
+                    </div>
+                    <p>
+                        These locations are shared by all Weather actions. Apply settings saves
+                        shared-list edits. Save binding saves this action’s selection. Cancel
+                        discards changes in this dialog.
+                    </p>
+                </details>
+            </section>
+            <section id="location-search" hidden aria-label="Weather location">
+                <h2>Location</h2>
+                <p>
+                    Weather data:
+                    <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">
+                        Open-Meteo
+                    </a>
+                    · CC BY 4.0. Credits and service diagnostics appear here, outside the device
+                    display.
+                </p>
+                <p>
+                    Search once, select a result, then apply and save the coordinates. The free
+                    public Nominatim service is used by default. Searches are sent to the selected
+                    service; do not enter personal or confidential information.
+                </p>
+                <label>
+                    Search by
+                    <select id="location-mode">
+                        <option value="postal">ZIP / postal code</option>
+                        <option value="address">Address or place</option>
+                    </select>
+                </label>
+                <label>
+                    Country
+                    <select id="location-country"></select>
+                </label>
+                <label>
+                    <span id="location-query-label">ZIP / postal code</span>
+                    <input id="location-query" type="text" maxlength="512" autocomplete="off" />
+                </label>
+                <div class="buttons">
+                    <button id="location-submit" type="button">Search location</button>
+                    <button id="location-cancel" type="button" hidden>Cancel search</button>
+                </div>
+                <p id="location-status" role="status" hidden></p>
+                <ul id="location-results" aria-label="Matching locations"></ul>
+                <p id="location-selection" hidden></p>
+                <p id="location-attribution" hidden>
+                    <a
+                        href="https://www.openstreetmap.org/copyright"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        © OpenStreetMap contributors · ODbL
+                    </a>
+                </p>
+            </section>
+            <section id="hiscores-help" hidden aria-label="Hiscores setup">
+                <p>
+                    Use your in-game player name and the board for this game. Apply settings, then
+                    save the binding to update the button.
+                </p>
+                <p>
+                    Hiscores snapshots refresh every five minutes. Cape artwork shows the skill's
+                    goal; it does not indicate that the player owns the cape.
+                </p>
+            </section>
+            <section id="speed-server-settings" hidden aria-label="Speed-test server">
+                <p>
+                    This server selection applies to Run and all latency, download and upload
+                    displays.
+                </p>
+                <label>
+                    Server selection
+                    <select id="speed-server-mode">
+                        <option value="auto">Detect server (lowest nearby ping)</option>
+                        <option value="manual">Choose a server</option>
+                    </select>
+                </label>
+                <label id="speed-server-choice" hidden>
+                    Server
+                    <select id="speed-server"></select>
+                </label>
+                <div class="buttons">
+                    <button id="speed-load-servers" type="button">Load nearby servers</button>
+                    <button id="speed-detect-server" type="button">Detect server</button>
+                    <button id="speed-cancel-servers" type="button" hidden>Cancel detection</button>
+                </div>
+                <p>
+                    Detection checks nearby servers and their ping. Download and upload tests start
+                    only when you activate Run. Save to apply this choice.
+                </p>
+                <p id="speed-server-status" role="status" hidden></p>
+            </section>
+            <section id="speed-server-help" hidden aria-label="Shared speed-test settings">
+                <p>
+                    Choose the shared server under Plugins → Internet Speed Test → Plugin settings.
+                    All result displays follow the same test session.
+                </p>
+            </section>
+            <section id="microphone-picker" hidden aria-label="Microphone selection">
+                <label>
+                    Microphone
+                    <select id="microphone-device"></select>
+                </label>
+                <div class="buttons">
+                    <button id="microphone-refresh" type="button">Refresh microphones</button>
+                    <button id="microphone-cancel" type="button" hidden>Cancel detection</button>
+                </div>
+                <p>
+                    Choose the input this action controls. System default follows your computer’s
+                    default microphone. Detection does not change mute state.
+                </p>
+                <p id="microphone-status" role="status" hidden></p>
+            </section>
+            <section id="target-picker" hidden aria-labelledby="target-label">
+                <label for="target-choice" id="target-label"></label>
+                <select id="target-choice" disabled></select>
+                <div class="buttons">
+                    <button id="target-load" type="button"></button>
+                </div>
+                <p id="target-status" role="status" hidden></p>
+            </section>
+            <section id="fields" aria-label="Plugin fields"></section>
+            <details>
+                <summary>Advanced JSON (troubleshooting)</summary>
+                <textarea id="advanced" rows="12" spellcheck="false"></textarea>
+                <button type="button" id="apply-json">Apply JSON to form</button>
+            </details>
+            <details>
+                <summary>Connection and dependency tools</summary>
+                <div class="buttons">
+                    <button id="discover" type="button">Discover / check dependencies</button>
+                    <button id="test" type="button">Test request / connection</button>
+                </div>
+            </details>
+            <footer class="inspector-actions">
+                <output id="status" role="status"></output>
+                <div class="buttons">
+                    <button type="submit">Save</button>
+                    <button id="cancel" type="button">Cancel</button>
+                </div>
+            </footer>
+        </form>
+        <details id="diagnostics">
+            <summary>Response details</summary>
+            <pre id="preview"></pre>
+        </details>
+        <script src="inspector-fields.js"></script>
+        <script src="inspector-sdk.js"></script>
+        <script src="inspector-workflows.js"></script>
+        <script src="inspector.js" type="module"></script>
+    </body>
+</html>

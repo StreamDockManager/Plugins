@@ -1,0 +1,31 @@
+{
+    "http-webhooks": {
+        "method": "GET",
+        "url": "https://example.com/status.json",
+        "headers": {
+            "Authorization": "Bearer ${STATUS_TOKEN}"
+        },
+        "timeout": 10,
+        "fields": {
+            "name": "data.user.name",
+            "first_item": "data.items[0].name"
+        },
+        "field": "name",
+        "interval": 0
+    },
+    "service-monitor": {
+        "url": "http://127.0.0.1:8080/health",
+        "interval": 30,
+        "timeout": 5
+    },
+    "internet-speed-test": {
+        "server": ""
+    },
+    "steam-library-plugin": {
+        "steam_path": "/path/to/Steam",
+        "account": ""
+    },
+    "steam-library-launch": {
+        "app_id": "570"
+    }
+}

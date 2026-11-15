@@ -1,0 +1,18 @@
+{
+    "schema_version": 1,
+    "retired_ids": [
+        "app.streamdockmanager.plugins.wireguard",
+        "app.streamdockmanager.plugins.voice-dictation",
+        "app.streamdockmanager.plugins.screen-recorder",
+        "app.streamdockmanager.plugins.imap-mailbox",
+        "app.streamdockmanager.plugins.audio-mixer",
+        "app.streamdockmanager.plugins.display-controls",
+        "app.streamdockmanager.plugins.github-actions",
+        "app.streamdockmanager.plugins.mpd",
+        "app.streamdockmanager.plugins.rss-reader",
+        "app.streamdockmanager.plugins.syncthing"
+    ],
+    "platforms": {
+        "app.streamdockmanager.plugins.screenshot-tools": ["macos", "windows"]
+    }
+}

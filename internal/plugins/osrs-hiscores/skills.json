@@ -1,0 +1,227 @@
+[
+    {
+        "id": "0",
+        "name": "Overall",
+        "cap": 2376,
+        "cape": "hiscores/osrs/cape-overall",
+        "cape_size": [132, 256],
+        "icon": "hiscores/osrs/icon-overall",
+        "icon_size": [25, 23]
+    },
+    {
+        "id": "1",
+        "name": "Attack",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-attack",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-attack",
+        "icon_size": [25, 25]
+    },
+    {
+        "id": "2",
+        "name": "Defence",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-defence",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-defence",
+        "icon_size": [17, 19]
+    },
+    {
+        "id": "3",
+        "name": "Strength",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-strength",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-strength",
+        "icon_size": [16, 20]
+    },
+    {
+        "id": "4",
+        "name": "Hitpoints",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-hitpoints",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-hitpoints",
+        "icon_size": [23, 20]
+    },
+    {
+        "id": "5",
+        "name": "Ranged",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-ranged",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-ranged",
+        "icon_size": [23, 23]
+    },
+    {
+        "id": "6",
+        "name": "Prayer",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-prayer",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-prayer",
+        "icon_size": [23, 23]
+    },
+    {
+        "id": "7",
+        "name": "Magic",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-magic",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-magic",
+        "icon_size": [25, 23]
+    },
+    {
+        "id": "8",
+        "name": "Cooking",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-cooking",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-cooking",
+        "icon_size": [19, 21]
+    },
+    {
+        "id": "9",
+        "name": "Woodcutting",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-woodcutting",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-woodcutting",
+        "icon_size": [18, 22]
+    },
+    {
+        "id": "10",
+        "name": "Fletching",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-fletching",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-fletching",
+        "icon_size": [25, 25]
+    },
+    {
+        "id": "11",
+        "name": "Fishing",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-fishing",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-fishing",
+        "icon_size": [24, 23]
+    },
+    {
+        "id": "12",
+        "name": "Firemaking",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-firemaking",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-firemaking",
+        "icon_size": [23, 23]
+    },
+    {
+        "id": "13",
+        "name": "Crafting",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-crafting",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-crafting",
+        "icon_size": [24, 22]
+    },
+    {
+        "id": "14",
+        "name": "Smithing",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-smithing",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-smithing",
+        "icon_size": [19, 19]
+    },
+    {
+        "id": "15",
+        "name": "Mining",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-mining",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-mining",
+        "icon_size": [23, 23]
+    },
+    {
+        "id": "16",
+        "name": "Herblore",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-herblore",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-herblore",
+        "icon_size": [25, 17]
+    },
+    {
+        "id": "17",
+        "name": "Agility",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-agility",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-agility",
+        "icon_size": [25, 25]
+    },
+    {
+        "id": "18",
+        "name": "Thieving",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-thieving",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-thieving",
+        "icon_size": [25, 25]
+    },
+    {
+        "id": "19",
+        "name": "Slayer",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-slayer",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-slayer",
+        "icon_size": [23, 24]
+    },
+    {
+        "id": "20",
+        "name": "Farming",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-farming",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-farming",
+        "icon_size": [25, 23]
+    },
+    {
+        "id": "21",
+        "name": "Runecraft",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-runecraft",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-runecraft",
+        "icon_size": [25, 25]
+    },
+    {
+        "id": "22",
+        "name": "Hunter",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-hunter",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-hunter",
+        "icon_size": [22, 23]
+    },
+    {
+        "id": "23",
+        "name": "Construction",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-construction",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-construction",
+        "icon_size": [25, 25]
+    },
+    {
+        "id": "24",
+        "name": "Sailing",
+        "cap": 99,
+        "cape": "hiscores/osrs/cape-sailing",
+        "cape_size": [131, 255],
+        "icon": "hiscores/osrs/icon-sailing",
+        "icon_size": [23, 23]
+    }
+]

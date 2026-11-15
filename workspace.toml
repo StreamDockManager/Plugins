@@ -1,0 +1,8 @@
+# Public defaults for standalone Make builds. Environment overrides take priority.
+# WORKSPACE_CONFIG can select a different configuration file.
+[manager]
+release_repository = "StreamDockManager/Manager"
+
+[plugins]
+release_repository = "StreamDockManager/Plugins"
+catalog_url = "https://cdn.streamdockmanager.app/catalog.json"

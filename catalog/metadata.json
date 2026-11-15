@@ -1,0 +1,446 @@
+{
+    "counter-tally": {
+        "description": "Persistent counters with increment, decrement, and reset controls.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["productivity", "counter"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "timers-pomodoro": {
+        "description": "Countdowns, stopwatches, and alternating focus and break timers.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["productivity", "timer"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "system-monitor": {
+        "description": "CPU, memory, disk, and network measurements on your controls.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["system", "telemetry"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "screenshot-tools": {
+        "description": "Capture a display, window, or region and copy screenshots.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["desktop", "capture"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "Screen Recording permission",
+                "required": true,
+                "platforms": ["macos"],
+                "actions": [],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "weather": {
+        "description": "Current conditions, forecasts, and sunrise and sunset times.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["weather", "network"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "Open-Meteo Internet access",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://open-meteo.com/en/docs"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "randomizer-dice": {
+        "description": "Roll dice, choose ranges and lists, and draw without replacement.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["games", "random"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "battery-power": {
+        "description": "Display battery charge and power status.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["system", "battery"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "network-vpn": {
+        "description": "Inspect interfaces, reachability, and VPN status.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["network", "system"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "NetworkManager nmcli",
+                "required": true,
+                "platforms": ["linux"],
+                "actions": ["vpn"],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "spotify": {
+        "description": "Control Spotify playback, volume, seeking, and track feedback.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["audio", "music"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "Spotify desktop application",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://www.spotify.com/download/"
+            },
+            {
+                "name": "gdbus (MPRIS)",
+                "required": true,
+                "platforms": ["linux"],
+                "actions": [],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            },
+            {
+                "name": "dbus-monitor (live events; polling fallback)",
+                "required": false,
+                "platforms": ["linux"],
+                "actions": [],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "microphone-controls": {
+        "description": "Mute, unmute, and toggle microphones with gain recovery.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["audio", "microphone"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "Native microphone access",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            },
+            {
+                "name": "wpctl or pactl",
+                "required": true,
+                "platforms": ["linux"],
+                "actions": [],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "http-webhooks": {
+        "description": "Run HTTP requests and display status, duration, or extracted JSON fields.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["network", "automation"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "Configured HTTP(S) endpoint",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "service-monitor": {
+        "description": "Monitor HTTP, TCP, and local operating system services.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["network", "monitoring"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "Configured service or endpoint",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            },
+            {
+                "name": "systemctl (systemd)",
+                "required": true,
+                "platforms": ["linux"],
+                "actions": ["service"],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "internet-speed-test": {
+        "description": "Run cancellable Internet latency, download, and upload tests.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["network", "diagnostics"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "Internet access to configured HTTPS test endpoints",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "steam-library": {
+        "description": "Browse and launch locally installed Steam games.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["games", "steam"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "Steam and locally installed games",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://store.steampowered.com/about/"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
+        }
+    },
+    "vlc": {
+        "description": "Authenticated VLC playback, playlist and track controls, volume/seek dials and companion displays.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["media", "vlc"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "VLC HTTP interface",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
+        }
+    },
+    "tailscale": {
+        "description": "Local tailnet status, peer availability, connection controls and exit-node selection.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["network", "vpn"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "Signed-in Tailscale CLI",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
+        }
+    },
+    "mqtt": {
+        "description": "MQTT 3.1.1 publishing and shared topic displays with QoS, retained messages and verified TLS.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["automation", "mqtt"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "Reachable MQTT 3.1.1 broker",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
+        }
+    },
+    "make": {
+        "description": "Discover and control Make scenarios, track asynchronous executions and explicitly send custom webhooks.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["automation", "make"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "Make API access or a custom webhook",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
+        }
+    },
+    "osrs-hiscores": {
+        "description": "OSRS skills, activity scores and resettable fetched-snapshot XP differences by player and board.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["gaming", "hiscores"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
+        }
+    },
+    "runescape-hiscores": {
+        "description": "RuneScape skills, activity scores and snapshot XP differences using provider IDs and a validated legacy mapping.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["gaming", "hiscores"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
+        }
+    },
+    "retroachievements": {
+        "description": "Mode-specific points, game completion and recent unlocks from the RetroAchievements Web API.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["gaming", "achievements"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "User-supplied RetroAchievements Web API key",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
+        }
+    },
+    "random-meme": {
+        "description": "Fetch a random meme, preview it on the device, then paste its image link into the selected input box.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["social", "meme", "clipboard"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Native VSD runtime qualification is pending."
+        }
+    },
+    "obs-studio": {
+        "description": "Control OBS scenes, input audio, recording, and replay saves through WebSocket v5.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["streaming", "video"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "OBS Studio with WebSocket v5 enabled",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://obsproject.com/kb/remote-control-guide"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Native VSD runtime qualification is pending."
+        }
+    },
+    "home-assistant": {
+        "description": "Control entities and scenes with live state and brightness feedback.",
+        "author": "Stream Dock Manager contributors",
+        "license": "GPL-3.0-or-later",
+        "tags": ["home", "automation"],
+        "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
+        "dependencies": [
+            {
+                "name": "Home Assistant server and long-lived access token",
+                "required": true,
+                "platforms": ["macos", "windows", "linux"],
+                "actions": [],
+                "documentation": "https://www.home-assistant.io/docs/authentication/"
+            }
+        ],
+        "vsd_compatibility": {
+            "status": "unverified",
+            "reason": "Native VSD runtime qualification is pending."
+        }
+    }
+}

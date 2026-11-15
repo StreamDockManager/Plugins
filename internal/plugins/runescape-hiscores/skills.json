@@ -1,0 +1,272 @@
+[
+    {
+        "id": "0",
+        "name": "Overall",
+        "cap": 3232,
+        "cape": "hiscores/runescape/cape-overall",
+        "cape_size": [175, 256],
+        "icon": "hiscores/runescape/icon-overall",
+        "icon_size": [32, 32]
+    },
+    {
+        "id": "1",
+        "name": "Attack",
+        "cap": 120,
+        "cape": "hiscores/runescape/cape-attack",
+        "cape_size": [134, 255],
+        "icon": "hiscores/runescape/icon-attack",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "2",
+        "name": "Defence",
+        "cap": 99,
+        "cape": "hiscores/runescape/cape-defence",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-defence",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "3",
+        "name": "Strength",
+        "cap": 120,
+        "cape": "hiscores/runescape/cape-strength",
+        "cape_size": [134, 255],
+        "icon": "hiscores/runescape/icon-strength",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "4",
+        "name": "Constitution",
+        "cap": 99,
+        "cape": "hiscores/runescape/cape-constitution",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-constitution",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "5",
+        "name": "Ranged",
+        "cap": 120,
+        "cape": "hiscores/runescape/cape-ranged",
+        "cape_size": [134, 255],
+        "icon": "hiscores/runescape/icon-ranged",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "6",
+        "name": "Prayer",
+        "cap": 99,
+        "cape": "hiscores/runescape/cape-prayer",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-prayer",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "7",
+        "name": "Magic",
+        "cap": 120,
+        "cape": "hiscores/runescape/cape-magic",
+        "cape_size": [134, 255],
+        "icon": "hiscores/runescape/icon-magic",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "8",
+        "name": "Cooking",
+        "cap": 99,
+        "cape": "hiscores/runescape/cape-cooking",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-cooking",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "9",
+        "name": "Woodcutting",
+        "cap": 110,
+        "cape": "hiscores/runescape/cape-woodcutting",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-woodcutting",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "10",
+        "name": "Fletching",
+        "cap": 110,
+        "cape": "hiscores/runescape/cape-fletching",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-fletching",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "11",
+        "name": "Fishing",
+        "cap": 99,
+        "cape": "hiscores/runescape/cape-fishing",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-fishing",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "12",
+        "name": "Firemaking",
+        "cap": 110,
+        "cape": "hiscores/runescape/cape-firemaking",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-firemaking",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "13",
+        "name": "Crafting",
+        "cap": 110,
+        "cape": "hiscores/runescape/cape-crafting",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-crafting",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "14",
+        "name": "Smithing",
+        "cap": 110,
+        "cape": "hiscores/runescape/cape-smithing",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-smithing",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "15",
+        "name": "Mining",
+        "cap": 110,
+        "cape": "hiscores/runescape/cape-mining",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-mining",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "16",
+        "name": "Herblore",
+        "cap": 120,
+        "cape": "hiscores/runescape/cape-herblore",
+        "cape_size": [134, 255],
+        "icon": "hiscores/runescape/icon-herblore",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "17",
+        "name": "Agility",
+        "cap": 99,
+        "cape": "hiscores/runescape/cape-agility",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-agility",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "18",
+        "name": "Thieving",
+        "cap": 120,
+        "cape": "hiscores/runescape/cape-thieving",
+        "cape_size": [134, 255],
+        "icon": "hiscores/runescape/icon-thieving",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "19",
+        "name": "Slayer",
+        "cap": 120,
+        "cape": "hiscores/runescape/cape-slayer",
+        "cape_size": [134, 255],
+        "icon": "hiscores/runescape/icon-slayer",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "20",
+        "name": "Farming",
+        "cap": 120,
+        "cape": "hiscores/runescape/cape-farming",
+        "cape_size": [134, 255],
+        "icon": "hiscores/runescape/icon-farming",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "21",
+        "name": "Runecrafting",
+        "cap": 110,
+        "cape": "hiscores/runescape/cape-runecrafting",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-runecrafting",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "22",
+        "name": "Hunter",
+        "cap": 110,
+        "cape": "hiscores/runescape/cape-hunter",
+        "cape_size": [133, 256],
+        "icon": "hiscores/runescape/icon-hunter",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "23",
+        "name": "Construction",
+        "cap": 120,
+        "cape": "hiscores/runescape/cape-construction",
+        "cape_size": [134, 255],
+        "icon": "hiscores/runescape/icon-construction",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "24",
+        "name": "Summoning",
+        "cap": 99,
+        "cape": "hiscores/runescape/cape-summoning",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-summoning",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "25",
+        "name": "Dungeoneering",
+        "cap": 120,
+        "cape": "hiscores/runescape/cape-dungeoneering",
+        "cape_size": [130, 256],
+        "icon": "hiscores/runescape/icon-dungeoneering",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "26",
+        "name": "Divination",
+        "cap": 99,
+        "cape": "hiscores/runescape/cape-divination",
+        "cape_size": [133, 255],
+        "icon": "hiscores/runescape/icon-divination",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "27",
+        "name": "Invention",
+        "cap": 120,
+        "cape": "hiscores/runescape/cape-invention",
+        "cape_size": [134, 255],
+        "icon": "hiscores/runescape/icon-invention",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "28",
+        "name": "Archaeology",
+        "cap": 120,
+        "cape": "hiscores/runescape/cape-archaeology",
+        "cape_size": [134, 255],
+        "icon": "hiscores/runescape/icon-archaeology",
+        "icon_size": [52, 52]
+    },
+    {
+        "id": "29",
+        "name": "Necromancy",
+        "cap": 120,
+        "cape": "hiscores/runescape/cape-necromancy",
+        "cape_size": [134, 255],
+        "icon": "hiscores/runescape/icon-necromancy",
+        "icon_size": [109, 125]
+    }
+]
