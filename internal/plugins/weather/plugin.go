@@ -5,12 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	discovery "github.com/StreamDockManager/Plugin-SDK/Go/discovery"
-	"maps"
+	cache "github.com/StreamDockManager/Plugin-SDK/Go/cache"
 	"math"
 	"net/http"
 	"net/url"
-	"path/filepath"
 	"strings"
 	"time"
 
@@ -20,8 +18,13 @@ import (
 )
 
 type Plugin struct {
-	discovery    discovery.Runner
+	vaultClient  *sdk.Client
+	cacheLRU     *cache.Cache[struct{}]
+	cacheKeys    map[string]bool
 	cacheLoaded  bool
+	indexStore   *sdk.HostStore
+	indexOrder   []forecastIndexEntry
+	indexVersion sdk.StorageVersion
 	cacheStore   *sdk.HostStore
 	cacheVersion sdk.StorageVersion
 	*engine.Engine
@@ -30,7 +33,6 @@ type Plugin struct {
 	weather          map[string]weatherCache
 	weatherClient    *http.Client
 	weatherRequests  *weatherRequests
-	geocoding        *geocoder
 	lastWeatherError error
 }
 
@@ -51,6 +53,7 @@ type probeStatus struct {
 type sampledStatus = engine.SampledStatus
 
 type statusRequest struct {
+	vaultClient     *sdk.Client
 	binding         binding
 	weather         map[string]weatherCache
 	weatherClient   *http.Client
@@ -137,13 +140,8 @@ func (e *Plugin) applyStatus(ctx context.Context, c *sdk.Client, result jobResul
 	})
 }
 
-// Forecast caches outlive individual visible contexts; retirement still cancels
-// the context's jobs through the shared authoring lifecycle
-func (e *Plugin) clearFeature(id string) { e.discovery.Clear(id) }
-
 // Clear weather transient resources during feature shutdown
 func (e *Plugin) closeFeature() {
-	e.discovery.Close()
 	clear(e.weather)
 	if e.weatherRequests != nil {
 		e.weatherRequests.close()
@@ -152,12 +150,12 @@ func (e *Plugin) closeFeature() {
 
 // Reuse a current weather sample or schedule a bounded refresh
 func (e *Plugin) collectStatus(ctx context.Context, id string, b binding) displayStatus {
-
 	previous := e.Statuses[id]
 	key := e.ProbeKey(id, b)
-	if previous.At.IsZero() {
+	if previous.At.IsZero() && !enabledVault(b.Settings) {
 		resolved := resolveLocation(e.MergedSettings(b.Settings), e.Global)
 		endpoint, _ := weatherURL(resolved)
+		e.restoreForecast(ctx, endpoint)
 		if cached, ok := e.weather[endpoint]; ok && !cached.At.IsZero() {
 			if text, err := weatherText(cached.Data, action(b.Action), configvalue.String(resolved, "units", "celsius")); err == nil {
 				interval := engine.RefreshInterval("weather", action(b.Action), b.Settings, time.Hour)
@@ -173,13 +171,16 @@ func (e *Plugin) collectStatus(ctx context.Context, id string, b binding) displa
 	// Snapshot binding settings before handing work to a background probe
 	return engine.CollectSample(e.Engine, id, key, previous, time.Now, func() bool {
 
-		request := statusRequest{binding: b, weather: e.weather, weatherClient: e.weatherClient, weatherRequests: e.weatherRequests}
+		request := statusRequest{vaultClient: e.vaultClient, binding: b, weather: e.weather, weatherClient: e.weatherClient, weatherRequests: e.weatherRequests}
 		request.binding.Settings = resolveLocation(e.MergedSettings(b.Settings), e.Global)
 		{
 
 			request.weatherClient = e.weatherClient
-			request.weather = make(map[string]weatherCache, len(e.weather))
-			maps.Copy(request.weather, e.weather)
+			endpoint, _ := weatherURL(request.binding.Settings)
+			request.weather = map[string]weatherCache{}
+			if cached, ok := e.weather[endpoint]; ok {
+				request.weather[endpoint] = cached
+			}
 		}
 
 		read := e.readStatus
@@ -190,11 +191,14 @@ func (e *Plugin) collectStatus(ctx context.Context, id string, b binding) displa
 			value := read(ctx, request)
 			return "", value, nil
 		})
-	}, func(status displayStatus) displayStatus { return displayStatus{Text: status.Text, Unavailable: true} })
+	}, engine.StaleSample)
 }
 
 // Build the current weather status for a binding
 func (e *Plugin) displayStatus(ctx context.Context, id string, b binding) displayStatus {
+	if enabledVault(b.Settings) {
+		return displayStatus{Text: "Waiting for shared location", Unavailable: true}
+	}
 
 	text, err := e.text(ctx, id, b)
 	if err != nil {
@@ -220,36 +224,8 @@ func (e *Plugin) extensionInspector(ctx context.Context, c *sdk.Client, ev sdk.E
 		Scope     string         `json:"scope"`
 	}
 	_ = json.Unmarshal(ev.Payload, &p)
-	if p.Op == "cancel_location_search" {
-		e.discovery.Cancel(ev.Context, "locations", p.RequestID)
-		return true, nil
-	}
-	if p.Op == "search_location" {
-		var request struct {
-			RequestID string         `json:"request_id"`
-			Search    LocationSearch `json:"search"`
-		}
-		if err := json.Unmarshal(ev.Payload, &request); err != nil || len(request.RequestID) > 80 {
-			return true, fmt.Errorf("invalid location search")
-		}
-		if e.geocoding == nil {
-			e.geocoding = &geocoder{path: filepath.Join(filepath.Dir(e.Path), "weather-geocoding-cache.v1.json")}
-		}
-		endpoint := configvalue.String(e.Global, "geocoding_endpoint", publicGeocodingEndpoint)
-		postalOnly := configvalue.Bool(e.Global, "geocoding_postal_only")
-		g := e.geocoding
-		err := e.discovery.Run(ctx, e.Engine, c, discovery.Request{Context: ev.Context, Action: ev.Action, Channel: "locations", ID: request.RequestID, Operation: "location_results", Scope: p.Scope}, 20*time.Second, func(job context.Context) (map[string]any, error) {
-			results, err := g.search(job, endpoint, postalOnly, request.Search)
-			message := "Select a location"
-			if len(results) == 0 {
-				message = "No matching locations"
-			}
-			if err != nil {
-				message = err.Error()
-			}
-			return map[string]any{"results": results, "message": message}, err
-		})
-		return true, err
+	if p.Op == "search_location" || p.Op == "cancel_location_search" {
+		return true, fmt.Errorf("Use Find a location in Manager")
 	}
 	if p.Op != "discover" && p.Op != "test" {
 		return false, nil
@@ -261,13 +237,25 @@ func (e *Plugin) extensionInspector(ctx context.Context, c *sdk.Client, ev sdk.E
 	}
 	if p.Op == "discover" {
 
-		return true, c.Send(ctx, sdk.Message("sendToPropertyInspector", ev.Context, map[string]any{"message": "This action has no runtime discovery"}))
+		return true, engine.SendDiagnostic(ctx, c, ev.Context, ev.Action, map[string]any{"message": "This action has no runtime discovery"})
 
 	}
 	{
 
-		sample := Plugin{weatherRequests: e.weatherRequests, weatherClient: e.weatherClient, weather: make(map[string]weatherCache, len(e.weather))}
-		maps.Copy(sample.weather, e.weather)
+		if enabledVault(s) {
+			request := statusRequest{vaultClient: c, weatherClient: e.weatherClient, binding: binding{Action: ev.Action, Settings: s}}
+			e.startJob(ctx, ev.Context, func(job context.Context) (string, any, error) {
+				result := request.sampleLocation(job)
+				return result.Status.Text, map[string]any{"message": result.Status.Text, "available": !result.Status.Unavailable}, nil
+			})
+			return true, nil
+		}
+		endpoint, _ := weatherURL(s)
+		e.restoreForecast(ctx, endpoint)
+		sample := Plugin{weatherRequests: e.weatherRequests, weatherClient: e.weatherClient, weather: map[string]weatherCache{}}
+		if cached, ok := e.weather[endpoint]; ok {
+			sample.weather[endpoint] = cached
+		}
 		e.startJob(ctx, ev.Context, func(job context.Context) (string, any, error) {
 			text, err := sample.weatherText(job, a, s)
 			message := text
@@ -303,7 +291,9 @@ func (e *Plugin) handleAction(ctx context.Context, c *sdk.Client, ev sdk.Event, 
 	}
 	{
 
-		if endpoint, err := weatherURL(resolveLocation(e.MergedSettings(s), e.Global)); err == nil {
+		if enabledVault(s) {
+			e.RefreshProbe(ev.Context)
+		} else if endpoint, err := weatherURL(resolveLocation(e.MergedSettings(s), e.Global)); err == nil {
 			if cached, exists := e.weather[endpoint]; exists {
 				cached.Refresh = true
 				e.weather[endpoint] = cached
@@ -316,7 +306,7 @@ func (e *Plugin) handleAction(ctx context.Context, c *sdk.Client, ev sdk.Event, 
 
 // Expose the weather feature callbacks used by the shared engine
 func (e *Plugin) hooks() engine.Feature {
-	return engine.Feature{Before: e.beforeEvent, Action: e.handleAction, Settings: e.settingsFeature, Inspector: e.extensionInspector, Clear: e.clearFeature, Close: e.closeFeature, Status: e.displayStatus, Deadline: e.nextPoll, Apply: e.applyResult, Visuals: visuals, View: e.displayView, Collect: e.collectStatus}
+	return engine.Feature{Before: e.beforeEvent, Action: e.handleAction, Settings: e.settingsFeature, Inspector: e.extensionInspector, Close: e.closeFeature, Status: e.displayStatus, Deadline: e.nextPoll, Apply: e.applyResult, Visuals: visuals, View: e.displayView, Collect: e.collectStatus}
 }
 
 // Choose the next explicit weather deadline without idle polling
@@ -359,6 +349,9 @@ func (e *Plugin) nextPoll(now time.Time) time.Time {
 
 // Read a detached weather status request away from binding mutation
 func (r statusRequest) sample(ctx context.Context) probeStatus {
+	if enabledVault(r.binding.Settings) {
+		return r.sampleLocation(ctx)
+	}
 	sample := Plugin{weather: r.weather, weatherClient: r.weatherClient, weatherRequests: r.weatherRequests}
 	status := sample.displayStatus(ctx, "", r.binding)
 	var retry time.Time
@@ -405,6 +398,7 @@ func (e *Plugin) weatherText(ctx context.Context, action string, settings map[st
 	if err != nil {
 		return "", err
 	}
+	e.restoreForecast(ctx, endpoint)
 	cached, ok := e.weather[endpoint]
 	units := configvalue.String(settings, "units", "celsius")
 	interval := engine.RefreshInterval("weather", action, settings, time.Hour)
@@ -507,12 +501,17 @@ func weatherText(data map[string]any, action, units string) (string, error) {
 
 // Build a forecast URL from validated location settings
 func weatherURL(settings map[string]any) (string, error) {
+	if enabledVault(settings) {
+		return "", fmt.Errorf("Choose a location in Manager")
+	}
 	endpoint := configvalue.String(settings, "endpoint", "https://api.open-meteo.com/v1/forecast")
 	u, err := url.Parse(endpoint)
 	if err != nil || u.Scheme != "https" || u.Hostname() == "" {
 		return "", fmt.Errorf("weather endpoint must use HTTPS")
 	}
-	if strings.EqualFold(u.Hostname(), "api.open-meteo.com") && !configvalue.Bool(settings, "noncommercial") {
+	// Default only an absent setting so explicit false and malformed values remain rejected
+	_, noncommercialSet := settings["noncommercial"]
+	if strings.EqualFold(u.Hostname(), "api.open-meteo.com") && noncommercialSet && !configvalue.Bool(settings, "noncommercial") {
 		return "", fmt.Errorf("confirm noncommercial free-service use in inspector or configure paid/self-hosted endpoint")
 	}
 	lat, lon := configvalue.Number(settings, "latitude", 0), configvalue.Number(settings, "longitude", 0)

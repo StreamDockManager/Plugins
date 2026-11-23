@@ -2,7 +2,7 @@ package weather
 
 import "github.com/StreamDockManager/Plugins/internal/engine"
 
-var Definition = engine.Definition{ViewTargets: viewTargets, RuntimeAssets: []string{"icons/cloud-sun", "icons/forecast", "icons/sun"}, Slug: "weather", Name: "Weather", Version: "0.1.0", MinimumManager: "0.1.0", RequiredCapabilities: []string{"plugin-protocol-v1", "plugin-theme-v1", "plugin-settings-v1", "manager-controls-v1"}, Actions: []string{"conditions", "forecast", "sun"}}
+var Definition = engine.Definition{ViewTargets: viewTargets, RuntimeAssets: []string{"icons/cloud-sun", "icons/forecast", "icons/sun"}, Slug: "weather", Name: "Weather", Version: "0.1.1", MinimumManager: engine.VaultMinimumManager, RequiredCapabilities: []string{}, Actions: []string{"conditions", "forecast", "sun"}}
 
 // Each target lists the actions allowed to update its physical views
 var viewTargets = []engine.ViewTarget{

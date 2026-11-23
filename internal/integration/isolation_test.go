@@ -27,10 +27,10 @@ var featureCapabilities = map[string][]string{
 	"runescape-hiscores": {"connectors", "hiscores"},
 	"retroachievements":  {"connectors"},
 
-	"battery-power":       {"native/battery", "native/command"},
+	"battery-power":       {"native/battery", "native/command", "native/observation"},
 	"http-webhooks":       {"httpclient", "pollingdisplay"},
 	"microphone-controls": {"microphone"},
-	"network-vpn":         {"native/command", "native/vpn"},
+	"network-vpn":         {"native/command", "native/vpn", "native/observation"},
 	"screenshot-tools":    {"native/capture", "native/command"},
 	"service-monitor":     {"httpclient", "native/command", "pollingdisplay"},
 	"spotify":             {"native/command", "native/spotify", "microphone"},
@@ -51,7 +51,8 @@ func TestEveryPluginCompilesOnlyItsDeclaredCapabilities(t *testing.T) {
 	root := repositoryRoot(t)
 	for _, target := range [][2]string{{"linux", "amd64"}, {"windows", "amd64"}, {"darwin", "amd64"}, {"darwin", "arm64"}} {
 		t.Run(target[0]+"/"+target[1], func(t *testing.T) {
-			cmd := exec.Command("go", "list", "-json", "./cmd/...")
+			args := []string{"list", "-json"}
+			cmd := exec.Command("go", append(args, "./cmd/...")...)
 			cmd.Dir = root
 			// Preserve an explicitly selected development SDK workspace; dependency
 			// closure assertions are identical for local and versioned SDK packages
@@ -77,19 +78,6 @@ func TestEveryPluginCompilesOnlyItsDeclaredCapabilities(t *testing.T) {
 					t.Fatal(err)
 				}
 				slug := strings.TrimPrefix(p.ImportPath, prefix+"cmd/")
-				if slug == "weather-geocoding-proxy" {
-					// The optional geocoding broker is a helper, not an installable
-					// plugin. Keep its dependency closure isolated as well
-					if !slices.Contains(p.Deps, prefix+"internal/nominatimbroker") {
-						t.Error("geocoding helper is missing its broker implementation")
-					}
-					for _, dep := range p.Deps {
-						if strings.HasPrefix(dep, prefix+"internal/") && dep != prefix+"internal/nominatimbroker" {
-							t.Errorf("geocoding helper imports unrelated capability %s", dep)
-						}
-					}
-					continue
-				}
 				count++
 				// coder/websocket owns host transport; HTTP/TLS are now core dependencies
 				// External service clients remain opt-in
@@ -120,13 +108,13 @@ func TestEveryPluginCompilesOnlyItsDeclaredCapabilities(t *testing.T) {
 							t.Errorf("%s imports %s, owned by %s", slug, dep, owner)
 						}
 					}
-					if strings.HasPrefix(dep, "github.com/ebitengine/purego") && slug != "microphone-controls" && slug != "system-monitor" && slug != "spotify" {
-						t.Errorf("%s imports an unused native audio backend", slug)
+					if strings.HasPrefix(dep, "github.com/ebitengine/purego") && slug != "microphone-controls" && slug != "system-monitor" && slug != "spotify" && !(target[0] == "darwin" && (slug == "battery-power" || slug == "network-vpn")) {
+						t.Errorf("%s imports an unused native API adapter", slug)
 					}
 				}
 			}
-			if count != 24 {
-				t.Errorf("inspected %d plugins, want 24", count)
+			if count != len(Definitions) {
+				t.Errorf("inspected %d plugins, want %d", count, len(Definitions))
 			}
 		})
 	}

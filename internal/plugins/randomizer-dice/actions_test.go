@@ -24,12 +24,18 @@ func randomizerEvent(kind, id, name string, settings map[string]any) sdk.Event {
 func TestRandomizerActionsOnEverySurface(t *testing.T) {
 	for _, kind := range []string{"keyDown", "dialDown", "touchTap"} {
 		for _, name := range Definition.Actions {
+			if name == "roll-all" {
+				continue
+			} // Multi-binding lifecycle covered by roll_all_test.go.
 			t.Run(kind+"/"+name, func(t *testing.T) {
 				e := New(filepath.Join(t.TempDir(), "state.json"))
 				settings := map[string]any{"sides": float64(2), "min": float64(-7), "max": float64(-7), "items": " \r\n Selected item \r\n\t"}
 				if name == "dice" {
 					// Hidden settings from another action must not change the die's lower bound
 					settings["min"] = float64(99)
+				}
+				if name == countCounterAction || name == totalCounterAction {
+					e.State[counterStateKey] = &saved{RollCount: 7, RollTotal: 24}
 				}
 				e.State["control"] = &saved{Draws: []string{"Previous item"}, Color: "Previous item"}
 				updates := driveDisplays(t, e, []displayStep{
@@ -39,11 +45,21 @@ func TestRandomizerActionsOnEverySurface(t *testing.T) {
 				v := e.State["control"]
 				want := ""
 				switch name {
+				case totalCounterAction:
+					if e.lookupState(counterStateKey, nil).RollTotal != 0 {
+						t.Fatal("total did not reset")
+					}
+					want = "0"
+				case countCounterAction:
+					if e.lookupState(counterStateKey, nil).RollCount != 0 {
+						t.Fatal("counter did not reset")
+					}
+					want = "0"
 				case "dice":
 					if v.Value < 1 || v.Value > 2 {
 						t.Fatal("die outside configured sides", v.Value)
 					}
-					want = "Dice"
+					want = "d2"
 				case "range":
 					if v.Value != -7 {
 						t.Fatal("range did not include its single endpoint", v.Value)
@@ -96,6 +112,18 @@ func expectedActionError(t *testing.T, e *Plugin, event sdk.Event, message strin
 	}}
 }
 
+func requireEmptyDrawFeedback(t *testing.T, events []sdk.Event, message string) {
+	t.Helper()
+	requireUpdatedContexts(t, events, "draw")
+	title := visualPayload(events, "draw", "setTitle")["title"]
+	feedback := visualPayload(events, "draw", "setFeedback")
+	primary, _ := feedback["line0"].(map[string]any)
+	label, _ := feedback["line1"].(map[string]any)
+	if title != message+"\nPress Reset" || primary["value"] != message || label["value"] != "Press Reset" {
+		t.Fatalf("expected %q and a reset prompt, got title %q and feedback %v", message, title, feedback)
+	}
+}
+
 // Verify default deck survives restart and reset
 func TestDefaultDeckSurvivesRestartAndReset(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "state.json")
@@ -117,23 +145,32 @@ func TestDefaultDeckSurvivesRestartAndReset(t *testing.T) {
 	for range 32 {
 		steps = append(steps, displayStep{event: randomizerEvent("keyDown", "draw", "draw", nil)})
 	}
-	steps = append(steps, expectedActionError(t, e, randomizerEvent("keyDown", "draw", "draw", nil), "no remaining items"),
+	emptyPress := len(steps)
+	steps = append(steps, displayStep{event: randomizerEvent("keyDown", "draw", "draw", nil)},
 		displayStep{Render: func(context.Context, *sdk.Client) error {
-			cards := slices.Clone(e.State["cards"].Draws)
+			history := e.State["cards"].Draws
+			cards := slices.Clone(history)
 			slices.Sort(cards)
 			want := strings.Split(defaultDeck, "\n")
 			slices.Sort(want)
 			if len(cards) != 52 || !slices.Equal(cards, want) || len(slices.Compact(cards)) != 52 {
 				t.Error("did not draw every card exactly once", cards)
 			}
+			if len(history) != 52 || e.State["cards"].Color != history[51] {
+				t.Error("empty draw replaced the last card")
+			}
 			return nil
 		}},
 		displayStep{event: randomizerEvent("willAppear", "reset", "reset", map[string]any{"shared_id": "cards"})},
 		displayStep{event: randomizerEvent("keyDown", "reset", "reset", nil)},
 		displayStep{event: randomizerEvent("keyDown", "draw", "draw", nil)})
-	driveDisplays(t, e, steps)
+	updates := driveDisplays(t, e, steps)
+	requireEmptyDrawFeedback(t, updates[emptyPress], "No Cards Left")
 	if len(e.State["cards"].Draws) != 1 {
 		t.Fatal("reset did not replenish the deck", e.State["cards"])
+	}
+	if title := visualPayload(updates[len(updates)-1], "draw", "setTitle")["title"]; title != e.State["cards"].Draws[0] {
+		t.Fatal("draw after reset did not show the new card", title)
 	}
 }
 
@@ -144,7 +181,7 @@ func TestCustomDrawAndListReplacementAndIsolation(t *testing.T) {
 		{event: randomizerEvent("willAppear", "draw", "draw", map[string]any{"items": " Alpha \r\nBeta\nAlpha\n\t", "shared_id": "custom"})},
 		{event: randomizerEvent("keyDown", "draw", "draw", nil)},
 		{event: randomizerEvent("keyDown", "draw", "draw", nil)},
-		expectedActionError(t, e, randomizerEvent("keyDown", "draw", "draw", nil), "no remaining items"),
+		{event: randomizerEvent("touchTap", "draw", "draw", nil)},
 		{event: randomizerEvent("willAppear", "list", "list", map[string]any{"items": "Alpha", "shared_id": "custom"})},
 		{event: randomizerEvent("keyDown", "list", "list", nil)},
 		{event: randomizerEvent("keyDown", "list", "list", nil)},
@@ -154,6 +191,7 @@ func TestCustomDrawAndListReplacementAndIsolation(t *testing.T) {
 		{event: randomizerEvent("keyDown", "draw", "draw", nil)},
 	}
 	updates := driveDisplays(t, e, steps)
+	requireEmptyDrawFeedback(t, updates[3], "No Items Left")
 	if !slices.Contains(e.State["custom"].Draws, "Alpha") || !slices.Contains(e.State["custom"].Draws, "Beta") || len(e.State["custom"].Draws) != 3 || e.State["custom"].Color != "Gamma" {
 		t.Fatal("custom draw history or settings update failed", e.State["custom"])
 	}
@@ -246,16 +284,31 @@ func TestRandomizerRPCReportsSuccessfulActions(t *testing.T) {
 			defer e.Close()
 			recorder := testkit.New(host)
 			settings := map[string]any{"shared_id": "rpc"}
-			if name == "list" {
-				settings["items"] = "Selected item"
-			}
 			event := randomizerEvent("keyDown", "control", name, settings)
 			event.Surface.RequestID = "request-" + name
+			if name == "roll-all" {
+				for _, v := range []struct{ id, action string }{{"control", "roll-all"}, {"die", "dice"}} {
+					appear := randomizerEvent("willAppear", v.id, v.action, nil)
+					appear.Device = "device"
+					if err := e.Handle(context.Background(), recorder.Client, appear); err != nil {
+						t.Fatal(err)
+					}
+				}
+				recorder.Drain()
+				event.Device = "device"
+			}
 			if err := recorder.Replay(context.Background(), e, []sdk.Event{event}); err != nil {
 				t.Fatal(err)
 			}
 			receipts, logs := 0, 0
-			for _, message := range recorder.Drain() {
+			messages := recorder.Drain()
+			if name == "list" {
+				title := visualPayload(messages, "control", "setTitle")["title"]
+				if title != "Yes" && title != "No" {
+					t.Fatalf("unconfigured List displayed %q", title)
+				}
+			}
+			for _, message := range messages {
 				switch message.Event {
 				case "actionResult":
 					receipts++

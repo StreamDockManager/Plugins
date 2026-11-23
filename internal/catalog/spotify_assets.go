@@ -17,6 +17,7 @@ func SpotifyAssets() map[string][]byte {
 	}
 	files := map[string][]byte{}
 	paths["volume-display"] = paths["volume"]
+	paths["mute-toggle"] = `<path d="M11 4 6 8H2v8h4l5 4zM16 9l6 6M22 9l-6 6"/>`
 	paths["progress"] = paths["seek"]
 	paths["track-info"] = paths["status"]
 	for name, path := range paths {

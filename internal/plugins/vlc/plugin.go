@@ -19,7 +19,7 @@ import (
 )
 
 var Icons = map[string]string{"toggle": "play|pause", "stop": "stop", "next": "next", "previous": "previous", "playlist": "list", "audio-track": "speaker", "subtitle-track": "list", "volume": "speaker", "seek": "latency", "track-info": "list", "progress": "latency", "volume-display": "speaker"}
-var Definition, visuals = c.Define("vlc", "VLC", Icons, "toggle", "stop", "next", "previous", "playlist", "audio-track", "subtitle-track", "volume", "seek", "track-info", "progress", "volume-display")
+var Definition, visuals = c.DefineVault("vlc", "VLC", Icons, "toggle", "stop", "next", "previous", "playlist", "audio-track", "subtitle-track", "volume", "seek", "track-info", "progress", "volume-display")
 
 // Declare the VLC global settings fields
 func PluginFields() []settings.Field {
@@ -77,14 +77,18 @@ func (status *Status) UnmarshalJSON(data []byte) error {
 }
 
 type Driver struct {
-	HTTP     *c.HTTP
-	Now      func() time.Time
-	cached   *Status
-	identity [32]byte
+	vaultSession c.VaultSession
+	HTTP         *c.HTTP
+	Now          func() time.Time
+	cached       *Status
+	identity     [32]byte
 }
 
 // Choose the shared VLC resource identity for these settings
-func (*Driver) Key(map[string]any) string { return "vlc" }
+func (d *Driver) Key(s map[string]any) string {
+	return c.VaultKey(s, Definition.Slug) + d.resourceKey(s)
+}
+func (d *Driver) resourceKey(s map[string]any) string { return "vlc" }
 
 // Send a bounded VLC service request and decode its response
 func (d *Driver) request(ctx context.Context, s map[string]any, path string, query url.Values, out any) error {
@@ -101,7 +105,7 @@ func (d *Driver) request(ctx context.Context, s map[string]any, path string, que
 	}
 	endpoint.Path = strings.TrimSuffix(endpoint.Path, "/") + "/requests/" + path
 	endpoint.RawQuery = query.Encode()
-	return d.HTTP.JSON(ctx, "GET", endpoint.String(), map[string]string{"Authorization": "Basic " + base64.StdEncoding.EncodeToString([]byte(":"+password))}, nil, out)
+	return c.ServiceHTTP(ctx, d.HTTP).JSON(ctx, "GET", endpoint.String(), map[string]string{"Authorization": "Basic " + base64.StdEncoding.EncodeToString([]byte(":"+password))}, nil, out)
 }
 
 // Read the injected VLC clock or the current time
@@ -114,6 +118,9 @@ func (d *Driver) now() time.Time {
 
 // Read the VLC resource selected by the binding settings
 func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, d.readService)
+}
+func (d *Driver) readService(ctx context.Context, s map[string]any) (any, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
@@ -155,6 +162,11 @@ func (d *Driver) readFresh(ctx context.Context, s map[string]any) (any, error) {
 
 // Execute the selected VLC command and report its outcome
 func (d *Driver) Command(ctx context.Context, a string, s map[string]any, ticks int) (c.Outcome, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, func(ctx context.Context, s map[string]any) (c.Outcome, error) {
+		return d.commandService(ctx, a, s, ticks)
+	})
+}
+func (d *Driver) commandService(ctx context.Context, a string, s map[string]any, ticks int) (c.Outcome, error) {
 	defer func() { d.cached = nil }()
 	query := url.Values{}
 	switch a {
@@ -213,6 +225,9 @@ func (d *Driver) Command(ctx context.Context, a string, s map[string]any, ticks 
 
 // List VLC choices for the property inspector
 func (d *Driver) Discover(ctx context.Context, s map[string]any) ([]c.Choice, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, d.discoverService)
+}
+func (d *Driver) discoverService(ctx context.Context, s map[string]any) ([]c.Choice, error) {
 	var tree struct {
 		Children []node `json:"children"`
 	}
@@ -289,6 +304,11 @@ func (d *Driver) Display(value any, a string, _ map[string]any) string {
 }
 
 // Release the VLC driver resources during shutdown
+func (*Driver) NeedsTick(value any, action string) bool {
+	v, ok := value.(Status)
+	return ok && (action == "seek" || action == "progress") && v.State == "playing" && v.Time != nil && v.Length != nil && validRate(v.Rate) && !v.Observed.IsZero()
+}
+
 func (d *Driver) Close() { d.HTTP.Close() }
 
 // Choose the action icon state from observed VLC playback

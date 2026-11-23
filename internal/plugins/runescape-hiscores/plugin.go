@@ -9,7 +9,7 @@ import (
 )
 
 var Icons = map[string]string{"overall": "skill-cape", "skill": "skill-cape", "activity": "check", "xp-change": "plus-minus", "reset-baseline": "reset", "refresh": "cycle"}
-var Definition, visuals = c.Define("runescape-hiscores", "RuneScape Hiscores", Icons, "overall", "skill", "activity", "xp-change", "reset-baseline", "refresh")
+var Definition, visuals = c.DefineVault("runescape-hiscores", "RuneScape Hiscores", Icons, "overall", "skill", "activity", "xp-change", "reset-baseline", "refresh")
 
 // Declare the hiscores artwork required by packaged game displays
 func init() { Definition.RuntimeAssets = Game.RuntimeAssets() }

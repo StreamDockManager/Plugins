@@ -9,7 +9,6 @@ type Runner = c.Runner
 var String = c.String
 var Number = c.Number
 var Boolean = c.Boolean
-var Secret = c.Secret
 var SafeError = c.SafeError
 var RetryAt = c.RetryAt
 var NewHTTP = c.NewHTTP

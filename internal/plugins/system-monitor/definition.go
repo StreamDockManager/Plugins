@@ -2,7 +2,7 @@ package systemmonitor
 
 import "github.com/StreamDockManager/Plugins/internal/engine"
 
-var Definition = engine.Definition{ViewTargets: viewTargets, RuntimeAssets: []string{"icons/cpu", "icons/disk", "icons/memory", "icons/network"}, Slug: "system-monitor", Name: "System Monitor", Version: "0.1.0", MinimumManager: "0.1.0", RequiredCapabilities: []string{"plugin-protocol-v1", "plugin-theme-v1", "plugin-settings-v1", "manager-controls-v1", "telemetry-v1"}, Actions: []string{"cpu", "memory", "disk", "network"}}
+var Definition = engine.Definition{ViewTargets: viewTargets, RuntimeAssets: []string{"icons/cpu", "icons/disk", "icons/memory", "icons/network"}, Slug: "system-monitor", Name: "System Monitor", Version: "0.1.1", MinimumManager: engine.NotificationsMinimumManager, RequiredCapabilities: []string{"telemetry-v1"}, Actions: []string{"cpu", "memory", "disk", "network"}}
 
 // Each target lists the actions allowed to update its physical views
 var viewTargets = []engine.ViewTarget{

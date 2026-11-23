@@ -16,3 +16,8 @@ sdk-pin-check:
 sdk-pin-update:
 	@test -n "$(SDK_VERSION)" || { echo 'Set SDK_VERSION=vX.Y.Z to a published SDK release'; exit 1; }
 	@$(PYTHON) "$(PROJECT)/scripts/sdk_pin.py" update "$(SDK_VERSION)"
+
+# Explicit local outputs only; CLEAN_DRY_RUN=1 previews without deleting.
+.PHONY: clean
+clean:
+	@$(PYTHON) "$(PROJECT)/scripts/clean.py"

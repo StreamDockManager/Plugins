@@ -37,12 +37,15 @@ func markLayoutRoles(data []byte) []byte {
 	return result
 }
 
-var roleAttribute = regexp.MustCompile(` (fill|stroke)="(#0f141d|#080808|#f5f7fa|#fafafa)"`)
+var roleAttribute = regexp.MustCompile(` (fill|stroke)="(#0f141d|#080808|#f5f7fa|#fafafa)"( data-sdm-(?:fill|stroke)="[a-z]+")?`)
 
 // markIconRoles annotates icon elements with semantic palette roles
 func markIconRoles(data []byte) []byte {
 	return roleAttribute.ReplaceAllFunc(data, func(attribute []byte) []byte {
 		parts := roleAttribute.FindSubmatch(attribute)
+		if len(parts[3]) != 0 { // Honor explicit roles on multi-color artwork.
+			return attribute
+		}
 		role := "accent"
 		if string(parts[2]) == "#0f141d" || string(parts[2]) == "#080808" {
 			role = "surface"
@@ -94,4 +97,4 @@ func PreviewPaletteAsset(path, mode, palette string, data []byte) []byte {
 	}
 }
 
-var previewRoleAttribute = regexp.MustCompile(` (fill|stroke)="#[a-fA-F0-9]+" data-sdm-(?:fill|stroke)="(accent|surface)"`)
+var previewRoleAttribute = regexp.MustCompile(` (fill|stroke)="#[a-fA-F0-9]+" data-sdm-(?:fill|stroke)="(accent|surface|ink|muted|border|meter)"`)

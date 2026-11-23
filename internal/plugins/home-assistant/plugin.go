@@ -1,6 +1,7 @@
 package homeassistant
 
 import (
+	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/hex"
@@ -26,7 +27,7 @@ import (
 )
 
 var Icons = map[string]string{"on": "play", "off": "stop", "toggle": "cycle", "scene": "list", "brightness": "sun", "state": "list", "refresh": "cycle"}
-var Definition, visuals = c.Define("home-assistant", "Home Assistant", Icons, "on", "off", "toggle", "scene", "brightness", "state", "refresh")
+var Definition, visuals = c.DefineVault("home-assistant", "Home Assistant", Icons, "on", "off", "toggle", "scene", "brightness", "state", "refresh")
 
 // Declare the Home Assistant global settings fields
 func PluginFields() []settings.Field {
@@ -66,31 +67,36 @@ type response struct {
 	Event   struct {
 		Type string `json:"event_type"`
 		Data struct {
-			ID string `json:"entity_id"`
+			ID       string          `json:"entity_id"`
+			NewState json.RawMessage `json:"new_state"`
 		} `json:"data"`
 	} `json:"event"`
 }
 type Driver struct {
-	client      connectedws.Client
-	mu          sync.Mutex
-	wake        chan<- struct{}
-	dirty       atomic.Bool
-	seq         atomic.Uint64
-	revision    uint64
-	wanted      map[string]bool
-	demandKnown bool
-	snapshot    engine.Snapshot[Sample]
-	session     *connectedws.Session
-	observed    *atomic.Bool
-	services    map[string]map[string]json.RawMessage
-	servicesAt  time.Time
+	vaultSession c.VaultSession
+	client       connectedws.Client
+	mu           sync.Mutex
+	wake         chan<- struct{}
+	dirty        atomic.Bool
+	seq          atomic.Uint64
+	revision     uint64
+	wanted       map[string]bool
+	demandKnown  bool
+	snapshot     engine.Snapshot[Sample]
+	session      *connectedws.Session
+	observed     *atomic.Bool
+	services     map[string]map[string]json.RawMessage
+	servicesAt   time.Time
 }
 
 // Initialize the Home Assistant service driver and its wake signaling
 func NewDriver(wake chan<- struct{}) *Driver { return &Driver{wake: wake, wanted: map[string]bool{}} }
 
 // Choose the shared Home Assistant resource identity for these settings
-func (*Driver) Key(map[string]any) string { return "connection" }
+func (d *Driver) Key(s map[string]any) string {
+	return c.VaultKey(s, Definition.Slug) + d.resourceKey(s)
+}
+func (d *Driver) resourceKey(s map[string]any) string { return "connection" }
 
 // Consume the Home Assistant dirty flag after a service notification
 func (d *Driver) Changed() bool { return d.dirty.Swap(false) }
@@ -118,6 +124,11 @@ func (d *Driver) Demand(bindings []map[string]any) {
 		}
 	}
 	d.mu.Lock()
+	if d.demandKnown && maps.Equal(d.wanted, wanted) {
+		d.mu.Unlock()
+		return
+	}
+	d.snapshot.Value = nil
 	d.wanted = wanted
 	d.demandKnown = true
 	d.mu.Unlock()
@@ -129,6 +140,9 @@ func (d *Driver) Close() {
 	d.client.Close()
 	d.mu.Lock()
 	d.session = nil
+	if d.observed != nil {
+		d.observed.Store(false)
+	}
 	d.observed = nil
 	d.snapshot.Value = nil
 	d.services = nil
@@ -187,11 +201,28 @@ func (d *Driver) routeNotifications(raw json.RawMessage, notify func() bool) (st
 		return strconv.FormatUint(r.ID, 10), nil
 	case "event":
 		if r.Event.Type == "state_changed" {
+			id := r.Event.Data.ID
 			d.mu.Lock()
-			relevant := !d.demandKnown || d.wanted[r.Event.Data.ID]
-			d.mu.Unlock()
+			relevant := !d.demandKnown || d.wanted[id]
 			if relevant {
-				d.eventChanged(notify)
+				var updated entity
+				raw := r.Event.Data.NewState
+				removed := string(raw) == "null"
+				valid := json.Unmarshal(raw, &updated) == nil && updated.ID == id && updated.State != ""
+				if (removed || valid) && d.snapshot.Value != nil && d.snapshot.Revision == d.revision && (notify == nil || notify()) {
+					next := Sample{Entities: maps.Clone(d.snapshot.Value.Entities)}
+					if removed {
+						delete(next.Entities, id)
+					} else {
+						next.Entities[id] = updated
+					}
+					d.snapshot.Store(&next, d.revision+1, d.snapshot.At)
+				}
+				d.revision++
+			}
+			d.mu.Unlock()
+			if relevant && (notify == nil || notify()) {
+				engine.SignalObservation(&d.dirty, d.wake)
 			}
 		}
 		return "", nil
@@ -244,6 +275,9 @@ func (d *Driver) connection(ctx context.Context, s map[string]any) (*connectedws
 	d.services = nil
 	d.servicesAt = time.Time{}
 	d.session = session
+	if d.observed != nil {
+		d.observed.Store(false)
+	}
 	d.observed = observed
 	d.mu.Unlock()
 	return session, nil
@@ -275,32 +309,45 @@ func (d *Driver) request(ctx context.Context, session *connectedws.Session, kind
 }
 
 // Read the Home Assistant entity-state snapshot
-func (d *Driver) states(ctx context.Context, session *connectedws.Session) (Sample, error) {
-	var entities []entity
-	if err := d.request(ctx, session, "get_states", nil, &entities); err != nil {
+func (d *Driver) states(ctx context.Context, session *connectedws.Session, wanted map[string]bool) (Sample, error) {
+	var raw json.RawMessage
+	if err := d.request(ctx, session, "get_states", nil, &raw); err != nil {
 		return Sample{}, err
 	}
-	if entities == nil {
+	decoder := json.NewDecoder(bytes.NewReader(raw))
+	start, err := decoder.Token()
+	if err != nil || start != json.Delim('[') {
 		return Sample{}, fmt.Errorf("Home Assistant returned an invalid entity snapshot")
 	}
-	if len(entities) > 10000 {
-		return Sample{}, fmt.Errorf("Home Assistant exceeds the 10000 entity limit")
-	}
 	sample := Sample{Entities: map[string]entity{}}
-	for _, e := range entities {
+	for count := 0; decoder.More(); count++ {
+		if count >= 10000 {
+			return Sample{}, fmt.Errorf("Home Assistant exceeds the 10000 entity limit")
+		}
+		var e entity
+		if err := decoder.Decode(&e); err != nil {
+			return Sample{}, fmt.Errorf("invalid Home Assistant response data")
+		}
 		if e.ID == "" || len(e.ID) > 512 {
 			return Sample{}, fmt.Errorf("invalid Home Assistant entity ID")
+		}
+		if wanted != nil && !wanted[e.ID] {
+			continue
 		}
 		if e.State == "" {
 			e.State = "unknown"
 		}
 		sample.Entities[e.ID] = e
 	}
-	return sample, nil
+	_, err = decoder.Token()
+	return sample, err
 }
 
 // Read the Home Assistant resource selected by the binding settings
 func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, d.readService)
+}
+func (d *Driver) readService(ctx context.Context, s map[string]any) (any, error) {
 	session, err := d.connection(ctx, s)
 	if err != nil {
 		return nil, err
@@ -310,14 +357,23 @@ func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
 		d.mu.Unlock()
 		return nil, fmt.Errorf("too many selected Home Assistant entities (maximum 10000)")
 	}
+	if id := c.String(s, "entity", ""); id != "" && d.demandKnown && !d.wanted[id] {
+		d.mu.Unlock()
+		// A property inspector can test an entity outside the visible bindings.
+		return d.states(ctx, session, map[string]bool{id: true})
+	}
 	rev := d.revision
 	if d.snapshot.Value != nil && d.snapshot.Fresh(rev, time.Now(), engine.RefreshInterval("home-assistant", "", s, time.Minute)) {
 		sample := *d.snapshot.Value
 		d.mu.Unlock()
 		return sample, nil
 	}
+	var wanted map[string]bool
+	if d.demandKnown {
+		wanted = d.wanted
+	}
 	d.mu.Unlock()
-	sample, err := d.states(ctx, session)
+	sample, err := d.states(ctx, session, wanted)
 	if err != nil {
 		return nil, err
 	}
@@ -325,6 +381,9 @@ func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
 	if d.session != session {
 		d.mu.Unlock()
 		return nil, connectedws.ErrClosed
+	}
+	if d.demandKnown {
+		maps.DeleteFunc(sample.Entities, func(id string, _ entity) bool { return !d.wanted[id] })
 	}
 	d.snapshot.Store(&sample, rev, time.Now())
 	d.observed.Store(true)
@@ -411,6 +470,11 @@ func (d *Driver) service(ctx context.Context, session *connectedws.Session, doma
 
 // Execute the selected Home Assistant command and report its outcome
 func (d *Driver) Command(ctx context.Context, a string, s map[string]any, ticks int) (c.Outcome, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, func(ctx context.Context, s map[string]any) (c.Outcome, error) {
+		return d.commandService(ctx, a, s, ticks)
+	})
+}
+func (d *Driver) commandService(ctx context.Context, a string, s map[string]any, ticks int) (c.Outcome, error) {
 	if a == "refresh" || a == "state" {
 		d.mu.Lock()
 		d.services = nil
@@ -448,7 +512,7 @@ func (d *Driver) Command(ctx context.Context, a string, s map[string]any, ticks 
 	if err != nil {
 		return c.Outcome{}, err
 	}
-	snapshot, err := d.states(ctx, session)
+	snapshot, err := d.states(ctx, session, map[string]bool{id: true})
 	if err != nil {
 		return c.Outcome{}, err
 	}
@@ -496,11 +560,14 @@ func (d *Driver) Command(ctx context.Context, a string, s map[string]any, ticks 
 
 // List Home Assistant choices for the property inspector
 func (d *Driver) Discover(ctx context.Context, s map[string]any) ([]c.Choice, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, d.discoverService)
+}
+func (d *Driver) discoverService(ctx context.Context, s map[string]any) ([]c.Choice, error) {
 	session, err := d.connection(ctx, s)
 	if err != nil {
 		return nil, err
 	}
-	sample, err := d.states(ctx, session)
+	sample, err := d.states(ctx, session, nil)
 	if err != nil {
 		return nil, err
 	}

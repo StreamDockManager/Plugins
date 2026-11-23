@@ -272,6 +272,12 @@
                     "default": 5,
                     "min": 0.1,
                     "max": 25
+                },
+                {
+                    "key": "use_vault_token",
+                    "label": "Use Manager Vault for token",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.home-assistant.off": [
@@ -280,6 +286,12 @@
                     "label": "Entity",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_token",
+                    "label": "Use Manager Vault for token",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.home-assistant.on": [
@@ -288,15 +300,34 @@
                     "label": "Entity",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_token",
+                    "label": "Use Manager Vault for token",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
-            "app.streamdockmanager.plugins.home-assistant.refresh": null,
+            "app.streamdockmanager.plugins.home-assistant.refresh": [
+                {
+                    "key": "use_vault_token",
+                    "label": "Use Manager Vault for token",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
             "app.streamdockmanager.plugins.home-assistant.scene": [
                 {
                     "key": "entity",
                     "label": "Entity",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_token",
+                    "label": "Use Manager Vault for token",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.home-assistant.state": [
@@ -305,6 +336,12 @@
                     "label": "Entity",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_token",
+                    "label": "Use Manager Vault for token",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.home-assistant.toggle": [
@@ -313,6 +350,12 @@
                     "label": "Entity",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_token",
+                    "label": "Use Manager Vault for token",
+                    "type": "checkbox",
+                    "default": false
                 }
             ]
         },
@@ -572,6 +615,12 @@
                     "default": 0,
                     "min": 0,
                     "max": 86400000
+                },
+                {
+                    "key": "use_vault_webhook",
+                    "label": "Use Manager Vault for webhook",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.http-webhooks.field": [
@@ -688,6 +737,12 @@
                     "default": 0,
                     "min": 0,
                     "max": 86400000
+                },
+                {
+                    "key": "use_vault_webhook",
+                    "label": "Use Manager Vault for webhook",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.http-webhooks.status": [
@@ -746,6 +801,12 @@
                     "default": 0,
                     "min": 0,
                     "max": 86400000
+                },
+                {
+                    "key": "use_vault_webhook",
+                    "label": "Use Manager Vault for webhook",
+                    "type": "checkbox",
+                    "default": false
                 }
             ]
         },
@@ -1000,6 +1061,12 @@
                     "label": "Scenario ID",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_token",
+                    "label": "Use Manager Vault for token",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.make.deactivate": [
@@ -1008,6 +1075,12 @@
                     "label": "Scenario ID",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_token",
+                    "label": "Use Manager Vault for token",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.make.execution": [
@@ -1016,6 +1089,12 @@
                     "label": "Scenario ID",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_token",
+                    "label": "Use Manager Vault for token",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.make.run": [
@@ -1030,6 +1109,12 @@
                     "label": "Scenario JSON inputs",
                     "type": "text",
                     "default": "{}"
+                },
+                {
+                    "key": "use_vault_token",
+                    "label": "Use Manager Vault for token",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.make.status": [
@@ -1038,6 +1123,12 @@
                     "label": "Scenario ID",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_token",
+                    "label": "Use Manager Vault for token",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.make.webhook": [
@@ -1053,6 +1144,12 @@
                     "label": "JSON payload",
                     "type": "text",
                     "default": "{}"
+                },
+                {
+                    "key": "use_vault_webhook",
+                    "label": "Use Manager Vault for webhook",
+                    "type": "checkbox",
+                    "default": false
                 }
             ]
         },
@@ -1374,9 +1471,34 @@
                     "label": "Retain published message",
                     "type": "checkbox",
                     "default": false
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
-            "app.streamdockmanager.plugins.mqtt.status": null,
+            "app.streamdockmanager.plugins.mqtt.status": [
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
             "app.streamdockmanager.plugins.mqtt.text": [
                 {
                     "key": "topic",
@@ -1396,6 +1518,18 @@
                     "label": "JSON field path (empty displays text)",
                     "type": "text",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
                 }
             ]
         },
@@ -1695,28 +1829,88 @@
                     "label": "Input",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
-            "app.streamdockmanager.plugins.obs-studio.record-pause": null,
-            "app.streamdockmanager.plugins.obs-studio.record-resume": null,
-            "app.streamdockmanager.plugins.obs-studio.record-start": null,
-            "app.streamdockmanager.plugins.obs-studio.record-stop": null,
-            "app.streamdockmanager.plugins.obs-studio.save-replay": null,
+            "app.streamdockmanager.plugins.obs-studio.record-pause": [
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
+            "app.streamdockmanager.plugins.obs-studio.record-resume": [
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
+            "app.streamdockmanager.plugins.obs-studio.record-start": [
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
+            "app.streamdockmanager.plugins.obs-studio.record-stop": [
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
+            "app.streamdockmanager.plugins.obs-studio.save-replay": [
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
             "app.streamdockmanager.plugins.obs-studio.scene": [
                 {
                     "key": "scene",
                     "label": "Scene",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
-            "app.streamdockmanager.plugins.obs-studio.status": null,
+            "app.streamdockmanager.plugins.obs-studio.status": [
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
             "app.streamdockmanager.plugins.obs-studio.toggle-mute": [
                 {
                     "key": "input",
                     "label": "Input",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.obs-studio.unmute": [
@@ -1725,6 +1919,12 @@
                     "label": "Input",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.obs-studio.volume": [
@@ -1741,6 +1941,12 @@
                     "default": 2,
                     "min": 0.1,
                     "max": 25
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.obs-studio.volume-display": [
@@ -1749,6 +1955,12 @@
                     "label": "Input",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
                 }
             ]
         },
@@ -1932,8 +2144,7 @@
                     "key": "username",
                     "label": "Player name",
                     "type": "text",
-                    "default": "",
-                    "required": true
+                    "default": ""
                 },
                 {
                     "key": "board",
@@ -1953,6 +2164,12 @@
                     "label": "Activity ID",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.osrs-hiscores.overall": [
@@ -1960,8 +2177,7 @@
                     "key": "username",
                     "label": "Player name",
                     "type": "text",
-                    "default": "",
-                    "required": true
+                    "default": ""
                 },
                 {
                     "key": "board",
@@ -1975,6 +2191,12 @@
                         "normal": "Normal",
                         "ultimate": "Ultimate Ironman"
                     }
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.osrs-hiscores.refresh": [
@@ -1982,8 +2204,7 @@
                     "key": "username",
                     "label": "Player name",
                     "type": "text",
-                    "default": "",
-                    "required": true
+                    "default": ""
                 },
                 {
                     "key": "board",
@@ -1997,6 +2218,12 @@
                         "normal": "Normal",
                         "ultimate": "Ultimate Ironman"
                     }
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.osrs-hiscores.reset-baseline": [
@@ -2004,8 +2231,7 @@
                     "key": "username",
                     "label": "Player name",
                     "type": "text",
-                    "default": "",
-                    "required": true
+                    "default": ""
                 },
                 {
                     "key": "board",
@@ -2079,6 +2305,12 @@
                         "8": "Cooking",
                         "9": "Woodcutting"
                     }
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.osrs-hiscores.skill": [
@@ -2086,8 +2318,7 @@
                     "key": "username",
                     "label": "Player name",
                     "type": "text",
-                    "default": "",
-                    "required": true
+                    "default": ""
                 },
                 {
                     "key": "board",
@@ -2174,6 +2405,12 @@
                         "rank": "Rank",
                         "xp": "Experience"
                     }
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.osrs-hiscores.xp-change": [
@@ -2181,8 +2418,7 @@
                     "key": "username",
                     "label": "Player name",
                     "type": "text",
-                    "default": "",
-                    "required": true
+                    "default": ""
                 },
                 {
                     "key": "board",
@@ -2256,6 +2492,12 @@
                         "8": "Cooking",
                         "9": "Woodcutting"
                     }
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
                 }
             ]
         },
@@ -2542,8 +2784,16 @@
                     "default": 6,
                     "min": 2,
                     "max": 1000000
+                },
+                {
+                    "key": "show_result_badge",
+                    "label": "Show result badge",
+                    "type": "checkbox",
+                    "default": true
                 }
             ],
+            "app.streamdockmanager.plugins.randomizer-dice.dice-roll-counter": null,
+            "app.streamdockmanager.plugins.randomizer-dice.dice-total-counter": null,
             "app.streamdockmanager.plugins.randomizer-dice.draw": [
                 {
                     "key": "shared_id",
@@ -2557,6 +2807,7 @@
                     "type": "textarea"
                 }
             ],
+            "app.streamdockmanager.plugins.randomizer-dice.heads-or-tails": null,
             "app.streamdockmanager.plugins.randomizer-dice.list": [
                 {
                     "key": "shared_id",
@@ -2568,9 +2819,11 @@
                     "key": "items",
                     "label": "Items (one per line)",
                     "type": "textarea",
+                    "default": "Yes\nNo",
                     "required": true
                 }
             ],
+            "app.streamdockmanager.plugins.randomizer-dice.magic-8-ball": null,
             "app.streamdockmanager.plugins.randomizer-dice.range": [
                 {
                     "key": "shared_id",
@@ -2602,7 +2855,8 @@
                     "type": "text",
                     "default": ""
                 }
-            ]
+            ],
+            "app.streamdockmanager.plugins.randomizer-dice.roll-all": null
         },
         "hiscores": false,
         "location": false,
@@ -2717,6 +2971,12 @@
                     "label": "Game ID (empty = latest game reported by API)",
                     "type": "text",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_credentials",
+                    "label": "Use the username and API key from Manager Vault",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.retroachievements.points": [
@@ -2726,6 +2986,12 @@
                     "type": "select",
                     "default": "hardcore",
                     "options": ["hardcore", "softcore"]
+                },
+                {
+                    "key": "use_vault_credentials",
+                    "label": "Use the username and API key from Manager Vault",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.retroachievements.recent": [
@@ -2735,6 +3001,12 @@
                     "type": "select",
                     "default": "hardcore",
                     "options": ["hardcore", "softcore"]
+                },
+                {
+                    "key": "use_vault_credentials",
+                    "label": "Use the username and API key from Manager Vault",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.retroachievements.refresh": [
@@ -2744,6 +3016,12 @@
                     "type": "select",
                     "default": "hardcore",
                     "options": ["hardcore", "softcore"]
+                },
+                {
+                    "key": "use_vault_credentials",
+                    "label": "Use the username and API key from Manager Vault",
+                    "type": "checkbox",
+                    "default": false
                 }
             ]
         },
@@ -2887,8 +3165,7 @@
                     "key": "username",
                     "label": "Player name",
                     "type": "text",
-                    "default": "",
-                    "required": true
+                    "default": ""
                 },
                 {
                     "key": "board",
@@ -2908,6 +3185,12 @@
                     "label": "Activity ID",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.runescape-hiscores.overall": [
@@ -2915,8 +3198,7 @@
                     "key": "username",
                     "label": "Player name",
                     "type": "text",
-                    "default": "",
-                    "required": true
+                    "default": ""
                 },
                 {
                     "key": "board",
@@ -2930,6 +3212,12 @@
                         "normal": "Normal",
                         "ultimate": "Ultimate Ironman"
                     }
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.runescape-hiscores.refresh": [
@@ -2937,8 +3225,7 @@
                     "key": "username",
                     "label": "Player name",
                     "type": "text",
-                    "default": "",
-                    "required": true
+                    "default": ""
                 },
                 {
                     "key": "board",
@@ -2952,6 +3239,12 @@
                         "normal": "Normal",
                         "ultimate": "Ultimate Ironman"
                     }
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.runescape-hiscores.reset-baseline": [
@@ -2959,8 +3252,7 @@
                     "key": "username",
                     "label": "Player name",
                     "type": "text",
-                    "default": "",
-                    "required": true
+                    "default": ""
                 },
                 {
                     "key": "board",
@@ -3044,6 +3336,12 @@
                         "8": "Cooking",
                         "9": "Woodcutting"
                     }
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.runescape-hiscores.skill": [
@@ -3051,8 +3349,7 @@
                     "key": "username",
                     "label": "Player name",
                     "type": "text",
-                    "default": "",
-                    "required": true
+                    "default": ""
                 },
                 {
                     "key": "board",
@@ -3149,6 +3446,12 @@
                         "rank": "Rank",
                         "xp": "Experience"
                     }
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.runescape-hiscores.xp-change": [
@@ -3156,8 +3459,7 @@
                     "key": "username",
                     "label": "Player name",
                     "type": "text",
-                    "default": "",
-                    "required": true
+                    "default": ""
                 },
                 {
                     "key": "board",
@@ -3241,6 +3543,12 @@
                         "8": "Cooking",
                         "9": "Woodcutting"
                     }
+                },
+                {
+                    "key": "use_vault_username",
+                    "label": "Use Manager Vault for username",
+                    "type": "checkbox",
+                    "default": false
                 }
             ]
         },
@@ -3523,6 +3831,186 @@
         "speedtest": false,
         "version": 1
     },
+    "sdm-vault-example": {
+        "actions": {
+            "app.streamdockmanager.plugins.sdm-vault-example.location": null,
+            "app.streamdockmanager.plugins.sdm-vault-example.manager-post": [
+                {
+                    "key": "transport",
+                    "label": "Webhook transport",
+                    "type": "select",
+                    "default": "https",
+                    "options": ["https", "http"]
+                }
+            ],
+            "app.streamdockmanager.plugins.sdm-vault-example.permissions": null,
+            "app.streamdockmanager.plugins.sdm-vault-example.plugin-post": [
+                {
+                    "key": "transport",
+                    "label": "Webhook transport",
+                    "type": "select",
+                    "default": "https",
+                    "options": ["https", "http"]
+                }
+            ],
+            "app.streamdockmanager.plugins.sdm-vault-example.read": [
+                {
+                    "key": "kind",
+                    "label": "Setup slot",
+                    "type": "select",
+                    "default": "text",
+                    "options": ["text", "api-key", "bearer-token", "credential"]
+                },
+                {
+                    "key": "display_text",
+                    "label": "Display text (optional, Text slot only)",
+                    "type": "text",
+                    "default": ""
+                }
+            ],
+            "app.streamdockmanager.plugins.sdm-vault-example.summary": [
+                {
+                    "key": "operation",
+                    "label": "Vault operation",
+                    "type": "select",
+                    "default": "pick for use",
+                    "options": [
+                        "pick for use",
+                        "use selection",
+                        "use setup slot",
+                        "approve for browsing",
+                        "list approved names"
+                    ]
+                },
+                {
+                    "key": "reference",
+                    "label": "Selected Vault reference",
+                    "type": "text",
+                    "default": ""
+                },
+                {
+                    "key": "kind",
+                    "label": "Broker setup slot",
+                    "type": "select",
+                    "default": "api-key",
+                    "options": ["api-key", "bearer-token"]
+                }
+            ],
+            "app.streamdockmanager.plugins.sdm-vault-example.webhooks": null,
+            "app.streamdockmanager.plugins.sdm-vault-example.write": [
+                {
+                    "key": "kind",
+                    "label": "Private secret kind",
+                    "type": "select",
+                    "default": "api-key",
+                    "options": ["api-key", "bearer-token", "credential"]
+                },
+                {
+                    "key": "expected_revision",
+                    "label": "Current revision (leave empty to create)",
+                    "type": "text",
+                    "default": ""
+                }
+            ]
+        },
+        "hiscores": false,
+        "location": false,
+        "microphones": false,
+        "name": "SDM Vault Example",
+        "palette": {
+            "themes": {
+                "dark": {
+                    "accent": "#c61e32",
+                    "accent-border": "#72303a",
+                    "accent-hover": "#da263b",
+                    "accent-ink": "#ff7b88",
+                    "accent-soft": "#281216",
+                    "border": "#303030",
+                    "border-hover": "#505050",
+                    "button-gap": "8px",
+                    "canvas": "#080808",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#ff6376",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "invert(1)",
+                    "ink": "#fafafa",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#ababab",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#0d0d0d",
+                    "sidebar-width": "228px",
+                    "subtle": "#858585",
+                    "surface": "#121212",
+                    "surface-hover": "#242424",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#1a1a1a",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#dedede",
+                    "toast-success": "#8cdda9",
+                    "toast-warning": "#f0c875"
+                },
+                "light": {
+                    "accent": "#b51e36",
+                    "accent-border": "#e7a2b0",
+                    "accent-hover": "#9c172c",
+                    "accent-ink": "#a91831",
+                    "accent-soft": "#fcebef",
+                    "border": "#d4d8e0",
+                    "border-hover": "#9da5b3",
+                    "button-gap": "8px",
+                    "canvas": "#f4f5f7",
+                    "card-radius": "12px",
+                    "control-font-size": "13px",
+                    "control-height": "40px",
+                    "control-line-height": "20px",
+                    "control-padding": "9px 12px",
+                    "control-radius": "8px",
+                    "danger-text": "var(--accent-ink)",
+                    "detail-gap": "4px",
+                    "field-gap": "12px",
+                    "focus": "#b51e36",
+                    "font": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+                    "icon-filter": "none",
+                    "ink": "#181b24",
+                    "label-font-size": "13px",
+                    "label-gap": "8px",
+                    "mono": "'SFMono-Regular', Consolas, monospace",
+                    "muted": "#525968",
+                    "page-gap": "24px",
+                    "section-gap": "16px",
+                    "sidebar": "#ffffff",
+                    "sidebar-width": "228px",
+                    "subtle": "#626b79",
+                    "surface": "#ffffff",
+                    "surface-hover": "#edeff3",
+                    "surface-padding": "20px",
+                    "surface-padding-small": "16px",
+                    "surface-raised": "#f8f9fb",
+                    "toast-error": "var(--accent-ink)",
+                    "toast-info": "#424b5d",
+                    "toast-success": "#216b3e",
+                    "toast-warning": "#805300"
+                }
+            },
+            "version": 1
+        },
+        "plugin": null,
+        "refresh": {},
+        "speedtest": false,
+        "version": 1
+    },
     "service-monitor": {
         "actions": {
             "app.streamdockmanager.plugins.service-monitor.http": [
@@ -3547,6 +4035,12 @@
                     "default": 30000,
                     "min": 0,
                     "max": 86400000
+                },
+                {
+                    "key": "use_vault_url",
+                    "label": "Use Manager Vault for url",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.service-monitor.refresh": [
@@ -3724,6 +4218,7 @@
     },
     "spotify": {
         "actions": {
+            "app.streamdockmanager.plugins.spotify.mute-toggle": null,
             "app.streamdockmanager.plugins.spotify.next": null,
             "app.streamdockmanager.plugins.spotify.previous": null,
             "app.streamdockmanager.plugins.spotify.progress": null,
@@ -3847,6 +4342,11 @@
         },
         "plugin": null,
         "refresh": {
+            "app.streamdockmanager.plugins.spotify.mute-toggle": {
+                "default_ms": 1000,
+                "minimum_ms": 1000,
+                "maximum_ms": 86400000
+            },
             "app.streamdockmanager.plugins.spotify.next": {
                 "default_ms": 1000,
                 "minimum_ms": 1000,
@@ -3940,6 +4440,12 @@
                     "label": "Steam application ID",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_account",
+                    "label": "Use Manager Vault for account",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
             "app.streamdockmanager.plugins.steam-library.previous": [
@@ -4551,19 +5057,52 @@
                     "label": "Audio stream ID",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
-            "app.streamdockmanager.plugins.vlc.next": null,
+            "app.streamdockmanager.plugins.vlc.next": [
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
             "app.streamdockmanager.plugins.vlc.playlist": [
                 {
                     "key": "playlist_item",
                     "label": "Playlist item",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
-            "app.streamdockmanager.plugins.vlc.previous": null,
-            "app.streamdockmanager.plugins.vlc.progress": null,
+            "app.streamdockmanager.plugins.vlc.previous": [
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
+            "app.streamdockmanager.plugins.vlc.progress": [
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
             "app.streamdockmanager.plugins.vlc.seek": [
                 {
                     "key": "step",
@@ -4572,19 +5111,52 @@
                     "default": 5,
                     "min": 0.1,
                     "max": 3600
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
-            "app.streamdockmanager.plugins.vlc.stop": null,
+            "app.streamdockmanager.plugins.vlc.stop": [
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
             "app.streamdockmanager.plugins.vlc.subtitle-track": [
                 {
                     "key": "subtitle_track",
                     "label": "Subtitle stream ID (-1 disables)",
                     "type": "device",
                     "default": ""
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
-            "app.streamdockmanager.plugins.vlc.toggle": null,
-            "app.streamdockmanager.plugins.vlc.track-info": null,
+            "app.streamdockmanager.plugins.vlc.toggle": [
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
+            "app.streamdockmanager.plugins.vlc.track-info": [
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ],
             "app.streamdockmanager.plugins.vlc.volume": [
                 {
                     "key": "step",
@@ -4593,9 +5165,22 @@
                     "default": 1,
                     "min": 1,
                     "max": 100
+                },
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
                 }
             ],
-            "app.streamdockmanager.plugins.vlc.volume-display": null
+            "app.streamdockmanager.plugins.vlc.volume-display": [
+                {
+                    "key": "use_vault_password",
+                    "label": "Use Manager Vault for password",
+                    "type": "checkbox",
+                    "default": false
+                }
+            ]
         },
         "hiscores": false,
         "location": false,
@@ -4806,6 +5391,12 @@
                     "key": "noncommercial",
                     "label": "Confirm noncommercial Open-Meteo use",
                     "type": "checkbox",
+                    "default": true
+                },
+                {
+                    "key": "use_vault_location",
+                    "label": "Use Manager Vault for location",
+                    "type": "checkbox",
                     "default": false
                 }
             ],
@@ -4843,6 +5434,12 @@
                     "key": "noncommercial",
                     "label": "Confirm noncommercial Open-Meteo use",
                     "type": "checkbox",
+                    "default": true
+                },
+                {
+                    "key": "use_vault_location",
+                    "label": "Use Manager Vault for location",
+                    "type": "checkbox",
                     "default": false
                 }
             ],
@@ -4879,6 +5476,12 @@
                 {
                     "key": "noncommercial",
                     "label": "Confirm noncommercial Open-Meteo use",
+                    "type": "checkbox",
+                    "default": true
+                },
+                {
+                    "key": "use_vault_location",
+                    "label": "Use Manager Vault for location",
                     "type": "checkbox",
                     "default": false
                 }
@@ -4977,20 +5580,7 @@
             },
             "version": 1
         },
-        "plugin": [
-            {
-                "key": "geocoding_endpoint",
-                "label": "Nominatim search endpoint (HTTPS)",
-                "type": "text",
-                "default": "https://nominatim.openstreetmap.org/search"
-            },
-            {
-                "key": "geocoding_postal_only",
-                "label": "Postal-only service (shared public Nominatim broker)",
-                "type": "checkbox",
-                "default": false
-            }
-        ],
+        "plugin": null,
         "refresh": {
             "app.streamdockmanager.plugins.weather.conditions": {
                 "default_ms": 3600000,

@@ -292,7 +292,7 @@ func (e *Plugin) extensionEvent(ctx context.Context, c *sdk.Client, ev sdk.Event
 				state.Draws = append(state.Draws, appID)
 			}
 		}
-		e.startSteam(ctx, id, a, s)
+		e.startSteamFor(ctx, c, id, b.Action, a, s)
 		if err := engine.Persist(e.Engine); err != nil {
 			return true, err
 		}
@@ -320,7 +320,7 @@ func (e *Plugin) extensionInspector(ctx context.Context, c *sdk.Client, ev sdk.E
 	s := e.MergedSettings(p.Settings)
 	if p.Op == "discover" {
 		return true, e.discovery.Run(ctx, e.Engine, c, discovery.Request{Context: ev.Context, Action: ev.Action, Channel: "steam", ID: p.RequestID, Operation: "steam_games", Scope: p.Scope}, 20*time.Second, func(job context.Context) (map[string]any, error) {
-			games, err := e.index.discover(job, configvalue.String(s, "steam_path", ""), configvalue.String(s, "account", ""))
+			games, err := e.discoverFor(job, c, ev.Action, s)
 			devices := make([]map[string]string, 0, min(len(games), 512))
 			for _, game := range games[:min(len(games), 512)] {
 				devices = append(devices, map[string]string{"id": game.ID, "name": game.Name, "kind": "app_id"})
@@ -333,7 +333,7 @@ func (e *Plugin) extensionInspector(ctx context.Context, c *sdk.Client, ev sdk.E
 		})
 	}
 
-	e.startSteam(ctx, ev.Context, "refresh", s)
+	e.startSteamFor(ctx, c, ev.Context, ev.Action, "refresh", s)
 	return true, nil
 }
 
@@ -367,7 +367,19 @@ func (e *Plugin) handleAction(ctx context.Context, c *sdk.Client, ev sdk.Event, 
 
 // Expose the steam library feature callbacks used by the shared engine
 func (e *Plugin) hooks() engine.Feature {
-	return engine.Feature{Clear: e.discovery.Clear, Close: e.discovery.Close, Action: e.handleAction, Inspector: e.extensionInspector, Status: e.displayStatus, Deadline: e.nextPoll, Snapshot: func() any { return e.State }, Apply: e.applyResult, Visuals: visuals, Poll: e.pollFeature}
+	return engine.Feature{Before: func(_ context.Context, _ *sdk.Client, ev sdk.Event) (bool, error) {
+		if ev.Event == "streamDockManagerPermissionsChanged" {
+			e.discovery.Close()
+			for id, b := range e.Bindings {
+				if configvalue.Bool(e.MergedSettings(b.Settings), "use_vault_account") {
+					e.CancelJob(id)
+					delete(e.Results, id)
+					delete(e.ResultsText, id)
+				}
+			}
+		}
+		return false, nil
+	}, Clear: e.discovery.Clear, Close: e.discovery.Close, Action: e.handleAction, Inspector: e.extensionInspector, Status: e.displayStatus, Deadline: e.nextPoll, Snapshot: func() any { return e.State }, Apply: e.applyResult, Visuals: visuals, Poll: e.pollFeature}
 }
 
 // Find the saved steam library state selected by this binding
@@ -394,13 +406,38 @@ func (e *Plugin) startJob(ctx context.Context, id string, work func(context.Cont
 
 // Schedule Steam discovery or launch work for a binding
 func (e *Plugin) startSteam(ctx context.Context, id, a string, s map[string]any) {
+	e.startSteamFor(ctx, nil, id, e.Bindings[id].Action, a, s)
+}
+
+func (e *Plugin) discoverFor(ctx context.Context, c *sdk.Client, uuid string, s map[string]any) ([]SteamGame, error) {
+	root := configvalue.String(s, "steam_path", "")
+	if !configvalue.Bool(s, "use_vault_account") {
+		return e.index.discover(ctx, root, configvalue.String(s, "account", ""))
+	}
+	if c == nil || uuid != engine.ID(Definition.Slug)+".playtime" {
+		return nil, fmt.Errorf("Select a Vault account for Playtime")
+	}
+	value, err := c.ReadVaultText(ctx, sdk.VaultValueRequest{Action: uuid, Slot: "account", Field: "account"})
+	if err != nil {
+		return nil, err
+	}
+	if _, err := strconv.ParseUint(value.Value, 10, 64); err != nil {
+		return nil, fmt.Errorf("Select a numeric Steam account ID")
+	}
+	games, err := DiscoverSteam(ctx, root, value.Value)
+	if err != nil {
+		return nil, fmt.Errorf("Could not read the selected Steam account")
+	}
+	return games, nil
+}
+func (e *Plugin) startSteamFor(ctx context.Context, c *sdk.Client, id, uuid, a string, s map[string]any) {
 	index := int(e.lookupState("library", nil).Value)
 	favorites := make(map[string]struct{})
 	for _, id := range e.lookupState("library", nil).Draws {
 		favorites[id] = struct{}{}
 	}
 	e.startJob(ctx, id, func(job context.Context) (string, any, error) {
-		games, err := e.index.discover(job, configvalue.String(s, "steam_path", ""), configvalue.String(s, "account", ""))
+		games, err := e.discoverFor(job, c, uuid, s)
 		if err != nil {
 			return "", nil, err
 		}

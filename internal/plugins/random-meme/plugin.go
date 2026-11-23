@@ -3,6 +3,7 @@ package randommeme
 import (
 	"context"
 	"crypto/rand"
+	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -41,7 +42,32 @@ func (p *Plugin) current(b engine.Binding) *Meme {
 	if meme != nil && meme.NSFW && !config.Bool(p.Global, "allow_nsfw") {
 		return nil
 	}
+	if meme != nil && meme.png != nil {
+		meme.Image = memePrefix + base64.StdEncoding.EncodeToString(meme.png)
+		meme.png = nil
+	}
 	return meme
+}
+
+const memePrefix = "data:image/png;base64,"
+
+func (p *Plugin) compactInactive() {
+	active := map[string]bool{}
+	for _, b := range p.Bindings {
+		active[group(b)] = true
+	}
+	for key, meme := range p.Current {
+		if active[key] || meme == nil {
+			continue
+		}
+		encoded, ok := strings.CutPrefix(meme.Image, memePrefix)
+		if !ok {
+			continue
+		}
+		if data, err := base64.StdEncoding.DecodeString(encoded); err == nil {
+			meme.png, meme.Image = data, ""
+		}
+	}
 }
 
 // Check whether a meme group already owns background work
@@ -135,7 +161,7 @@ func (p *Plugin) action(ctx context.Context, c *sdk.Client, ev sdk.Event, b engi
 			if result.Err != nil {
 				message = result.Err.Error()
 			}
-			if err := c.Send(ctx, sdk.Message("sendToPropertyInspector", result.ID, map[string]any{"message": message})); err != nil {
+			if err := engine.SendDiagnostic(ctx, c, result.ID, p.Bindings[result.ID].Action, map[string]any{"message": message}); err != nil {
 				return err
 			}
 			return p.Render(ctx, c, result.ID)
@@ -180,7 +206,7 @@ func (p *Plugin) action(ctx context.Context, c *sdk.Client, ev sdk.Event, b engi
 
 // Expose the random meme feature callbacks used by the shared engine
 func (p *Plugin) hooks() engine.Feature {
-	return engine.Feature{Action: p.action, Status: p.status, Visuals: visuals, DynamicDisplay: true,
+	return engine.Feature{DemandChanged: p.compactInactive, Action: p.action, Status: p.status, Visuals: visuals, DynamicDisplay: true,
 		View: func(id string, status engine.DisplayStatus) engine.Display {
 			return View(p.Bindings[id], p.current(p.Bindings[id]), status.Text, p.Theme)
 		},
@@ -205,7 +231,7 @@ func (p *Plugin) hooks() engine.Feature {
 			return nil
 		},
 		Inspector: func(ctx context.Context, c *sdk.Client, ev sdk.Event) (bool, error) {
-			return true, c.Send(ctx, sdk.Message("sendToPropertyInspector", ev.Context, map[string]any{"message": "Use Fetch meme to preview, then Copy link or Paste link into the selected input. Inspector tests do not access the clipboard."}))
+			return true, engine.SendDiagnostic(ctx, c, ev.Context, ev.Action, map[string]any{"message": "Use Fetch meme to preview, then Copy link or Paste link into the selected input. Inspector tests do not access the clipboard."})
 		},
 		Clear: func(id string) { delete(p.Pending, id) },
 		Deadline: func(time.Time) time.Time {

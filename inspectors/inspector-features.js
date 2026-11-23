@@ -288,20 +288,12 @@ export function createSpeedFeature(shell) {
 // Create weather search and shared saved-location controls
 export function createWeatherFeature(shell) {
     let weatherGlobals = {},
-        savedLocationDraft = {};
-    const locationDiscovery = new DiscoveryController({
-        // Send location searches through the shell-owned transport
-        send: (payload) => shell.inspector.send(payload),
-        cancelOp: 'cancel_location_search',
-        timeout: 25000,
-        // Refresh search controls and explain discovery failures
-        changed(phase) {
-            document.querySelector('#location-submit').disabled = locationDiscovery.busy;
-            document.querySelector('#location-cancel').hidden = !locationDiscovery.busy;
-            if (phase === 'timeout') locationMessage('Location search timed out. Try again.');
-            if (phase === 'error') locationMessage('Location search is unavailable. Try again.');
-        },
-    });
+        savedLocationDraft = {},
+        vaultLocation; // undefined means the host has not answered
+    const locationCredits = new Map([
+        ['nominatim', '© OpenStreetMap contributors (ODbL)'],
+        ['open-meteo', 'Open-Meteo geocoding · GeoNames (CC BY 4.0)'],
+    ]);
     // Read saved locations from the active settings scope
     function weatherLocations() {
         const list = (shell.globalScope ? shell.settings : weatherGlobals).saved_locations;
@@ -331,34 +323,56 @@ export function createWeatherFeature(shell) {
         const editor = document.querySelector('#saved-location-list');
         locationOptions(editor, 'New location', editor.value);
         document.querySelector('#weather-location-choice-label').hidden = shell.globalScope;
-        locationOptions(
-            document.querySelector('#weather-location-choice'),
-            'Custom location',
-            shell.settings.location_id,
-        );
+        const choice = document.querySelector('#weather-location-choice');
+        const usingVault = !shell.globalScope && shell.settings.use_vault_location === true;
+        locationOptions(choice, 'Custom location', shell.settings.location_id);
+        if (!shell.globalScope && vaultLocation !== undefined && (vaultLocation || usingVault)) {
+            // Imported plugin settings can already use arbitrary IDs, so avoid collisions
+            let value = '@vault-location';
+            while (Array.from(choice.options).some((option) => option.value === value))
+                value += '@';
+            const option = new Option(
+                vaultLocation ? `Vault · ${vaultLocation}` : 'Vault location unavailable',
+                value,
+            );
+            option.dataset.vaultLocation = 'true';
+            option.disabled = !vaultLocation;
+            choice.add(option);
+            if (usingVault) choice.value = value;
+        }
         const linked = weatherLocations().find((entry) => entry.id === shell.settings.location_id);
-        const missing = !shell.globalScope && shell.settings.location_id && !linked;
+        const missing = !shell.globalScope && !usingVault && shell.settings.location_id && !linked;
+        const vaultMissing = usingVault && vaultLocation === null;
         const warning = document.querySelector('#weather-location-warning');
-        warning.hidden = !missing;
-        warning.textContent = missing
-            ? 'Saved location unavailable. This action keeps its saved coordinates; choose a location to repair the link.'
-            : '';
+        warning.hidden = !missing && !vaultMissing;
+        warning.textContent = vaultMissing
+            ? 'Unlock the Vault or review the location shared with this Weather action.'
+            : missing
+              ? 'Saved location unavailable. This action keeps its saved coordinates; choose a location to repair the link.'
+              : '';
         if (!shell.globalScope) {
             for (const key of ['latitude', 'longitude']) {
                 const field = document.querySelector('#field-' + key);
                 if (field) {
-                    field.disabled = Boolean(linked);
-                    if (linked) field.value = linked[key];
+                    field.disabled = Boolean(linked) || (usingVault && vaultLocation !== undefined);
+                    if (linked && !usingVault) field.value = linked[key];
                 }
             }
         }
         document.querySelector('#saved-location-remove').disabled = !editor.value;
         if (shell.globalScope)
             document.querySelector('#saved-weather-locations details').open = true;
+        renderLocation();
     }
     // Apply a linked location or return the action to custom coordinates
     document.querySelector('#weather-location-choice').onchange = (event) => {
         shell.settings = shell.collect();
+        if (event.target.selectedOptions[0]?.dataset.vaultLocation === 'true') {
+            if (vaultLocation) shell.settings.use_vault_location = true;
+            shell.render();
+            return;
+        }
+        if (vaultLocation !== undefined) shell.settings.use_vault_location = false;
         const entry = weatherLocations().find((location) => location.id === event.target.value);
         if (entry)
             Object.assign(shell.settings, {
@@ -389,6 +403,7 @@ export function createWeatherFeature(shell) {
         // Mark edited coordinates as manually supplied
         document.querySelector('#saved-location-' + key).oninput = () => {
             savedLocationDraft = { source: 'manual' };
+            if (shell.globalScope) renderLocation();
         };
     // Validate and save a location into the draft without committing the binding
     document.querySelector('#saved-location-save').onclick = () => {
@@ -433,6 +448,7 @@ export function createWeatherFeature(shell) {
         setWeatherLocations(list);
         if (!shell.globalScope)
             Object.assign(shell.settings, {
+                ...(vaultLocation !== undefined ? { use_vault_location: false } : {}),
                 location_id: id,
                 latitude: entry.latitude,
                 longitude: entry.longitude,
@@ -466,39 +482,34 @@ export function createWeatherFeature(shell) {
         node.textContent = message;
         node.hidden = !message;
     }
-    // Stop pending location discovery before showing its final status
-    function finishLocation(message) {
-        if (locationDiscovery.busy) locationDiscovery.cancel();
-        locationMessage(message);
-    }
-    // Cancel search and clear obsolete results
-    function cancelLocation() {
-        locationDiscovery.cancel();
-        finishLocation('');
-        document.querySelector('#location-results').replaceChildren();
-    }
     // Show selected-location details only while their coordinates match the draft
     function renderLocation() {
         const enabled = shell.module?.location === true;
         document.querySelector('#location-search').hidden = !enabled;
         if (!enabled) return;
-        const saved = shell.settings.location;
+        const saved =
+            weatherLocations().find((entry) => entry.id === shell.settings.location_id) ||
+            shell.settings.location;
         const matches =
             !shell.globalScope &&
+            shell.settings.use_vault_location !== true &&
             saved &&
             saved.latitude === Number(document.querySelector('#field-latitude').value) &&
             saved.longitude === Number(document.querySelector('#field-longitude').value);
         const selected = document.querySelector('#location-selection');
-        selected.textContent = matches ? `Selected: ${saved.label}` : '';
-        selected.hidden = !matches;
-        document.querySelector('#location-attribution').hidden = !(
-            matches && saved.source === 'nominatim'
-        );
+        const label = matches && (saved.label || saved.name);
+        selected.textContent = label ? `Selected: ${label}` : '';
+        selected.hidden = !label;
+        const source = shell.globalScope ? savedLocationDraft.source : matches && saved.source;
+        document.querySelector('#location-attribution').hidden = !locationCredits.has(source);
+        for (const credit of document.querySelectorAll('#location-attribution [data-source]'))
+            credit.hidden = credit.dataset.source !== source;
     }
     // Validate coordinates before applying a search or device location to the draft
     function useLocation(value, source) {
         if (
             !shell.module?.location ||
+            !value ||
             typeof value.latitude !== 'number' ||
             typeof value.longitude !== 'number' ||
             !Number.isFinite(value.latitude) ||
@@ -507,14 +518,18 @@ export function createWeatherFeature(shell) {
             Math.abs(value.longitude) > 180
         )
             return;
-        savedLocationDraft = {
-            ...value,
+        const attribution = locationCredits.get(source);
+        const location = {
+            latitude: value.latitude,
+            longitude: value.longitude,
             source,
             label:
                 source === 'device'
                     ? 'Current device location'
                     : String(value.label || '').slice(0, 2048),
+            ...(attribution ? { attribution } : {}),
         };
+        savedLocationDraft = { ...value, ...location };
         document.querySelector('#saved-location-latitude').value = String(value.latitude);
         document.querySelector('#saved-location-longitude').value = String(value.longitude);
         if (!document.querySelector('#saved-location-name').value)
@@ -524,7 +539,7 @@ export function createWeatherFeature(shell) {
             );
         if (shell.globalScope) {
             document.querySelector('#saved-weather-locations details').open = true;
-            cancelLocation();
+            renderLocation();
             locationMessage(
                 'Location added to the editor. Save location to draft, then apply settings.',
             );
@@ -536,113 +551,78 @@ export function createWeatherFeature(shell) {
         latitude.value = String(value.latitude);
         longitude.value = String(value.longitude);
         shell.settings = shell.collect();
-        cancelLocation();
+        if (vaultLocation !== undefined) shell.settings.use_vault_location = false;
         shell.settings.latitude = value.latitude;
         shell.settings.longitude = value.longitude;
-        shell.settings.location = {
-            latitude: value.latitude,
-            longitude: value.longitude,
-            source,
-            label:
-                source === 'device'
-                    ? 'Current device location'
-                    : String(value.label).slice(0, 2048),
-            ...(source === 'nominatim'
-                ? { attribution: '© OpenStreetMap contributors (ODbL)' }
-                : {}),
-        };
+        shell.settings.location = location;
         shell.render();
         locationMessage('Location added to draft. Apply settings, then save the binding.');
     }
-    // Render a bounded set of correlated search results as selectable locations
-    function receiveLocations(payload) {
-        if (!locationDiscovery.receive(payload)) return;
-        finishLocation(String(payload.message || ''));
-        const list = document.querySelector('#location-results');
-        list.replaceChildren();
-        for (const result of Array.isArray(payload.results) ? payload.results.slice(0, 5) : []) {
-            const row = document.createElement('li');
-            const label = document.createElement('span');
-            label.textContent = `${result.label} (${result.latitude}, ${result.longitude})`;
-            const button = document.createElement('button');
-            button.type = 'button';
-            button.textContent = 'Use location';
-            button.setAttribute('aria-label', `Use location: ${result.label}`);
-            button.onclick = () => useLocation(result, 'nominatim');
-            row.append(label, button);
-            list.append(row);
-        }
-        document.querySelector('#location-attribution').hidden = list.childElementCount === 0;
-    }
-    // Validate search inputs before starting a scoped location lookup
-    function searchLocation() {
-        if (!shell.module?.location) return;
-        cancelLocation();
-        const query = document.querySelector('#location-query').value.trim();
-        const country = document.querySelector('#location-country').value;
-        const mode = document.querySelector('#location-mode').value;
-        if (!query || (mode === 'postal' && !country)) {
-            locationMessage('Enter a location and choose its country.');
-            return;
-        }
-        locationMessage('Searching…');
-        locationDiscovery.start({ op: 'search_location', search: { mode, query, country } });
-    }
-    document.querySelector('#location-submit').onclick = searchLocation;
-    document.querySelector('#location-cancel').onclick = cancelLocation;
-    // Run location search on Enter without submitting the settings form
-    document.querySelector('#location-query').onkeydown = (event) => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            searchLocation();
-        }
-    };
-    for (const id of ['location-query', 'location-country', 'location-mode'])
-        // Cancel stale searches when search parameters change
-        document.getElementById(id).addEventListener('input', () => {
-            cancelLocation();
-            document.querySelector('#location-query-label').textContent =
-                document.querySelector('#location-mode').value === 'postal'
-                    ? 'ZIP / postal code'
-                    : 'Address or place';
-        });
     // Detach saved-location metadata when coordinates are edited directly
     document.querySelector('#fields').addEventListener('input', (event) => {
         if (!['field-latitude', 'field-longitude'].includes(event.target.id)) return;
         delete shell.settings.location;
         delete shell.settings.location_id;
-        renderLocation();
         renderSavedLocations();
     });
-    const countries =
-        'AD AE AF AG AI AL AM AO AQ AR AS AT AU AW AX AZ BA BB BD BE BF BG BH BI BJ BL BM BN BO BQ BR BS BT BV BW BY BZ CA CC CD CF CG CH CI CK CL CM CN CO CR CU CV CW CX CY CZ DE DJ DK DM DO DZ EC EE EG EH ER ES ET FI FJ FK FM FO FR GA GB GD GE GF GG GH GI GL GM GN GP GQ GR GS GT GU GW GY HK HM HN HR HT HU ID IE IL IM IN IO IQ IR IS IT JE JM JO JP KE KG KH KI KM KN KP KR KW KY KZ LA LB LC LI LK LR LS LT LU LV LY MA MC MD ME MF MG MH MK ML MM MN MO MP MQ MR MS MT MU MV MW MX MY MZ NA NC NE NF NG NI NL NO NP NR NU NZ OM PA PE PF PG PH PK PL PM PN PR PS PT PW PY QA RE RO RS RU RW SA SB SC SD SE SG SH SI SJ SK SL SM SN SO SR SS ST SV SX SY SZ TC TD TF TG TH TJ TK TL TM TN TO TR TT TV TW TZ UA UG UM US UY UZ VA VC VE VG VI VN VU WF WS YE YT ZA ZM ZW'.split(
-            ' ',
-        );
-    const names = new Intl.DisplayNames(['en'], { type: 'region' });
-    const countrySelect = document.querySelector('#location-country');
-    countrySelect.add(new Option('Choose country', ''));
-    for (const code of countries.sort((a, b) => names.of(a).localeCompare(names.of(b))))
-        countrySelect.add(new Option(names.of(code), code.toLowerCase()));
-    // Accept device-location messages only from the matching parent and context
+    // Accept location messages only from the matching parent and context
     window.addEventListener('message', (event) => {
-        if (
-            event.source !== window.parent ||
-            event.data?.event !== 'stream-dock-manager-location-selected' ||
-            event.data?.context !== shell.context
-        )
-            return;
+        if (event.source !== window.parent || event.data?.context !== shell.context) return;
         if (document.referrer && event.origin !== new URL(document.referrer).origin) return;
-        useLocation(event.data.location, 'device');
+        if (event.data?.event === 'stream-dock-manager-vault-location') {
+            // The parent provides display metadata only, never a secret or coordinates
+            if (
+                window.parent === window ||
+                !shell.context?.startsWith('settings-draft:') ||
+                !supportsVaultLocation()
+            )
+                return;
+            const location = event.data.location;
+            if (
+                location !== null &&
+                (typeof location?.label !== 'string' || !location.label.trim())
+            )
+                return;
+            const checkbox = document.querySelector('#field-use_vault_location');
+            if (checkbox) shell.settings.use_vault_location = checkbox.checked;
+            vaultLocation = location === null ? null : location.label.slice(0, 256);
+            shell.render();
+            return;
+        }
+        if (event.data?.event !== 'stream-dock-manager-location-selected') return;
+        // Older Manager versions omitted the source for device fixes
+        const source = event.data.location?.source ?? 'device';
+        if (source === 'device' || locationCredits.has(source))
+            useLocation(event.data.location, source);
     });
 
+    function supportsVaultLocation() {
+        return (
+            shell.module?.location &&
+            !shell.globalScope &&
+            shell.module.actions?.[shell.action]?.some(
+                (field) => field.key === 'use_vault_location',
+            )
+        );
+    }
     return {
-        discovery: locationDiscovery,
-        render: renderLocation,
         renderSaved: renderSavedLocations,
+        usesVaultPicker: () => vaultLocation !== undefined,
+        requestVaultLocation() {
+            if (
+                !supportsVaultLocation() ||
+                !shell.context?.startsWith('settings-draft:') ||
+                window.parent === window
+            )
+                return;
+            // macOS may omit the referrer for Manager's custom webview scheme
+            // The fallback request contains only the event and active panel context
+            window.parent.postMessage(
+                { event: 'stream-dock-manager-request-vault-location', context: shell.context },
+                document.referrer ? new URL(document.referrer).origin : '*',
+            );
+        },
         message: locationMessage,
-        finish: finishLocation,
-        cancel: cancelLocation,
-        receive: receiveLocations,
         // Refresh saved-location choices after shared settings arrive
         globals(value) {
             weatherGlobals = value;
@@ -653,6 +633,7 @@ export function createWeatherFeature(shell) {
             if (!shell.module?.location) return;
             if (shell.globalScope) next.saved_locations = weatherLocations();
             else {
+                if (next.use_vault_location === true) return;
                 const selected = weatherLocations().find((entry) => entry.id === next.location_id);
                 if (selected)
                     Object.assign(next, {
@@ -664,9 +645,9 @@ export function createWeatherFeature(shell) {
         },
         // Clear weather discovery and drafts when the inspector context changes
         reset() {
-            locationDiscovery.cancel();
             weatherGlobals = {};
             savedLocationDraft = {};
+            vaultLocation = undefined;
         },
     };
 }
@@ -677,6 +658,7 @@ export function createWeatherFeature(shell) {
 export function createFeatureRegistry(adapters) {
     const operations = new Map();
     for (const adapter of adapters) {
+        if (!adapter.operation) continue;
         if (operations.has(adapter.operation)) throw Error('Duplicate feature operation');
         operations.set(adapter.operation, adapter);
     }
@@ -707,7 +689,7 @@ export function createFeatureRegistry(adapters) {
         // Notify busy controllers when the transport becomes unavailable
         status(text) {
             if (/disconnected|unavailable/i.test(text)) {
-                for (const adapter of adapters) if (adapter.busy()) adapter.disconnect(text);
+                for (const adapter of adapters) if (adapter.busy?.()) adapter.disconnect(text);
             }
         },
         // Route pending notices to the highest-priority busy owner

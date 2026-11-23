@@ -13,6 +13,7 @@ import (
 	vlc "github.com/StreamDockManager/Plugins/internal/plugins/vlc"
 
 	"fmt"
+	vaultexample "github.com/StreamDockManager/Plugins/internal/plugins/sdm-vault-example"
 	"regexp"
 	"strings"
 
@@ -36,7 +37,6 @@ import (
 type Definition = engine.Definition
 
 // Definitions aggregates feature-owned metadata in the original official-plugin order
-// All official plugins remain at 0.1.0 until the first release
 var registrations = []engine.Registration{
 	{Definition: obsstudio.Definition, PluginFields: obsstudio.PluginFields, ActionFields: obsstudio.ActionFields},
 	{Definition: homeassistant.Definition, PluginFields: homeassistant.PluginFields, ActionFields: homeassistant.ActionFields},
@@ -62,6 +62,7 @@ var registrations = []engine.Registration{
 	{Definition: osrshiscores.Definition, PluginFields: osrshiscores.PluginFields, ActionFields: osrshiscores.ActionFields},
 	{Definition: runescapehiscores.Definition, PluginFields: runescapehiscores.PluginFields, ActionFields: runescapehiscores.ActionFields},
 	{Definition: retroachievements.Definition, PluginFields: retroachievements.PluginFields, ActionFields: retroachievements.ActionFields},
+	{Definition: vaultexample.Definition, PluginFields: vaultexample.PluginFields, ActionFields: vaultexample.ActionFields},
 }
 
 var Definitions, settingsRegistry = registrationIndex(registrations)
@@ -122,7 +123,7 @@ func ValidateDefinitions(definitions []Definition) error {
 					if len(SpotifyAssets()[icon+".svg"]) == 0 {
 						return fmt.Errorf("%s: missing icon %q", d.Slug, icon)
 					}
-				} else if glyphs[strings.TrimPrefix(icon, "icons/")] == "" {
+				} else if actionGlyph(d.Slug, icon) == "" {
 					return fmt.Errorf("%s: missing icon %q", d.Slug, icon)
 				}
 			}
@@ -136,6 +137,18 @@ func ID(slug string) string { return engine.ID(slug) }
 
 // ActionName resolves the display name for an action identity
 func ActionName(slug, action string) string {
+	if slug == vaultexample.Slug {
+		return vaultexample.ActionName(action)
+	}
+	if slug == "randomizer-dice" && action == "heads-or-tails" {
+		return "Heads or Tails"
+	}
+	if slug == "randomizer-dice" && action == "roll-all" {
+		return "Roll All"
+	}
+	if slug == "spotify" && action == "mute-toggle" {
+		return "Mute Toggle"
+	}
 	if slug == "random-meme" {
 		if action == "send" {
 			return "Paste link"

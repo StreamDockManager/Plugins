@@ -6,10 +6,8 @@
         "tags": ["productivity", "counter"],
         "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
         "dependencies": [],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "timers-pomodoro": {
         "description": "Countdowns, stopwatches, and alternating focus and break timers.",
@@ -18,10 +16,8 @@
         "tags": ["productivity", "timer"],
         "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
         "dependencies": [],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "system-monitor": {
         "description": "CPU, memory, disk, and network measurements on your controls.",
@@ -30,10 +26,8 @@
         "tags": ["system", "telemetry"],
         "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
         "dependencies": [],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "screenshot-tools": {
         "description": "Capture a display, window, or region and copy screenshots.",
@@ -50,10 +44,8 @@
                 "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "weather": {
         "description": "Current conditions, forecasts, and sunrise and sunset times.",
@@ -70,10 +62,8 @@
                 "documentation": "https://open-meteo.com/en/docs"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "randomizer-dice": {
         "description": "Roll dice, choose ranges and lists, and draw without replacement.",
@@ -82,10 +72,8 @@
         "tags": ["games", "random"],
         "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
         "dependencies": [],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": true,
+        "opendeck_compatible": true
     },
     "battery-power": {
         "description": "Display battery charge and power status.",
@@ -94,10 +82,8 @@
         "tags": ["system", "battery"],
         "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
         "dependencies": [],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "network-vpn": {
         "description": "Inspect interfaces, reachability, and VPN status.",
@@ -114,10 +100,8 @@
                 "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "spotify": {
         "description": "Control Spotify playback, volume, seeking, and track feedback.",
@@ -148,10 +132,8 @@
                 "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": true,
+        "opendeck_compatible": true
     },
     "microphone-controls": {
         "description": "Mute, unmute, and toggle microphones with gain recovery.",
@@ -175,10 +157,8 @@
                 "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "http-webhooks": {
         "description": "Run HTTP requests and display status, duration, or extracted JSON fields.",
@@ -195,10 +175,8 @@
                 "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "service-monitor": {
         "description": "Monitor HTTP, TCP, and local operating system services.",
@@ -222,10 +200,8 @@
                 "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "internet-speed-test": {
         "description": "Run cancellable Internet latency, download, and upload tests.",
@@ -242,10 +218,8 @@
                 "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "steam-library": {
         "description": "Browse and launch locally installed Steam games.",
@@ -262,10 +236,8 @@
                 "documentation": "https://store.steampowered.com/about/"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Manifest conversion has been validated; native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "vlc": {
         "description": "Authenticated VLC playback, playlist and track controls, volume/seek dials and companion displays.",
@@ -282,10 +254,8 @@
                 "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "tailscale": {
         "description": "Local tailnet status, peer availability, connection controls and exit-node selection.",
@@ -302,10 +272,8 @@
                 "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "mqtt": {
         "description": "MQTT 3.1.1 publishing and shared topic displays with QoS, retained messages and verified TLS.",
@@ -322,10 +290,8 @@
                 "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "make": {
         "description": "Discover and control Make scenarios, track asynchronous executions and explicitly send custom webhooks.",
@@ -342,10 +308,8 @@
                 "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "osrs-hiscores": {
         "description": "OSRS skills, activity scores and resettable fetched-snapshot XP differences by player and board.",
@@ -354,10 +318,8 @@
         "tags": ["gaming", "hiscores"],
         "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
         "dependencies": [],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "runescape-hiscores": {
         "description": "RuneScape skills, activity scores and snapshot XP differences using provider IDs and a validated legacy mapping.",
@@ -366,10 +328,8 @@
         "tags": ["gaming", "hiscores"],
         "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
         "dependencies": [],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "retroachievements": {
         "description": "Mode-specific points, game completion and recent unlocks from the RetroAchievements Web API.",
@@ -386,10 +346,8 @@
                 "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Protocol fixtures and package validation are separate from native VSD runtime qualification."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "random-meme": {
         "description": "Fetch a random meme, preview it on the device, then paste its image link into the selected input box.",
@@ -398,10 +356,8 @@
         "tags": ["social", "meme", "clipboard"],
         "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/README.md",
         "dependencies": [],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "obs-studio": {
         "description": "Control OBS scenes, input audio, recording, and replay saves through WebSocket v5.",
@@ -418,10 +374,8 @@
                 "documentation": "https://obsproject.com/kb/remote-control-guide"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     },
     "home-assistant": {
         "description": "Control entities and scenes with live state and brightness feedback.",
@@ -438,9 +392,7 @@
                 "documentation": "https://www.home-assistant.io/docs/authentication/"
             }
         ],
-        "vsd_compatibility": {
-            "status": "unverified",
-            "reason": "Native VSD runtime qualification is pending."
-        }
+        "vsd_craft_compatible": false,
+        "opendeck_compatible": false
     }
 }

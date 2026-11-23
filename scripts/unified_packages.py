@@ -66,6 +66,8 @@ def read_archive(path, identity):
 # Reject different shared assets/manifests instead of silently picking one
 def assemble(directory, record, inventories, host="manager", *, verified=None):
     """Reject different shared assets/manifests instead of silently picking one."""
+    if host == 'opendeck' and catalog.vendor_incompatibility(record):
+        raise ValueError('OpenDeck cannot supply required Manager capabilities')
     shared = None
     common_manifest = None
     binaries = {}
@@ -269,6 +271,22 @@ def remember_package(path, key, package):
         Path(temporary).unlink(missing_ok=True)
 
 
+def retire_opendeck_bundle(directory, identity):
+    path = path_for(directory, identity, 'opendeck')
+    cache = path.with_suffix('.cache.json')
+    if not path.is_file() or not cache.is_file():
+        return
+    try:
+        metadata = json.loads(cache.read_text())['package']
+    except (OSError, ValueError, KeyError, TypeError):
+        return
+    if (isinstance(metadata, dict) and metadata.get('id') == identity
+            and metadata.get('path') == path.relative_to(directory.resolve()).as_posix()
+            and catalog.digest(path) == metadata.get('sha256')):
+        path.unlink()
+        cache.unlink()
+
+
 # Build or reuse a validated universal archive for the selected host
 def build(directory=None, records=None, macos_intel=False, host="manager", *, validated_inventories=None, _verified_inputs=None):
     directory = Path(directory or catalog.ROOT / 'dist')
@@ -278,13 +296,16 @@ def build(directory=None, records=None, macos_intel=False, host="manager", *, va
         raise ValueError('Validated inputs do not match requested source scope')
     inventories = verified.inventories()
     if host == 'opendeck':
-        print('OpenDeck export is packaging compatibility only; Manager-required capabilities and external dependencies are preserved, not supplied by this archive.', flush=True)
+        print('OpenDeck exports include portable plugins with packages for all three operating systems.', flush=True)
     inventory = {'schema_version': 1, 'product': 'plugins-opendeck' if host == 'opendeck' else 'plugins-unified',
                  'source_fingerprint': inventories['macos']['source_fingerprint'],
                  'support_policy': inventories['macos']['support_policy'], 'packages': []}
     for record in sorted(records, key=lambda p: p['id']):
         if set(catalog.supported_platforms(record)) != set(catalog.PLATFORMS):
             print(f"Unified bundle skipped: {record['id']} does not support all three operating systems")
+            continue
+        if host == 'opendeck' and (restriction := catalog.vendor_incompatibility(record)):
+            print(f"OpenDeck bundle skipped: {record['id']}. {restriction['reason']}")
             continue
         path = path_for(directory, record['id'], host)
         key = cache_key(record, inventories, host)
@@ -308,6 +329,10 @@ def build(directory=None, records=None, macos_intel=False, host="manager", *, va
     temporary = output.with_suffix('.tmp')
     catalog.write(temporary, inventory)
     temporary.replace(output)
+    if host == 'opendeck':
+        for record in records:
+            if catalog.vendor_incompatibility(record):
+                retire_opendeck_bundle(directory, record['id'])
     print(f"Built {len(inventory['packages'])} optional unified bundles: {output}")
     if validated_inventories is not None:
         validated_inventories.update(verified.inventories())
@@ -345,7 +370,8 @@ def validate(directory=None, records=None, inventory=None, host="manager"):
     for platform in inventories.values():
         if any(record.get('source_fingerprint') != platform.get('source_fingerprint') for record in records):
             raise ValueError('Unified source fingerprint changed; rebuild')
-    eligible = {p['id']: p for p in records if set(catalog.supported_platforms(p)) == set(catalog.PLATFORMS)}
+    eligible = {p['id']: p for p in records if set(catalog.supported_platforms(p)) == set(catalog.PLATFORMS)
+                and (host != 'opendeck' or not catalog.vendor_incompatibility(p))}
     if (inventory.get('schema_version') != 1 or inventory.get('product') != ('plugins-opendeck' if host == 'opendeck' else 'plugins-unified')
             or inventory.get('source_fingerprint') != inventories['macos']['source_fingerprint']
             or inventory.get('support_policy') != inventories['macos']['support_policy']

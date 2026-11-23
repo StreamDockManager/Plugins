@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Plugin catalog schema 1: source previews, immutable artifacts and channel plans."""
+"""Plugin catalog schema 2: source previews, immutable artifacts and channel plans."""
 import argparse
 import base64
 import binascii
@@ -44,6 +44,13 @@ def supported_platforms(plugin):
     if not isinstance(platforms, list) or not platforms or len(platforms) != len(set(platforms)) or not set(platforms) <= PLATFORMS.keys():
         raise ValueError('Invalid plugin supported platforms')
     return platforms
+
+def vendor_incompatibility(plugin):
+    required = plugin.get('required_capabilities', [])
+    if required:
+        return {'status': 'incompatible', 'reason': 'Requires Stream Dock Manager: ' + ', '.join(required) + '.'}
+    return None
+
 
 # Check source metadata against the declared platform support policy
 def check_source_policy(source, policy):
@@ -162,7 +169,7 @@ def empty(repository, channel):
             or any(part in ('.', '..') for part in repository.split('/'))
             or channel not in ('stable', 'development')):
         raise ValueError('Invalid repository/channel')
-    return {'schema_version': 1, 'product': 'plugins', 'repository': repository, 'channel': channel, 'plugins': []}
+    return {'schema_version': 2, 'product': 'plugins', 'repository': repository, 'channel': channel, 'plugins': []}
 
 # Validate the public catalog base URL before constructing download links
 def public_base(value):
@@ -213,7 +220,7 @@ def artifact_url_valid(value, repository, channel, plugin, artifact, catalog_url
 def validate_unified_download(artifact, plugin, repository, channel, catalog_url=None, *, host="manager"):
     """Validate an explicit cross-platform host artifact, never an OS variant."""
     suffix = "opendeck-universal" if host == "opendeck" else "unified"
-    if not isinstance(artifact, dict) or 'os' in artifact or 'architectures' in artifact:
+    if not isinstance(artifact, dict) or {'os', 'architectures', 'compatibility', 'vsd_craft_compatible'} & artifact.keys():
         raise ValueError('Unified download must use explicit targets')
     targets = artifact.get('targets')
     if (not isinstance(targets, list) or len(targets) != 3
@@ -238,19 +245,15 @@ def validate_unified_download(artifact, plugin, repository, channel, catalog_url
     if (not isinstance(files, dict) or not files or len(files) > 4096 or 'manifest.json' not in files
             or any(not safe_path(n) or not isinstance(h, str) or not HEX.fullmatch(h) for n, h in files.items())):
         raise ValueError('Invalid unified complete file inventory')
-    if host == 'opendeck':
-        compatibility = artifact.get('compatibility')
-        if (not isinstance(compatibility, dict) or compatibility.get('status') != 'unverified'
-                or not isinstance(compatibility.get('reason'), str) or not compatibility['reason'].strip()
-                or 'evidence' in compatibility or 'vsd_craft_compatible' in artifact):
-            raise ValueError('OpenDeck packaging is not native runtime qualification')
     return artifact
 
 # Validate catalog structure, source identity, and download metadata
 def validate(catalog, production=True, catalog_url=None):
     empty(catalog.get('repository', ''), catalog.get('channel'))
-    if catalog.get('schema_version') != 1 or catalog.get('product') != 'plugins' or (production and catalog.get('preview')) or not isinstance(catalog.get('plugins'), list) or len(catalog['plugins']) > 256:
-        raise ValueError('Invalid plugin catalog schema 1')
+    if type(catalog.get('schema_version')) is not int or catalog['schema_version'] != 2:
+        raise ValueError('Unsupported plugin catalog schema; expected version 2')
+    if catalog.get('product') != 'plugins' or (production and catalog.get('preview')) or not isinstance(catalog.get('plugins'), list) or len(catalog['plugins']) > 256:
+        raise ValueError('Invalid plugin catalog')
     seen = set()
     for p in catalog['plugins']:
         if not re.fullmatch(r'[a-z0-9]+(?:[.-][a-z0-9]+)*', p['id']) or p['id'] in seen:
@@ -258,6 +261,9 @@ def validate(catalog, production=True, catalog_url=None):
         seen.add(p['id'])
         semver(p['version']); semver(p['minimum_manager'])
         supported_platforms(p)
+        for field in ('vsd_craft_compatible', 'opendeck_compatible'):
+            if not isinstance(p.get(field), bool):
+                raise ValueError(f'{p["id"]}: invalid {field} flag')
         for field in ('name', 'description', 'author', 'license', 'documentation', 'icon'):
             if not isinstance(p.get(field), str) or not p[field]:
                 raise ValueError(f'{p["id"]}: missing {field}')
@@ -274,10 +280,14 @@ def validate(catalog, production=True, catalog_url=None):
             raise ValueError('Published plugin has no artifacts')
         if 'unified_download' in p:
             validate_unified_download(p['unified_download'], p, catalog['repository'], catalog['channel'], catalog_url)
+        if vendor_incompatibility(p) and (p['vsd_craft_compatible'] or p['opendeck_compatible'] or 'opendeck_download' in p):
+            raise ValueError('Vendor host support conflicts with required Manager capabilities')
         if 'opendeck_download' in p:
             validate_unified_download(p['opendeck_download'], p, catalog['repository'], catalog['channel'], catalog_url, host='opendeck')
         platforms = set()
         for a in p['downloads']:
+            if 'compatibility' in a or 'vsd_craft_compatible' in a:
+                raise ValueError('Host compatibility belongs on the plugin')
             osname = a['os']
             if osname not in supported_platforms(p):
                 raise ValueError('Download contradicts supported platforms')
@@ -293,27 +303,22 @@ def validate(catalog, production=True, catalog_url=None):
                 raise ValueError('Invalid artifact URL/hash/size/source')
             if not a['files'] or len(a['files']) > 4096 or 'manifest.json' not in a['files'] or any(not safe_path(n) or not HEX.fullmatch(h) for n, h in a['files'].items()):
                 raise ValueError('Invalid complete file inventory')
-            c = a['compatibility']
-            if c['status'] not in ('verified', 'incompatible', 'unverified') or not c['reason'] or not isinstance(a['vsd_craft_compatible'], bool):
-                raise ValueError('Invalid compatibility record')
-            if c['status'] == 'verified' or 'evidence' in c:
-                evidence = c.get('evidence', {})
-                if not isinstance(evidence, dict) or evidence.get('plugin_version') != p['version'] or evidence.get('os') != osname or evidence.get('sha256') != a['sha256'] or not https_url(evidence.get('url')):
-                    raise ValueError('Qualification evidence does not match artifact')
-            if a['vsd_craft_compatible'] != (c['status'] == 'verified'):
-                raise ValueError('Compatibility requires verified evidence')
     return catalog
 
 # Read the complete plugin definitions from the source catalog command
-def source_records(env=None):
+def source_records(env=None, *, builder=None):
     from go_modules import environment
     env = environment(os.environ if env is None else env, cwd=ROOT)
     env.setdefault('GOCACHE', str(ROOT / '.cache/go-build'))
-    definitions = json.loads(subprocess.check_output(['go', 'run', './tools/pluginbuild', 'catalog'], cwd=ROOT, env=env, text=True))
+    command = [str(builder), 'catalog'] if builder is not None else ['go', 'run', './tools/pluginbuild', 'catalog']
+    definitions = json.loads(subprocess.check_output(command, cwd=ROOT, env=env, text=True))
     metadata = json.loads((ROOT / 'catalog/metadata.json').read_text())
+    if any(d['slug'] == 'sdm-vault-example' for d in definitions):
+        metadata['sdm-vault-example'] = json.loads((ROOT / 'internal/plugins/sdm-vault-example/metadata.json').read_text())
     if set(metadata) != {d['slug'] for d in definitions}:
         raise ValueError('Metadata must cover exactly the source plugins')
-    return [dict(d, **metadata[d['slug']], downloads=[]) for d in definitions]
+    records = [dict(d, **metadata[d['slug']], downloads=[]) for d in definitions]
+    return records
 
 
 # Select the requested release channel from the available catalog inputs
@@ -454,19 +459,9 @@ def annotate(catalog_value, metadata):
     for plugin in result['plugins']:
         values = metadata.get(plugin['slug'])
         if values is None: continue
-        for field in ('description', 'author', 'license', 'tags', 'documentation', 'dependencies'):
+        for field in ('description', 'author', 'license', 'tags', 'documentation', 'dependencies',
+                      'vsd_craft_compatible', 'opendeck_compatible'):
             plugin[field] = deepcopy(values[field])
-        platforms = values.get('vsd_compatibility', {}).get('platforms', {})
-        for osname, record in platforms.items():
-            candidates = [a for a in plugin['downloads'] if a['os'] == osname]
-            if candidates and 'evidence' in record and not any(a['sha256'] == record['evidence'].get('sha256') for a in candidates):
-                raise ValueError('Qualification evidence does not match any platform artifact')
-        for artifact in plugin['downloads']:
-            record = platforms.get(artifact['os'])
-            if record is None: continue
-            if 'evidence' in record and record['evidence'].get('sha256') != artifact['sha256']: continue
-            artifact['compatibility'] = deepcopy(record)
-            artifact['vsd_craft_compatible'] = record['status'] == 'verified'
     return validate(result)
 
 

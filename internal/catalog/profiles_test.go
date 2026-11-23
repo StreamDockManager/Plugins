@@ -24,6 +24,12 @@ func suggestedActionLeaves(t *testing.T, action map[string]any) []map[string]any
 		if !ok || leaves[index]["kind"] != "plugin" {
 			t.Fatal("generated dial lane must retain its plugin action")
 		}
+		if index == 2 && leaves[0]["action_id"] == ID("spotify")+".volume" {
+			if leaves[index]["action_id"] != ID("spotify")+".mute-toggle" {
+				t.Fatal("volume press must toggle mute")
+			}
+			continue
+		}
 		if !reflect.DeepEqual(lane, lanes[0]) {
 			t.Fatal("plugin dial lanes must keep the same settings; rotation direction comes from signed input")
 		}
@@ -46,6 +52,7 @@ func TestSuggestedProfilesIncludeCurrentWorkspaceEnvelope(t *testing.T) {
 				}
 				for key, expected := range map[string]any{
 					"schema_version":         float64(1),
+					"minimum_manager":        definition.MinimumManager,
 					"configuration_revision": float64(0),
 					"saved_macros":           []any{},
 					"rules":                  []any{},
@@ -318,6 +325,52 @@ func TestPollingInspectorDefaultsAreExplicitCurrentSettings(t *testing.T) {
 					t.Fatal(err)
 				}
 			}
+		}
+	}
+}
+
+func TestSpotifyVolumeMutePressAcrossDialModels(t *testing.T) {
+	var definition Definition
+	for _, d := range Definitions {
+		if d.Slug == "spotify" {
+			definition = d
+		}
+	}
+	files, err := SuggestedProfiles(definition)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, model := range []string{"k1-pro", "m3", "n1", "n1-vsd", "n3", "n3-vsd", "n4", "n4-pro"} {
+		var doc struct {
+			Profiles []struct {
+				Pages []suggestedPage `json:"pages"`
+			} `json:"profiles"`
+		}
+		if err = json.Unmarshal(files["profiles/"+model+".json"], &doc); err != nil {
+			t.Fatal(err)
+		}
+		count := 0
+		for _, page := range doc.Profiles[0].Pages {
+			for _, raw := range page.Bindings {
+				a := raw.(map[string]any)["action"].(map[string]any)
+				if a["kind"] != "dial" {
+					continue
+				}
+				lanes := a["actions"].([]any)
+				if lanes[0].(map[string]any)["action_id"] != ID("spotify")+".volume" {
+					continue
+				}
+				count++
+				if !reflect.DeepEqual(lanes[0], lanes[1]) {
+					t.Fatal(model, "rotation lanes changed")
+				}
+				if lanes[2].(map[string]any)["action_id"] != ID("spotify")+".mute-toggle" {
+					t.Fatal(model, "missing mute press")
+				}
+			}
+		}
+		if count != 1 {
+			t.Fatal(model, "volume placements", count)
 		}
 	}
 }

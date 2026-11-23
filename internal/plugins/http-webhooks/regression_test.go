@@ -823,3 +823,33 @@ func TestEmptyPollingDisplayRemainsUnavailableOnFailure(t *testing.T) {
 		t.Fatal("empty display became a stale fallback", text, e.polling["empty"])
 	}
 }
+
+func TestPreviewFollowsHostInspectorLifecycle(t *testing.T) {
+	for _, known := range []bool{true, false} {
+		raw, _ := json.Marshal(map[string]any{"streamDockManager": map[string]any{"contract_version": 1, "inspector_lifecycle": known}})
+		info, err := sdk.ParseHostInfo(raw)
+		if err != nil {
+			t.Fatal(err)
+		}
+		c, _ := sdk.NewLocalClient(info, "test")
+		e := New(filepath.Join(t.TempDir(), "state.json"))
+		ctx := context.Background()
+		_, _ = e.observeInspector(ctx, c, sdk.Event{Event: "willAppear", Context: "key"})
+		if e.preview("key") == known {
+			t.Fatal("incorrect preview policy before inspector opens")
+		}
+		_, _ = e.observeInspector(ctx, c, sdk.Event{Event: "propertyInspectorDidAppear", Context: "key"})
+		if !e.preview("key") {
+			t.Fatal("open inspector lost preview")
+		}
+		_, _ = e.observeInspector(ctx, c, sdk.Event{Event: "propertyInspectorDidDisappear", Context: "key"})
+		if e.preview("key") == known {
+			t.Fatal("incorrect preview policy after inspector closes")
+		}
+		e.explicit["key"] = true
+		if !e.preview("key") {
+			t.Fatal("explicit inspector test lost preview")
+		}
+		e.Close()
+	}
+}

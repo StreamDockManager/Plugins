@@ -54,28 +54,38 @@ def release_catalog(records, inventories, hosts, repository, tag, commit, channe
     for source in sorted(records, key=lambda item: item['id']):
         plugin = deepcopy(source)
         plugin.pop('source_fingerprint', None)
-        qualification = plugin.pop('vsd_compatibility', {}).get('platforms', {})
         plugin['downloads'] = []
         for platform, inventory in inventories.items():
             if platform not in catalog.supported_platforms(plugin):
                 continue
             for package in catalog.selected_packages(inventory['packages'], plugin['id'], platform):
                 value = artifact(package, catalog.artifact_filename(plugin, package), catalog.package_path(directory, package), ('os','architectures','sha256','size','files'))
-                compatibility = qualification.get(platform, {'status':'unverified','reason':'Native VSD qualification is pending.'})
-                if compatibility.get('evidence', {}).get('sha256', package['sha256']) != package['sha256']:
-                    compatibility = {'status':'unverified','reason':'Native VSD qualification is pending.'}
-                value.update(compatibility=compatibility, vsd_craft_compatible=compatibility['status']=='verified')
                 plugin['downloads'].append(value)
         for host, field, suffix in [('manager','unified_download','unified'),('opendeck','opendeck_download','opendeck-universal')]:
             package = next((p for p in hosts[host]['packages'] if p['id']==plugin['id']), None)
             if package:
                 value = artifact(package, f'{plugin["id"]}-{plugin["version"]}-{suffix}.zip', unified_packages.path_for(directory,plugin['id'],host), ('targets','sha256','size','files'))
-                if host=='opendeck':
-                    value['compatibility']={'status':'unverified','reason':'Package format validated; native OpenDeck runtime compatibility has not been verified.'}
                 plugin[field]=value
         result['plugins'].append(plugin)
     catalog.validate(result, catalog_url=f'https://api.github.com/repos/{repository}/releases')
     return result, files
+
+
+# Compile the host packaging tool once and reuse it for each target
+def build_packages(env, jobs, macos_intel=False):
+    with tempfile.TemporaryDirectory(prefix='plugins-release-tool-') as temporary:
+        tool = Path(temporary) / ('pluginbuild.exe' if os.name == 'nt' else 'pluginbuild')
+        subprocess.run(['go', 'build', '-p', '1', '-o', str(tool), './tools/pluginbuild'],
+                       cwd=ROOT, env=env, check=True)
+        records = catalog.source_records(env=env, builder=tool)
+        if not records:
+            raise ValueError('No source plugins')
+        for platform in ('linux', 'windows', 'darwin'):
+            args = [str(tool), 'package', '--os', platform, '--jobs', str(jobs)]
+            if macos_intel:
+                args.append('--macos-intel')
+            subprocess.run(args, cwd=ROOT, env=env, check=True)
+        return records
 
 
 # Stage every verified release asset from the exact clean source revision
@@ -96,16 +106,14 @@ def prepare(directory, output, repository, tag, commit, channel='stable', build=
     # Always discover the entire repository, never honor PLUGIN filtering
     env=dict(os.environ,RELEASE_REPOSITORY=repository,GOMAXPROCS=str(jobs),PLUGIN_MACOS_INTEL='1' if macos_intel else '0')
     env.pop('PLUGIN',None)
-    records=catalog.source_records(env=env)
-    if not records:
-        raise ValueError('No source plugins')
     if build:
         if directory.resolve() != (ROOT/'dist').resolve():
             raise ValueError('--build requires this checkout dist directory')
-        for platform in ('linux','windows','darwin'):
-            args=['go','run','-p','1','./tools/pluginbuild','package','--os',platform,'--jobs',str(jobs)]
-            if macos_intel: args.append('--macos-intel')
-            subprocess.run(args,cwd=ROOT,env=env,check=True)
+        records = build_packages(env, jobs, macos_intel)
+    else:
+        records = catalog.source_records(env=env)
+        if not records:
+            raise ValueError('No source plugins')
     inventories={}
     hosts=unified_packages.build_hosts(directory,records,macos_intel=macos_intel,validated_inventories=inventories)
     document, files=release_catalog(records,inventories,hosts,repository,tag,commit,channel,directory)

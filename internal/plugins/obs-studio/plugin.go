@@ -26,7 +26,7 @@ import (
 )
 
 var Icons = map[string]string{"scene": "list", "mute": "speaker", "unmute": "speaker", "toggle-mute": "speaker", "volume": "speaker", "volume-display": "speaker", "record-start": "play", "record-stop": "stop", "record-pause": "pause", "record-resume": "play", "save-replay": "save", "status": "video"}
-var Definition, visuals = c.Define("obs-studio", "OBS Studio", Icons, "scene", "mute", "unmute", "toggle-mute", "volume", "volume-display", "record-start", "record-stop", "record-pause", "record-resume", "save-replay", "status")
+var Definition, visuals = c.DefineVault("obs-studio", "OBS Studio", Icons, "scene", "mute", "unmute", "toggle-mute", "volume", "volume-display", "record-start", "record-stop", "record-pause", "record-resume", "save-replay", "status")
 
 // Declare the OBS Studio global settings fields
 func PluginFields() []settings.Field {
@@ -81,24 +81,28 @@ type Sample struct {
 	Inputs            map[string]inputState
 }
 type Driver struct {
-	client   connectedws.Client
-	mu       sync.Mutex
-	wake     chan<- struct{}
-	dirty    atomic.Bool
-	seq      atomic.Uint64
-	revision uint64
-	wanted   map[string]bool
-	requests map[string]bool
-	snapshot engine.Snapshot[Sample]
-	session  *connectedws.Session
-	observed *atomic.Bool
+	vaultSession c.VaultSession
+	client       connectedws.Client
+	mu           sync.Mutex
+	wake         chan<- struct{}
+	dirty        atomic.Bool
+	seq          atomic.Uint64
+	revision     uint64
+	wanted       map[string]bool
+	requests     map[string]bool
+	snapshot     engine.Snapshot[Sample]
+	session      *connectedws.Session
+	observed     *atomic.Bool
 }
 
 // Initialize the OBS Studio service driver and its wake signaling
 func NewDriver(wake chan<- struct{}) *Driver { return &Driver{wake: wake, wanted: map[string]bool{}} }
 
 // Choose the shared OBS Studio resource identity for these settings
-func (*Driver) Key(map[string]any) string { return "connection" }
+func (d *Driver) Key(s map[string]any) string {
+	return c.VaultKey(s, Definition.Slug) + d.resourceKey(s)
+}
+func (d *Driver) resourceKey(s map[string]any) string { return "connection" }
 
 // Consume the OBS Studio dirty flag after a service notification
 func (d *Driver) Changed() bool { return d.dirty.Swap(false) }
@@ -298,6 +302,9 @@ func selection(s map[string]any, key string) (string, error) {
 // (opcodes 8/9) need per-entry handling and do not provide an atomic snapshot
 // https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.md#requestbatch-opcode-8
 func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, d.readService)
+}
+func (d *Driver) readService(ctx context.Context, s map[string]any) (any, error) {
 	session, err := d.connection(ctx, s)
 	if err != nil {
 		return nil, err
@@ -430,6 +437,11 @@ func (d *Driver) replay(ctx context.Context, session *connectedws.Session) (bool
 
 // Execute the selected OBS Studio command and report its outcome
 func (d *Driver) Command(ctx context.Context, a string, s map[string]any, ticks int) (c.Outcome, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, func(ctx context.Context, s map[string]any) (c.Outcome, error) {
+		return d.commandService(ctx, a, s, ticks)
+	})
+}
+func (d *Driver) commandService(ctx context.Context, a string, s map[string]any, ticks int) (c.Outcome, error) {
 	if a == "status" || a == "volume-display" {
 		d.notify()
 		return c.Outcome{Message: "Refreshing"}, nil
@@ -511,6 +523,9 @@ func (d *Driver) Command(ctx context.Context, a string, s map[string]any, ticks 
 
 // List OBS Studio choices for the property inspector
 func (d *Driver) Discover(ctx context.Context, s map[string]any) ([]c.Choice, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, d.discoverService)
+}
+func (d *Driver) discoverService(ctx context.Context, s map[string]any) ([]c.Choice, error) {
 	session, err := d.connection(ctx, s)
 	if err != nil {
 		return nil, err

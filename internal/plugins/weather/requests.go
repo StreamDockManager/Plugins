@@ -11,6 +11,7 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"time"
 
@@ -19,6 +20,7 @@ import (
 )
 
 type weatherRequests struct {
+	mu       sync.Mutex
 	group    requests.Group[map[string]any]
 	restored map[string]*forecastHTTPError
 	closed   atomic.Bool
@@ -32,8 +34,10 @@ func (r *weatherRequests) get(ctx context.Context, endpoint string, client *http
 	if r.closed.Load() {
 		return nil, context.Canceled
 	}
-	// Restored forecast metadata is immutable after initialization and bounded by the product cache
-	if failure := r.restored[endpoint]; failure != nil && time.Now().Before(failure.RetryAt) {
+	r.mu.Lock()
+	failure := r.restored[endpoint]
+	r.mu.Unlock()
+	if failure != nil && time.Now().Before(failure.RetryAt) {
 		return nil, failure
 	}
 	return r.group.Get(ctx, endpoint, func(work context.Context) (map[string]any, error) { return fetchWeather(work, endpoint, client) }, func(err error) time.Duration {
@@ -49,15 +53,19 @@ func (r *weatherRequests) close() { r.closed.Store(true); r.group.Close() }
 
 // Fetch and decode a bounded forecast response
 func fetchWeather(ctx context.Context, endpoint string, client *http.Client) (map[string]any, error) {
+	if client == nil {
+		client = &http.Client{Timeout: 8 * time.Second}
+	}
+	return readForecast(ctx, endpoint, httptrack.TrackHTTPClient(client))
+}
+
+func readForecast(ctx context.Context, endpoint string, client *http.Client) (map[string]any, error) {
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, endpoint, nil)
 	if err != nil {
 		return nil, fmt.Errorf("invalid weather request")
 	}
 	req.Header.Set("User-Agent", "stream-dock-manager-plugins/Weather")
-	if client == nil {
-		client = &http.Client{Timeout: 8 * time.Second}
-	}
-	response, err := httptrack.TrackHTTPClient(client).Do(req)
+	response, err := client.Do(req)
 	if err != nil {
 		if endpointError, ok := errors.AsType[*url.Error](err); ok {
 			err = endpointError.Err

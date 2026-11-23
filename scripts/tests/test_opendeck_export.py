@@ -18,14 +18,14 @@ import unified_packages as unified
 class OpenDeckExportTests(unittest.TestCase):
     # Create isolated package inputs for the exporter regression
     def fixture(self, root):
-        record = {'id': 'test.counter', 'version': '0.1.0', 'capabilities': {'required_capabilities': ['private-storage']}}
+        record = {'id': 'test.counter', 'version': '0.1.0', 'required_capabilities': [], 'capabilities': {'theme_protocol': 1}}
         inventories = {}
         for osname, platform, arch in [('windows', 'windows', 'amd64'), ('linux', 'linux', 'amd64'), ('macos', 'mac', 'arm64')]:
             entry = 'bin/counter' + ('.exe' if osname == 'windows' else '')
             manifest = {'UUID': record['id'], 'Version': record['version'], 'CodePath': entry,
                         'OS': [{'Platform': platform}], 'Icon': 'icon.png',
                         'StreamDockManager': {'Capabilities': record['capabilities']},
-                        'Actions': [{'UUID': 'test.counter.action', 'States': [{'Image': 'icon.png'}]}]}
+                        'Actions': [{'UUID': 'test.counter.action', 'Controllers': ['Keypad', 'Knob'], 'States': [{'Image': 'icon.png'}]}]}
             files = {'manifest.json': json.dumps(manifest).encode(), entry: osname.encode(), 'icon.png': b'original PNG', 'icon.svg': b'different SVG'}
             folder = 'darwin' if osname == 'macos' else osname
             relative = f'packages/{folder}/{arch}/test.counter.zip'
@@ -50,6 +50,8 @@ class OpenDeckExportTests(unittest.TestCase):
             self.assertEqual(manifest['StreamDockManager']['Capabilities'], record['capabilities'])
             self.assertEqual(files[manifest['Icon'] + '.png'], b'original PNG')
             self.assertEqual(manifest['Actions'][0]['States'][0]['Image'], manifest['Icon'])
+            self.assertEqual(manifest['Actions'][0]['Controllers'], ['Keypad', 'Encoder'])
+            self.assertEqual(manifest['Actions'][0]['Encoder'], {})
             path = unified.path_for(root, record['id'], 'opendeck')
             self.assertNotEqual(path, unified.path_for(root, record['id']))
             unified.write_archive(path, record['id'], files, executables, 'opendeck')
@@ -61,6 +63,30 @@ class OpenDeckExportTests(unittest.TestCase):
             inventories['linux']['packages'] = []
             with self.assertRaisesRegex(ValueError, 'all three'):
                 unified.assemble(root, record, inventories, 'opendeck')
+
+    def test_manager_only_package_is_rejected_before_opening_inputs(self):
+        for capability in ('telemetry-v1', 'desktop-input-v1'):
+            record = {'required_capabilities': [capability]}
+            self.assertEqual(catalog.vendor_incompatibility(record)['status'], 'incompatible')
+            with self.assertRaisesRegex(ValueError, 'required Manager capabilities'):
+                unified.assemble(None, record, {}, 'opendeck')
+        self.assertIsNone(catalog.vendor_incompatibility({'required_capabilities': []}))
+
+    def test_retire_only_previously_generated_opendeck_zip(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root, identity = Path(folder).resolve(), 'test.manager-only'
+            path = unified.path_for(root, identity, 'opendeck')
+            path.parent.mkdir(parents=True)
+            path.write_bytes(b'previous export')
+            package = {'id': identity, 'path': path.relative_to(root).as_posix(), 'sha256': catalog.digest(path)}
+            unified.remember_package(path, 'fixture', package)
+            path.write_bytes(b'different file')
+            unified.retire_opendeck_bundle(root, identity)
+            self.assertTrue(path.is_file())
+            path.write_bytes(b'previous export')
+            unified.retire_opendeck_bundle(root, identity)
+            self.assertFalse(path.exists())
+            self.assertFalse(path.with_suffix('.cache.json').exists())
 
     # Verify both hosts write level six deflate with permissions
     def test_both_hosts_write_level_six_deflate_with_permissions(self):

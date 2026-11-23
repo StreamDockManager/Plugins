@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"github.com/StreamDockManager/Plugins/internal/engine"
 	"os"
+	"reflect"
 	"testing"
 )
 
@@ -34,7 +35,7 @@ func TestSettingsRegistryCoversEveryOfficialPlugin(t *testing.T) {
 
 // TestCorePluginSettingsRemainFreshPerRequest verifies core plugin settings remain fresh per request
 func TestCorePluginSettingsRemainFreshPerRequest(t *testing.T) {
-	for _, slug := range []string{"weather", "steam-library", "internet-speed-test"} {
+	for _, slug := range []string{"home-assistant", "steam-library", "internet-speed-test"} {
 		first := PluginFields(slug)
 		key := first[0].Key
 		first[0].Key = "edited fixture"
@@ -58,17 +59,17 @@ func TestSettingsModulesMatchCharacterizedOutput(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// Compare the JSON contract independently of source-fixture indentation
-	var expectedJSON, actualJSON bytes.Buffer
-	if err := json.Compact(&expectedJSON, expected); err != nil {
+	var want, got map[string]any
+	if err := json.Unmarshal(expected, &want); err != nil {
 		t.Fatal(err)
 	}
-	if err := json.Compact(&actualJSON, actual); err != nil {
+	if err := json.Unmarshal(actual, &got); err != nil {
 		t.Fatal(err)
 	}
-	if !bytes.Equal(expectedJSON.Bytes(), actualJSON.Bytes()) {
+	if !reflect.DeepEqual(got, want) {
 		t.Fatal("settings module contract changed")
 	}
+
 }
 
 // TestAllSettingsFactoriesOwnNestedMetadata verifies all settings factories own nested metadata

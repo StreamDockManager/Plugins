@@ -78,40 +78,46 @@
                     display.
                 </p>
                 <p>
-                    Search once, select a result, then apply and save the coordinates. The free
-                    public Nominatim service is used by default. Searches are sent to the selected
-                    service; do not enter personal or confidential information.
+                    Use Find a location in Manager to search an address or use your current
+                    position. You can also enter coordinates manually.
                 </p>
-                <label>
-                    Search by
-                    <select id="location-mode">
-                        <option value="postal">ZIP / postal code</option>
-                        <option value="address">Address or place</option>
-                    </select>
-                </label>
-                <label>
-                    Country
-                    <select id="location-country"></select>
-                </label>
-                <label>
-                    <span id="location-query-label">ZIP / postal code</span>
-                    <input id="location-query" type="text" maxlength="512" autocomplete="off" />
-                </label>
-                <div class="buttons">
-                    <button id="location-submit" type="button">Search location</button>
-                    <button id="location-cancel" type="button" hidden>Cancel search</button>
-                </div>
                 <p id="location-status" role="status" hidden></p>
-                <ul id="location-results" aria-label="Matching locations"></ul>
                 <p id="location-selection" hidden></p>
                 <p id="location-attribution" hidden>
                     <a
+                        data-source="nominatim"
                         href="https://www.openstreetmap.org/copyright"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
                         © OpenStreetMap contributors · ODbL
                     </a>
+                    <span data-source="open-meteo" hidden>
+                        <a
+                            href="https://open-meteo.com/en/docs/geocoding-api"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            Open-Meteo geocoding
+                        </a>
+                        ·
+                        <a
+                            href="https://www.geonames.org/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            GeoNames
+                        </a>
+                        (
+                        <a
+                            href="https://creativecommons.org/licenses/by/4.0/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            CC BY 4.0
+                        </a>
+                        )
+                    </span>
                 </p>
             </section>
             <section id="hiscores-help" hidden aria-label="Hiscores setup">

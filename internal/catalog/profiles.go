@@ -113,6 +113,10 @@ func SuggestedProfiles(d Definition) (map[string][]byte, error) {
 			}
 			newPage()
 			for _, action := range compatible {
+				// Mute is a volume dial companion, not a new standalone placement.
+				if d.Slug == "spotify" && action == "mute-toggle" {
+					continue
+				}
 				capability := descriptor.Actions[owner+"."+action]
 				preference := []string{"button", "touch", "encoder"}
 				if capability.AdditiveDial {
@@ -157,7 +161,11 @@ func SuggestedProfiles(d Definition) (map[string][]byte, error) {
 				if slices.ContainsFunc(model.Controls, func(c profileControl) bool { return c.ID == control && c.Kind == "encoder" }) {
 					// Manager preserves signed rotation for each plugin lane, so the
 					// same settings retain left/right direction and press behavior
-					binding = map[string]any{"kind": "dial", "actions": []any{leaf(), leaf(), leaf()}}
+					press := leaf()
+					if d.Slug == "spotify" && action == "volume" {
+						press = map[string]any{"kind": "plugin", "plugin_id": owner, "action_id": owner + ".mute-toggle", "settings": actionDefaults(d, "mute-toggle")}
+					}
+					binding = map[string]any{"kind": "dial", "actions": []any{leaf(), leaf(), press}}
 				}
 				pages[len(pages)-1].Bindings[control] = map[string]any{"title": name, "color": "#00000000", "action": binding}
 			}
@@ -188,7 +196,7 @@ func SuggestedProfiles(d Definition) (map[string][]byte, error) {
 		// Suggested layouts carry the complete current workspace envelope, even
 		// when they have no macros, rules, revisions, or history to import
 		document := map[string]any{
-			"schema_version": 1, "minimum_manager": "0.1.0",
+			"schema_version": 1, "minimum_manager": d.MinimumManager,
 			"configuration_revision": 0, "saved_macros": []any{}, "rules": []any{},
 			"history":              map[string]any{"undo": []any{}, "redo": []any{}},
 			"active_profile":       profileID,

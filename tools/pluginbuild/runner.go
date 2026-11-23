@@ -18,10 +18,10 @@ import (
 // buildConfig is a per-invocation snapshot. Neither parsing nor plan validation
 // changes process environment, working directory or package selection
 type buildConfig struct {
-	root, action, selected, targetOS, targetArch, planFile string
-	macosIntel, force                                      bool
-	jobs                                                   int
-	environment                                            []string
+	root, action, selected, targetOS, targetArch, planFile, assetsOutput string
+	macosIntel, force                                                    bool
+	jobs                                                                 int
+	environment                                                          []string
 }
 
 type lockedBuildWriter struct {
@@ -82,6 +82,9 @@ func parseConfig(args []string, root string, environment []string, stderr io.Wri
 	config.action = args[0]
 	flags := flag.NewFlagSet(config.action, flag.ContinueOnError)
 	flags.SetOutput(stderr)
+	if config.action == "assets" {
+		flags.StringVar(&config.assetsOutput, "output", "", "fresh inspector staging directory")
+	}
 	flags.StringVar(&config.planFile, "plan", "", "immutable release plan (build selected plugins only)")
 	flags.StringVar(&config.selected, "plugin", "", "plugin slug")
 	flags.BoolVar(&config.force, "force", false, "rebuild and repackage without cache")

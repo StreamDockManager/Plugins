@@ -1,17 +1,21 @@
 package catalog
 
-import "maps"
+import (
+	randomizerdice "github.com/StreamDockManager/Plugins/internal/plugins/randomizer-dice"
+	"maps"
+)
 
 // Each package has original geometry. These are intentionally independent of
 // the first action so catalogue artwork remains stable as actions are added
 var packageGlyphs = map[string]string{
+	"sdm-vault-example":   `<rect x="2" y="3" width="20" height="18" rx="3"/><circle cx="13" cy="12" r="4"/><path d="M13 8v2m4 2h-2m-2 4v-2m-4-2h2M5 7v3m0 4v3"/>`,
 	"random-meme":         `<rect x="2" y="2" width="20" height="20" rx="4"/><path d="M6 8h4M14 8h4M6 14q6 8 12 0M4 4l2 2M18 18l2 2"/>`,
 	"counter-tally":       `<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M7 9v6M4 12h6M14 9h5M14 15h5"/>`,
 	"timers-pomodoro":     `<path d="M8 3h8M12 3v3"/><circle cx="12" cy="14" r="8"/><path d="M12 9v5l4 2M2 3l3 3M22 3l-3 3"/>`,
 	"system-monitor":      `<rect x="2" y="3" width="20" height="16" rx="2"/><path d="M4 13h4l2-6 4 10 2-4h4M8 22h8M12 19v3"/>`,
 	"screenshot-tools":    `<path d="M2 7h5l2-4h6l2 4h5v14H2z"/><circle cx="12" cy="13" r="4"/><path d="M3 2v2M1 3h4"/>`,
 	"weather":             `<circle cx="7" cy="7" r="4"/><path d="M7 1v1M1 7h1M3 3l1 1M11 11a5 5 0 0 1 9 3 4 4 0 0 1 0 8H9a4 4 0 0 1 2-8"/>`,
-	"randomizer-dice":     `<path d="m12 1 10 6v10l-10 6-10-6V7zM2 7l10 6 10-6M12 13v10M8 7h.1M16 17h.1M6 16h.1"/>`,
+	"randomizer-dice":     randomizerdice.PackageGlyph(),
 	"battery-power":       `<path d="M7 2h10v3h3v17H4V5h3zM13 7l-5 7h5l-2 5 6-8h-5z"/>`,
 	"network-vpn":         `<path d="m12 2 9 4v6c0 5-5 8-9 10-4-2-9-5-9-10V6zM7 10a7 7 0 0 1 10 0M9 13a4 4 0 0 1 6 0M12 16h.1"/>`,
 	"spotify":             `<circle cx="12" cy="12" r="10"/><path d="M5 9q7-4 14 0M6 13q6-3 12 0M8 17q4-2 8 0"/>`,

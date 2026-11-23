@@ -8,5 +8,4 @@ type Driver = c.Driver
 type Options = c.Options
 type Runtime = c.Runtime
 
-var Factory = c.Factory
 var SingleResource = c.SingleResource

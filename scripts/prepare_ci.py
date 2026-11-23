@@ -14,7 +14,7 @@ if __name__ == '__main__':
         ['python3', 'scripts/sdk_pin.py', 'check'],
         ['go', 'mod', 'download'], ['go', 'mod', 'verify'],
         ['go', 'run', 'golang.org/x/vuln/cmd/govulncheck@latest', './...'],
-        ['go', 'vet', './...'], ['go', 'test', './...'],
+        ['go', 'vet', './...'], ['go', 'test', '-vet=off', './...'],
         ['python3', '-m', 'unittest', 'discover', '-s', 'scripts/tests', '-p', 'test_*.py'],
         ['python3', 'scripts/release.py', 'version'],
     ]:

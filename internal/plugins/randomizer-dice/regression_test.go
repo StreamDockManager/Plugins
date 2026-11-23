@@ -7,6 +7,7 @@ import (
 	"github.com/StreamDockManager/Plugins/internal/testhost"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -14,6 +15,22 @@ import (
 	"github.com/StreamDockManager/Plugin-SDK/Go"
 	"github.com/StreamDockManager/Plugins/internal/engine"
 )
+
+// Custom displays without artwork must keep their text on both keypad and touch tiles.
+func TestCustomDisplaysWithoutArtworkRetainFallback(t *testing.T) {
+	plugin := New(filepath.Join(t.TempDir(), "state.json"))
+	for _, action := range []string{"heads-or-tails", "magic-8-ball"} {
+		for _, surface := range []*sdk.Surface{{Width: 64, Height: 64}, {Width: 176, Height: 112}} {
+			plugin.Bindings["fixture"] = binding{Action: action, Surface: surface}
+			status := displayStatus{Text: "Fixture result"}
+			reference := engine.CoordinatedView(plugin.Engine, "fixture", status)
+			got := plugin.displayView("fixture", status)
+			if got.Title == "" || !reflect.DeepEqual(got, reference) {
+				t.Errorf("%s at %dx%d lost the fallback display", action, surface.Width, surface.Height)
+			}
+		}
+	}
+}
 
 // Verify official displays only send changed fields
 func TestOfficialDisplaysOnlySendChangedFields(t *testing.T) {

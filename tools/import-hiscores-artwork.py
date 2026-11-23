@@ -12,7 +12,7 @@ OUTPUT = ROOT / 'internal/catalog/artwork/hiscores'
 
 def read(url):
     request = urllib.request.Request(url, headers={
-        'User-Agent': 'stream-dock-manager-plugins/0.1.0 (skill artwork maintenance)',
+        'User-Agent': 'stream-dock-manager-plugins/0.1.1 (skill artwork maintenance)',
     })
     with urllib.request.urlopen(request, timeout=40) as response:
         return response.read(8 * 1024 * 1024)

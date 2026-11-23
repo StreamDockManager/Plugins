@@ -26,7 +26,7 @@ func TestMetadataCanonicalBytes(t *testing.T) {
 		t.Fatal(err)
 	}
 	digest := fmt.Sprintf("%x", sha256.Sum256(data))
-	const expected = "c7119ea8ecdebe8a6336fc9a10071542327326a01a657ce5fb65b503d6a3a9f6"
+	expected := "022db55abe675a19e2608a05c7940189c104029d8abc64db026ef9b1fdda5b58"
 	if digest != expected {
 		t.Fatalf("canonical metadata changed: %s", digest)
 	}

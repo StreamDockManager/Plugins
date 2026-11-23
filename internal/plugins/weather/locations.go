@@ -9,10 +9,21 @@ import (
 	sdk "github.com/StreamDockManager/Plugin-SDK/Go"
 )
 
+func enabledVault(settings map[string]any) bool {
+	selected, _ := settings["use_vault_location"].(bool)
+	return selected
+}
+
 // A reference remains portable through its saved coordinate snapshot. Globals
 // are resolved at read time; they never overwrite unrelated action preferences
 func resolveLocation(settings, globals map[string]any) map[string]any {
 	result := cloneSettings(settings)
+	if enabledVault(settings) {
+		delete(result, "latitude")
+		delete(result, "longitude")
+		delete(result, "location")
+		return result
+	}
 	id, _ := result["location_id"].(string)
 	if id == "" {
 		return result
@@ -37,6 +48,15 @@ func resolveLocation(settings, globals map[string]any) map[string]any {
 
 // Process weather metadata and lifecycle updates before common dispatch
 func (e *Plugin) beforeEvent(ctx context.Context, c *sdk.Client, ev sdk.Event) (bool, error) {
+	e.vaultClient = c
+	if ev.Event == "streamDockManagerPermissionsChanged" {
+		for id, b := range e.Bindings {
+			if enabledVault(b.Settings) {
+				e.InvalidateProbe(id)
+				delete(e.Last, id)
+			}
+		}
+	}
 	e.loadForecastCache(ctx, c)
 	if ev.Event != "didReceiveGlobalSettings" {
 		return false, nil

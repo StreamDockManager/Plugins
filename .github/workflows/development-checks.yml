@@ -1,0 +1,101 @@
+name: Development plugin checks
+on:
+    workflow_dispatch:
+        inputs:
+            runner_service:
+                description: Runner service
+                type: choice
+                options: [github, blacksmith]
+                default: github
+            sdk_commit:
+                description: Exact development SDK commit to test against
+                type: string
+                required: true
+            targets:
+                description: Native operating system to check
+                type: choice
+                options: [all, linux, macos, windows]
+                default: all
+            profile:
+                description: Check depth
+                type: choice
+                options: [quick, full]
+                default: quick
+permissions:
+    contents: read
+jobs:
+    checks:
+        if: github.event_name == 'workflow_dispatch' && github.repository_id == '1456097289' && github.ref == 'refs/heads/main'
+        name: Development checks (${{ matrix.os }})
+        strategy:
+            fail-fast: false
+            matrix:
+                os: ${{ fromJSON(inputs.targets == 'linux' && '["linux"]' || inputs.targets == 'macos' && '["darwin"]' || inputs.targets == 'windows' && '["windows"]' || '["linux","darwin","windows"]') }}
+        runs-on: ${{ fromJSON(inputs.runner_service == 'blacksmith' && (matrix.os == 'linux' && '"blacksmith-4vcpu-ubuntu-2404"' || matrix.os == 'darwin' && '"blacksmith-6vcpu-macos-15"' || '"blacksmith-4vcpu-windows-2025"') || matrix.os == 'linux' && (vars.LINUX_RUNNER_LABELS || '"ubuntu-24.04"') || matrix.os == 'darwin' && (vars.MACOS_ARM64_RUNNER_LABELS || '"macos-15"') || (vars.WINDOWS_RUNNER_LABELS || '"windows-2022"')) }}
+        timeout-minutes: 55
+        env:
+            SDK_COMMIT: ${{ inputs.sdk_commit }}
+            EXPECTED_OS: ${{ matrix.os }}
+            EXPECTED_ARCH: ${{ matrix.os == 'darwin' && 'arm64' || 'amd64' }}
+            GOENV: 'off'
+            GOWORK: 'off'
+            PLUGIN_MACOS_INTEL: '0'
+        steps:
+            - name: Require an exact SDK revision and read-only access
+              env:
+                  SDK_READ_TOKEN: ${{ secrets.SDK_DEV_READ_TOKEN }}
+              shell: bash
+              run: |
+                  set -euo pipefail
+                  [[ "$SDK_COMMIT" =~ ^[0-9a-f]{40}$ ]]
+                  if [[ -z "$SDK_READ_TOKEN" ]]; then
+                      echo '::error::Set SDK_DEV_READ_TOKEN to a read-only Contents credential for the development SDK.'
+                      exit 1
+                  fi
+            - uses: actions/checkout@v7.0.1
+              with:
+                  ref: ${{ github.sha }}
+                  persist-credentials: false
+            - uses: actions/checkout@v7.0.1
+              with:
+                  repository: ${{ github.repository_owner }}/Plugin-SDK-dev
+                  ref: ${{ inputs.sdk_commit }}
+                  token: ${{ secrets.SDK_DEV_READ_TOKEN }}
+                  path: .development-sdk
+                  persist-credentials: false
+            - uses: actions/setup-go@v7.1.0
+              with: { go-version: '1.27.4', cache: false }
+            - uses: actions/setup-python@v7.1.0
+              with: { python-version: '3.12' }
+            - name: Isolate Go cache directories
+              shell: bash
+              run: |
+                  printf 'GOCACHE=%s/plugins-dev-go-build\nGOMODCACHE=%s/plugins-dev-go-mod\n' \
+                    "$RUNNER_TEMP" "$RUNNER_TEMP" >> "$GITHUB_ENV"
+            - name: Use exact SDK sources in a temporary Go workspace
+              run: python scripts/development_go_workspace.py
+            # Cache only isolated Go data; the private checkout and temporary workspace are never included
+            - uses: actions/cache@v6.1.0
+              with:
+                  path: |
+                      ${{ env.GOCACHE }}
+                      ${{ env.GOMODCACHE }}
+                  key: plugins-dev-go-v1-${{ matrix.os }}-${{ env.EXPECTED_ARCH }}-1.27.4-${{ hashFiles('go.sum', '.development-sdk/Go/go.sum') }}-${{ inputs.sdk_commit }}
+            - name: Check and test plugin source
+              shell: bash
+              run: |
+                  set -euo pipefail
+                  test -z "$(git ls-files -z '*.go' | xargs -0 gofmt -l)"
+                  go run golang.org/x/vuln/cmd/govulncheck@latest ./...
+                  go vet ./...
+                  go test -vet=off ./...
+                  python -m unittest discover -s scripts/tests -p 'test_*.py'
+            - name: Build and verify packages for this native host
+              if: inputs.profile == 'full'
+              shell: bash
+              run: |
+                  set -euo pipefail
+                  go run ./tools/pluginbuild package --os "$EXPECTED_OS" --arch "$EXPECTED_ARCH"
+                  python scripts/validate_packages.py
+            - name: Verify the public dependency pin is unchanged
+              run: git diff --exit-code -- go.mod go.sum

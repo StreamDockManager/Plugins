@@ -17,6 +17,8 @@ import (
 	"net"
 	"net/url"
 	"os"
+	"reflect"
+	"slices"
 	"strconv"
 	"strings"
 	"sync"
@@ -25,7 +27,7 @@ import (
 )
 
 var Icons = map[string]string{"publish": "upload", "text": "list", "status": "network"}
-var Definition, visuals = c.Define("mqtt", "MQTT", Icons, "publish", "text", "status")
+var Definition, visuals = c.DefineVault("mqtt", "MQTT", Icons, "publish", "text", "status")
 
 // Declare the MQTT global settings fields
 func PluginFields() []settings.Field {
@@ -68,6 +70,8 @@ type Sample struct {
 	Messages  map[string]Message
 }
 type Driver struct {
+	vaultSession  c.VaultSession
+	paths         map[string][]string
 	mu            sync.Mutex
 	client        paho.Client
 	subscriptions map[string]byte
@@ -78,6 +82,8 @@ type Driver struct {
 	generation    uint64
 	clientID      string
 	desired       map[string]byte
+	demandByScope map[string]map[string]byte
+	activeScope   string
 	demandKnown   bool
 	receiving     map[string]byte
 	budget        *messageBudget
@@ -92,7 +98,10 @@ func NewDriver(wake chan<- struct{}) *Driver {
 }
 
 // Choose the shared MQTT resource identity for these settings
-func (*Driver) Key(s map[string]any) string {
+func (d *Driver) Key(s map[string]any) string {
+	return c.VaultKey(s, Definition.Slug) + d.resourceKey(s)
+}
+func (d *Driver) resourceKey(s map[string]any) string {
 	return "topic:" + c.String(s, "topic", "") + ":" + c.String(s, "qos", "0")
 }
 
@@ -101,7 +110,8 @@ func (d *Driver) Changed() bool { return d.dirty.Swap(false) }
 
 // Retain MQTT resources required by the current bindings
 func (d *Driver) Demand(bindings []map[string]any) {
-	desired := map[string]byte{}
+	byScope := map[string]map[string]byte{}
+	paths := map[string][]string{}
 	for _, s := range bindings {
 		if c.String(s, "_action", "") != "text" {
 			continue
@@ -110,9 +120,18 @@ func (d *Driver) Demand(bindings []map[string]any) {
 		if topic == "" {
 			continue
 		}
+		if path := c.String(s, "json_path", ""); path != "" && len(path) <= 1024 && len(paths[topic]) < 64 && !slices.Contains(paths[topic], path) {
+			paths[topic] = append(paths[topic], path)
+		}
 		q, err := qos(s)
 		if err != nil {
 			q = 255
+		}
+		scope := c.VaultKey(s, Definition.Slug)
+		desired := byScope[scope]
+		if desired == nil {
+			desired = map[string]byte{}
+			byScope[scope] = desired
 		}
 		prior, ok := desired[topic]
 		if !ok || q > prior {
@@ -120,8 +139,10 @@ func (d *Driver) Demand(bindings []map[string]any) {
 		}
 	}
 	d.mu.Lock()
-	changed := !d.demandKnown || !maps.Equal(desired, d.desired)
-	d.desired = desired
+	changed := !d.demandKnown || !reflect.DeepEqual(byScope, d.demandByScope)
+	d.demandByScope = byScope
+	d.paths = paths
+	d.desired = byScope[d.activeScope]
 	d.demandKnown = true
 	d.pruneMessages()
 	d.mu.Unlock()
@@ -272,11 +293,16 @@ func qos(s map[string]any) (byte, error) {
 
 // Read the MQTT resource selected by the binding settings
 func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, d.readService)
+}
+func (d *Driver) readService(ctx context.Context, s map[string]any) (any, error) {
 	cl, err := d.connection(ctx, s)
 	if err != nil {
 		return nil, err
 	}
 	d.mu.Lock()
+	d.activeScope = c.VaultKey(s, Definition.Slug)
+	d.desired = d.demandByScope[d.activeScope]
 	desired, known := maps.Clone(d.desired), d.demandKnown
 	subscriptions := maps.Clone(d.subscriptions)
 	d.mu.Unlock()
@@ -334,7 +360,12 @@ func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
 }
 
 // Execute the selected MQTT command and report its outcome
-func (d *Driver) Command(ctx context.Context, a string, s map[string]any, _ int) (c.Outcome, error) {
+func (d *Driver) Command(ctx context.Context, a string, s map[string]any, ticks int) (c.Outcome, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, func(ctx context.Context, s map[string]any) (c.Outcome, error) {
+		return d.commandService(ctx, a, s, ticks)
+	})
+}
+func (d *Driver) commandService(ctx context.Context, a string, s map[string]any, _ int) (c.Outcome, error) {
 	if a != "publish" {
 		return c.Outcome{Message: "MQTT refresh requested"}, nil
 	}
@@ -371,12 +402,15 @@ func (d *Driver) Command(ctx context.Context, a string, s map[string]any, _ int)
 
 // List MQTT choices for the property inspector
 func (d *Driver) Discover(ctx context.Context, s map[string]any) ([]c.Choice, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, d.discoverService)
+}
+func (d *Driver) discoverService(ctx context.Context, s map[string]any) ([]c.Choice, error) {
 	_, err := d.connection(ctx, s)
 	return nil, err
 }
 
 // Format a MQTT resource sample for its selected action
-func (*Driver) Display(value any, a string, s map[string]any) string {
+func (d *Driver) Display(value any, a string, s map[string]any) string {
 	v := value.(Sample)
 	if !v.Connected {
 		return "MQTT disconnected"
@@ -401,7 +435,10 @@ func (*Driver) Display(value any, a string, s map[string]any) string {
 	}
 	text := message.Text
 	if path := c.String(s, "json_path", ""); path != "" {
-		extracted := message.extracted(path)
+		d.mu.Lock()
+		paths := d.paths
+		d.mu.Unlock()
+		extracted := message.extractPaths(path, paths)
 		text = extracted.text
 		if !extracted.valid {
 			return text

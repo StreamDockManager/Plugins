@@ -18,6 +18,7 @@ import (
 	retroachievements "github.com/StreamDockManager/Plugins/internal/plugins/retroachievements"
 	runescapehiscores "github.com/StreamDockManager/Plugins/internal/plugins/runescape-hiscores"
 	screenshottools "github.com/StreamDockManager/Plugins/internal/plugins/screenshot-tools"
+	example "github.com/StreamDockManager/Plugins/internal/plugins/sdm-vault-example"
 	servicemonitor "github.com/StreamDockManager/Plugins/internal/plugins/service-monitor"
 	spotify "github.com/StreamDockManager/Plugins/internal/plugins/spotify"
 	steamlibrary "github.com/StreamDockManager/Plugins/internal/plugins/steam-library"
@@ -53,4 +54,5 @@ var actionVisuals = map[string]func(string) engine.Visual{
 	"timers-pomodoro":     timerspomodoro.VisualFor,
 	"spotify":             spotify.VisualFor,
 	"weather":             weather.VisualFor,
+	example.Slug:          example.VisualFor,
 }

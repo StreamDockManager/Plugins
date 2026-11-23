@@ -8,10 +8,20 @@ on:
                 description: 'Exact 40-character commit in StreamDockManager/Plugins'
                 required: true
                 type: string
+            targets:
+                description: Native operating system to validate
+                type: choice
+                options: [all, linux, macos, windows]
+                default: all
+            profile:
+                description: Check depth
+                type: choice
+                options: [quick, full]
+                default: quick
 permissions:
     contents: read
 concurrency:
-    group: plugins-native-validation-${{ github.ref }}-${{ inputs.plugins_commit }}
+    group: plugins-native-validation-${{ github.ref }}-${{ inputs.plugins_commit }}-${{ inputs.targets || 'all' }}-${{ inputs.profile || 'full' }}
     cancel-in-progress: true
 jobs:
     native:
@@ -21,20 +31,8 @@ jobs:
             fail-fast: false
             max-parallel: 3
             matrix:
-                include:
-                    - os: linux
-                      arch: amd64
-                      runner_variable: LINUX_RUNNER_LABELS
-                      default_labels: '["self-hosted","Linux","X64"]'
-                    - os: windows
-                      arch: amd64
-                      runner_variable: WINDOWS_RUNNER_LABELS
-                      default_labels: '["self-hosted","Windows","X64"]'
-                    - os: darwin
-                      arch: arm64
-                      runner_variable: MACOS_ARM64_RUNNER_LABELS
-                      default_labels: '["self-hosted","macOS","ARM64"]'
-        runs-on: ${{ fromJSON(vars[matrix.runner_variable] || matrix.default_labels) }}
+                os: ${{ fromJSON(inputs.targets == 'linux' && '["linux"]' || inputs.targets == 'macos' && '["darwin"]' || inputs.targets == 'windows' && '["windows"]' || '["linux","darwin","windows"]') }}
+        runs-on: ${{ fromJSON(matrix.os == 'linux' && (vars.LINUX_RUNNER_LABELS || '["self-hosted","Linux","X64"]') || matrix.os == 'darwin' && (vars.MACOS_ARM64_RUNNER_LABELS || '["self-hosted","macOS","ARM64"]') || (vars.WINDOWS_RUNNER_LABELS || '["self-hosted","Windows","X64"]')) }}
         timeout-minutes: 90
         defaults:
             run:
@@ -44,11 +42,13 @@ jobs:
             # Let the selected Go executable resolve its own toolchain root
             GOROOT: ''
             GOENV: 'off'
+            GOWORK: 'off'
             PLUGINS_COMMIT: ${{ inputs.plugins_commit || github.sha }}
             EXPECTED_OS: ${{ matrix.os }}
-            EXPECTED_ARCH: ${{ matrix.arch }}
+            EXPECTED_ARCH: ${{ matrix.os == 'darwin' && 'arm64' || 'amd64' }}
             EVIDENCE_DIR: ../validation-evidence/${{ github.run_id }}-${{ github.run_attempt }}/${{ matrix.os }}
             GOMAXPROCS: '4'
+            CHECK_PROFILE: ${{ github.event_name == 'push' && 'full' || inputs.profile }}
         steps:
             - name: Use Git for Windows Bash
               if: runner.os == 'Windows'
@@ -73,7 +73,7 @@ jobs:
                   ref: ${{ inputs.plugins_commit || github.sha }}
                   path: plugins
                   persist-credentials: false
-            - uses: actions/setup-go@v7.0.0
+            - uses: actions/setup-go@v7.1.0
               with:
                   go-version: '1.27.4'
                   cache-dependency-path: plugins/go.sum
@@ -107,7 +107,6 @@ jobs:
             - uses: actions/setup-node@v7.1.0
               with:
                   node-version: '26'
-            - run: npm install --global npm@12.2.2
             - name: Configure SDK module access
               run: python scripts/go_modules.py --github-env "$GITHUB_ENV"
             - name: Bind source and actual native host
@@ -141,6 +140,7 @@ jobs:
                                'linux_release': platform.freedesktop_os_release() if sys.platform == 'linux' else None},
                       'go': go, 'compiler': compiler, 'node': command('node', '--version'),
                       'source_ci_sha256': hashlib.sha256(pathlib.Path('.github/workflows/ci.yml').read_bytes()).hexdigest(),
+                      'check_profile': os.environ['CHECK_PROFILE'],
                       'scope': 'Native validation for this recorded host; cross-compilation does not qualify other hosts. No release, tag, readiness or Pages operation.'
                   }
                   (out / 'provenance.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
@@ -155,7 +155,7 @@ jobs:
                   PY
             - name: Find an existing native Windows race compiler
               id: windows_compiler
-              if: runner.os == 'Windows'
+              if: runner.os == 'Windows' && env.CHECK_PROFILE == 'full'
               # Compiler requirements: https://go.dev/doc/articles/race_detector#Requirements
               run: |
                   python - <<'PY'
@@ -189,7 +189,7 @@ jobs:
                   PY
             - name: Provision isolated pinned MSYS2 compiler when needed
               id: msys2
-              if: runner.os == 'Windows' && steps.windows_compiler.outputs.found != 'true'
+              if: runner.os == 'Windows' && env.CHECK_PROFILE == 'full' && steps.windows_compiler.outputs.found != 'true'
               # v2.33.0 pins and checks the 2026-09-27 base installer SHA-256
               # No database refresh: retain that archive's package selection, fail if unavailable
               uses: msys2/setup-msys2@ec48f7c5447b3140e2b088413ae3a55687bccb6e
@@ -203,7 +203,7 @@ jobs:
                   install: mingw-w64-ucrt-x86_64-gcc
             - name: Verify Windows compiler and execute race runtime preflight
               id: windows_race
-              if: runner.os == 'Windows'
+              if: runner.os == 'Windows' && env.CHECK_PROFILE == 'full'
               env:
                   MSYS2_LOCATION: ${{ steps.msys2.outputs.msys2-location }}
               run: |
@@ -275,6 +275,7 @@ jobs:
               run: go vet ./... 2>&1 | tee "$EVIDENCE_DIR/vet.log"
             - name: Native compilation
               id: compile
+              if: env.CHECK_PROFILE == 'full'
               env:
                   CGO_ENABLED: '1'
               run: |
@@ -284,21 +285,23 @@ jobs:
                   fi
                   go env -json CGO_ENABLED CC GOHOSTOS GOHOSTARCH GOOS GOARCH > "$EVIDENCE_DIR/compile-environment.json"
                   go build ./... 2>&1 | tee "$EVIDENCE_DIR/compile.log"
-            - name: Supported target cross-compilation
-              id: cross
-              run: go run ./tools/pluginbuild cross 2>&1 | tee "$EVIDENCE_DIR/cross.log"
+            - name: Native Go tests
+              id: tests
+              run: go test -vet=off ./... 2>&1 | tee "$EVIDENCE_DIR/tests.log"
             - name: Native packages
               id: packages
-              run: go run ./tools/pluginbuild package 2>&1 | tee "$EVIDENCE_DIR/packages.log"
+              if: env.CHECK_PROFILE == 'full'
+              run: go run ./tools/pluginbuild package --os "$EXPECTED_OS" --arch "$EXPECTED_ARCH" 2>&1 | tee "$EVIDENCE_DIR/packages.log"
             - name: Native package validation
               id: validation
+              if: env.CHECK_PROFILE == 'full'
               run: python scripts/validate_packages.py 2>&1 | tee "$EVIDENCE_DIR/validation.log"
             - name: Retain final source and output inventory
               id: inventory
               if: always() && steps.provenance.outcome == 'success'
               env:
                   STEP_RESULTS: >-
-                      {"windows_compiler":"${{ steps.windows_compiler.outcome }}","msys2":"${{ steps.msys2.outcome }}","windows_race":"${{ steps.windows_race.outcome }}","modules":"${{ steps.modules.outcome }}","security":"${{ steps.security.outcome }}","version":"${{ steps.version.outcome }}","python":"${{ steps.python.outcome }}","format":"${{ steps.format.outcome }}","vet":"${{ steps.vet.outcome }}","compile":"${{ steps.compile.outcome }}","cross":"${{ steps.cross.outcome }}","packages":"${{ steps.packages.outcome }}","validation":"${{ steps.validation.outcome }}"}
+                      {"windows_compiler":"${{ steps.windows_compiler.outcome }}","msys2":"${{ steps.msys2.outcome }}","windows_race":"${{ steps.windows_race.outcome }}","modules":"${{ steps.modules.outcome }}","security":"${{ steps.security.outcome }}","version":"${{ steps.version.outcome }}","python":"${{ steps.python.outcome }}","format":"${{ steps.format.outcome }}","vet":"${{ steps.vet.outcome }}","compile":"${{ steps.compile.outcome }}","tests":"${{ steps.tests.outcome }}","packages":"${{ steps.packages.outcome }}","validation":"${{ steps.validation.outcome }}"}
               run: |
                   python - <<'PY'
                   import hashlib, json, os, pathlib, subprocess
@@ -328,4 +331,5 @@ jobs:
                   path: |
                       plugins/dist/catalog-*.json
                       plugins/dist/packages
+                  compression-level: 0
                   if-no-files-found: error

@@ -74,13 +74,13 @@ func TestCollectSampleCacheClockAdmissionOwnershipAndStalePolicy(t *testing.T) {
 func TestDiagnosticDeliveryBoundsAndFailures(t *testing.T) {
 	ctx := context.Background()
 	recorder := observationRecorder(t)
-	if err := SendDiagnostic(ctx, nil, "", make(chan int)); err != nil {
+	if err := SendDiagnostic(ctx, nil, "", "fixture.action", make(chan int)); err != nil {
 		t.Fatal(err)
 	}
-	if err := SendDiagnostic(ctx, nil, "key", nil); err != nil {
+	if err := SendDiagnostic(ctx, nil, "key", "fixture.action", nil); err != nil {
 		t.Fatal(err)
 	}
-	if err := SendDiagnostic(ctx, recorder.Client, "key", make(chan int)); err != nil {
+	if err := SendDiagnostic(ctx, recorder.Client, "key", "fixture.action", make(chan int)); err != nil {
 		t.Fatal(err)
 	}
 	failedEncoding := recorder.Drain()
@@ -88,7 +88,7 @@ func TestDiagnosticDeliveryBoundsAndFailures(t *testing.T) {
 		t.Fatal("SDK empty-payload compatibility changed", failedEncoding)
 	}
 	for _, value := range []any{map[string]any{"value": "ok"}, strings.Repeat("x", DiagnosticLimit)} {
-		if err := SendDiagnostic(ctx, recorder.Client, "key", value); err != nil {
+		if err := SendDiagnostic(ctx, recorder.Client, "key", "fixture.action", value); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -96,7 +96,7 @@ func TestDiagnosticDeliveryBoundsAndFailures(t *testing.T) {
 	if len(events) != 2 {
 		t.Fatal(events)
 	}
-	if events[0].Context != "key" || events[0].Event != "sendToPropertyInspector" {
+	if events[0].Context != "key" || events[0].Action != "fixture.action" || events[0].Event != "sendToPropertyInspector" {
 		t.Fatal(events[0])
 	}
 	var payload map[string]any
@@ -206,7 +206,7 @@ func (d *changingDiagnostic) MarshalJSON() ([]byte, error) {
 func TestDiagnosticChecksTheDeliveredBytesOnce(t *testing.T) {
 	recorder := observationRecorder(t)
 	value := &changingDiagnostic{}
-	if err := SendDiagnostic(context.Background(), recorder.Client, "key", value); err != nil {
+	if err := SendDiagnostic(context.Background(), recorder.Client, "key", "fixture.action", value); err != nil {
 		t.Fatal(err)
 	}
 	events := recorder.Drain()
@@ -214,7 +214,7 @@ func TestDiagnosticChecksTheDeliveredBytesOnce(t *testing.T) {
 		t.Fatal(value.calls, events)
 	}
 	// A JSON string adds exactly two quote bytes; the inclusive limit remains valid
-	if err := SendDiagnostic(context.Background(), recorder.Client, "key", strings.Repeat("x", DiagnosticLimit-2)); err != nil {
+	if err := SendDiagnostic(context.Background(), recorder.Client, "key", "fixture.action", strings.Repeat("x", DiagnosticLimit-2)); err != nil {
 		t.Fatal(err)
 	}
 	if events = recorder.Drain(); len(events) != 1 || len(events[0].Payload) != DiagnosticLimit {
@@ -223,7 +223,7 @@ func TestDiagnosticChecksTheDeliveredBytesOnce(t *testing.T) {
 	// Transport admission failures still reach the caller, which owns recovery
 	failed := false
 	for range 1024 {
-		if err := SendDiagnostic(context.Background(), recorder.Client, "key", "small"); err != nil {
+		if err := SendDiagnostic(context.Background(), recorder.Client, "key", "fixture.action", "small"); err != nil {
 			failed = true
 			break
 		}

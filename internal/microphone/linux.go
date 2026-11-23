@@ -76,13 +76,18 @@ func (n native) Read(ctx context.Context, id string) (Device, error) {
 
 // SetMute applies the requested microphone mute state
 func (n native) SetMute(ctx context.Context, id string, m bool) error {
-	if _, e := n.Read(ctx, id); e != nil {
-		return e
+	d, err := n.Read(ctx, id)
+	if err != nil {
+		return err
 	}
+	return n.setResolvedMute(ctx, d, m)
+}
+
+func (n native) setResolvedMute(ctx context.Context, d Device, m bool) error {
 	v := "0"
 	if m {
 		v = "1"
 	}
-	_, e := pulse(ctx, "set-source-mute", id, v)
+	_, e := pulse(ctx, "set-source-mute", d.ID, v)
 	return e
 }

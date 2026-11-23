@@ -159,7 +159,7 @@ def validate(directory=None, plan=None, all_platforms=False, records=None, unive
         if validated_inventories is not None:
             validated_inventories[expected_os] = json.dumps(platform_catalog, sort_keys=True)
         print(f'{path.name}: {len(platform_catalog["packages"])} manifests, compiled descriptors, inventories and requirements validated')
-    print(f'{count} packages passed. Native VSD runtime compatibility remains unverified.')
+    print(f'{count} packages passed validation.')
     return count
 
 

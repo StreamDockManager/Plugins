@@ -58,7 +58,14 @@ func (c *Controller) Apply(ctx context.Context, selected, action string) (Device
 		return d, errors.New("unknown microphone action")
 	}
 	if target != d.Muted {
-		if err = c.Adapter.SetMute(ctx, d.ID, target); err != nil {
+		if resolved, ok := c.Adapter.(interface {
+			setResolvedMute(context.Context, Device, bool) error
+		}); ok {
+			err = resolved.setResolvedMute(ctx, d, target)
+		} else {
+			err = c.Adapter.SetMute(ctx, d.ID, target)
+		}
+		if err != nil {
 			return d, err
 		}
 	}

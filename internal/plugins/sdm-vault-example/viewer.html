@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="color-scheme" content="light dark" />
+        <title>Webhook requests · SDM Vault Example</title>
+        <style>
+            body {
+                font: 1rem/1.5 system-ui;
+                margin: 3rem auto;
+                padding: 0 1rem;
+                max-width: 56rem;
+            }
+            h1 {
+                line-height: 1.2;
+            }
+            .scroll {
+                overflow: auto;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            th,
+            td {
+                text-align: left;
+                padding: 0.6rem;
+                border-bottom: 1px solid GrayText;
+            }
+            code {
+                overflow-wrap: anywhere;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <h1>Webhook requests</h1>
+            <p>
+                Press
+                <b>Send from plugin</b>
+                or
+                <b>Send through Manager</b>
+                on your dock. Refresh to see the latest 64 accepted pings.
+            </p>
+            {{if .}}
+            <div class="scroll" tabindex="0" role="region" aria-label="Webhook request history">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Received (UTC)</th>
+                            <th scope="col">Route</th>
+                            <th scope="col">Transport</th>
+                            <th scope="col">Request</th>
+                            <th scope="col">Event</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{range .}}
+                        <tr>
+                            <td>{{.Time}}</td>
+                            <td>{{.Source}}</td>
+                            <td>{{.Scheme}}</td>
+                            <td><code>POST {{.Path}}</code></td>
+                            <td>ping</td>
+                        </tr>
+                        {{end}}
+                    </tbody>
+                </table>
+            </div>
+            {{else}}
+            <p>No pings received yet.</p>
+            {{end}}
+            <p>
+                <a href="/">Refresh requests</a>
+                ·
+                <a href="/certificate.pem" download="sdm-example.pem">
+                    Download session certificate
+                </a>
+            </p>
+        </main>
+    </body>
+</html>

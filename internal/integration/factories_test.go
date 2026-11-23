@@ -35,11 +35,18 @@ import (
 
 var Definitions = catalog.Definitions
 
+// Vault-capable builds register the example alongside the portable fixtures.
+var vaultExampleFactory func(string) *engine.Engine
+
 // New constructs the fixture or runtime instance with its dependencies
 func New(slug, path string) *engine.Engine {
 	switch slug {
 	case "obs-studio":
 		return fixtureengine.New(obsstudio.Definition, path, obsstudio.Factory)
+	case "sdm-vault-example":
+		if vaultExampleFactory != nil {
+			return vaultExampleFactory(path)
+		}
 	case "home-assistant":
 		return fixtureengine.New(homeassistant.Definition, path, homeassistant.Factory)
 

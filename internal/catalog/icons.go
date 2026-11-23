@@ -6,6 +6,7 @@ import (
 	"github.com/StreamDockManager/Plugin-SDK/Go/authoring"
 	"github.com/StreamDockManager/Plugins/internal/engine"
 	randommeme "github.com/StreamDockManager/Plugins/internal/plugins/random-meme"
+	randomizerdice "github.com/StreamDockManager/Plugins/internal/plugins/randomizer-dice"
 	"maps"
 	"strings"
 )
@@ -72,16 +73,22 @@ var glyphs = map[string]string{
 	"copy":              `<rect x="8" y="8" width="13" height="14" rx="2"/><path d="M16 8V2H3v14h5"/>`,
 	"palette":           `<path d="M12 2a10 10 0 1 0 0 20h2a3 3 0 0 0 1-6c-2-1-1-3 1-3h3c5 0 3-11-7-11Z"/><circle cx="7" cy="8" r="1"/><circle cx="12" cy="6" r="1"/><circle cx="17" cy="8" r="1"/><circle cx="5" cy="13" r="1"/>`,
 	"cycle":             `<path d="M3 9a9 9 0 0 1 16-3l2 3M21 3v6h-6M21 15A9 9 0 0 1 5 18l-2-3M3 21v-6h6"/>`,
-	"dice":              `<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 7h.1M17 7h.1M12 12h.1M7 17h.1M17 17h.1" stroke-width="3"/>`,
-	"range":             `<path d="M3 6h18M3 18h18M7 3v6M17 15v6M3 12h18M12 9v6"/>`,
 	"list":              `<path d="M9 5h13M9 12h13M9 19h13M2 5h1M2 12h1M2 19h1"/>`,
-	"cards":             `<path d="m4 9-3 1 4 12 8-3M9 5 6 6l3 14 9-2"/><rect x="12" y="2" width="10" height="15" rx="1"/><path d="m17 7 2 3-2 3-2-3z"/>`,
 	"battery":           `<rect x="2" y="6" width="18" height="12" rx="2"/><path d="M22 10v4M6 9v6M10 9v6M14 9v6"/>`,
 	"globe":             `<circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/><path d="M2 12h20"/>`,
 	"shield":            `<path d="m12 2 9 4v6c0 5-5 9-9 11-4-2-9-6-9-11V6ZM8 12l3 3 5-6"/>`,
 	"calculator":        `<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M7 5h10v4H7zM8 13h1M15 13h1M8 17h1M15 17h1"/>`,
 	"convert":           `<path d="M3 7h18l-5-5M21 17H3l5 5M21 7l-5 5M3 17l5-5"/>`,
 	"unavailable":       `<path d="m12 2 11 20H1zM12 9v5M12 18h.1"/>`,
+}
+
+var randomizerGlyphs = randomizerdice.ActionGlyphs()
+
+func actionGlyph(slug, asset string) string {
+	if slug == "randomizer-dice" && randomizerGlyphs[asset] != "" {
+		return randomizerGlyphs[asset]
+	}
+	return glyphs[strings.TrimPrefix(asset, "icons/")]
 }
 
 // iconSVG builds the SVG artwork for the selected icon
@@ -94,6 +101,11 @@ var displayLayout = authoring.DisplayLayout
 // PluginAssets collects the assets required by one plugin
 func PluginAssets(d Definition) map[string][]byte {
 	files := map[string][]byte{"display/key.json": displayLayout(false), "display/wide.json": displayLayout(true)}
+	if d.Slug == "randomizer-dice" {
+		for path, glyph := range randomizerdice.RollGlyphs() {
+			files[path+".svg"] = iconSVG(glyph)
+		}
+	}
 	if d.Slug == "random-meme" {
 		files["display/meme.json"], _ = json.Marshal(randommeme.Layout())
 		files[randommeme.CaptionAsset] = []byte(randommeme.CaptionSVG)
@@ -116,8 +128,7 @@ func PluginAssets(d Definition) map[string][]byte {
 		maps.Copy(files, HiscoresAssets(d.Slug))
 	}
 	for _, asset := range RequiredAssets(d) {
-		name := strings.TrimPrefix(asset, "icons/")
-		if path, ok := glyphs[name]; ok {
+		if path := actionGlyph(d.Slug, asset); path != "" {
 			files[asset+".svg"] = iconSVG(path)
 		}
 	}

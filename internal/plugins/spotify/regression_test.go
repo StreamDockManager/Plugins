@@ -889,3 +889,32 @@ func TestArtworkRetainsJPEGAndGIFSupport(t *testing.T) {
 		})
 	}
 }
+
+// Shared observation failures report once and healthy observations clear failure episodes
+func TestSpotifyObservationFailurePolicy(t *testing.T) {
+	e := New(filepath.Join(t.TempDir(), "state.json"))
+	defer e.Close()
+	c, _ := sdk.NewLocalClient(sdk.HostInfo{}, "fixture")
+	for _, id := range []string{"b", "a"} {
+		e.Bindings[id] = binding{Action: engine.ID("spotify") + ".status"}
+	}
+	var observed []string
+	recovered := map[string]bool{}
+	e.Feature.ObserveFailure = func(_ context.Context, _ *sdk.Client, id string, _ error) { observed = append(observed, id) }
+	e.Feature.FilterStatus = func(_ context.Context, _ *sdk.Client, id string, s displayStatus) displayStatus {
+		recovered[id] = true
+		return s
+	}
+	if err := e.applySpotify(context.Background(), c, jobResult{Value: spotifyProbe{}, Err: fmt.Errorf("private provider error")}); err != nil {
+		t.Fatal(err)
+	}
+	if len(observed) != 1 || observed[0] != "a" || len(recovered) != 0 {
+		t.Fatal(observed, recovered)
+	}
+	if err := e.applySpotify(context.Background(), c, jobResult{Value: spotifyProbe{}}); err != nil {
+		t.Fatal(err)
+	}
+	if len(observed) != 1 || len(recovered) != 2 {
+		t.Fatal(observed, recovered)
+	}
+}

@@ -9,11 +9,16 @@ import (
 // TestOfficialInventory verifies official inventory
 func TestOfficialInventory(t *testing.T) {
 	expected := strings.Fields(`obs-studio home-assistant battery-power counter-tally http-webhooks internet-speed-test make microphone-controls mqtt network-vpn osrs-hiscores random-meme randomizer-dice retroachievements runescape-hiscores screenshot-tools service-monitor spotify steam-library system-monitor tailscale timers-pomodoro vlc weather`)
+	expected = append(expected, "sdm-vault-example")
 	actual := make([]string, 0, len(Definitions))
 	for _, d := range Definitions {
 		actual = append(actual, d.Slug)
-		if d.Version != "0.1.0" {
-			t.Fatal("unreleased plugin version changed", d)
+		version := "0.1.1"
+		if d.Slug == "sdm-vault-example" {
+			version = "0.1.0"
+		}
+		if d.Version != version {
+			t.Fatal("plugin version differs from expected release", d)
 		}
 	}
 	slices.Sort(expected)

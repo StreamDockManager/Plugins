@@ -25,7 +25,8 @@ func themed(path string) sdk.ThemedAsset {
 // Descriptor builds plugin capabilities from the registered actions and settings
 func Descriptor(d Definition) sdk.Capabilities {
 	result := sdk.Capabilities{MinimumManager: d.MinimumManager, RequiredCapabilities: d.RequiredCapabilities, Version: 1, ID: ID(d.Slug), PluginVersion: d.Version, ThemeProtocol: 1, SettingsProtocol: 1, Icon: themed("icon"), Actions: map[string]sdk.ActionCapability{}}
-	if len(PluginFields(d.Slug)) > 0 {
+	setVaultDescriptor(&result, d.Slug)
+	if len(PluginFields(d.Slug)) > 0 || d.Slug == "weather" {
 		result.PluginSettings = "inspector.html"
 	}
 	if d.Slug == "random-meme" {
@@ -56,6 +57,8 @@ func Descriptor(d Definition) sdk.Capabilities {
 		}
 		if d.Slug == "spotify" {
 			switch a {
+			case "mute-toggle":
+				ac.ControlTypes = []string{"encoder"}
 			case "volume", "seek":
 				ac.ControlTypes = []string{"encoder"}
 				ac.FeedbackLayout = "spotify/volume-display.json"
@@ -94,7 +97,7 @@ func ThemeAsset(path, theme string) string {
 // Control capability classification is independent of settings ownership
 func buttonFirstControls(slug string) bool {
 	switch slug {
-	case "obs-studio", "home-assistant", "random-meme", "vlc", "tailscale", "mqtt", "make", "osrs-hiscores", "runescape-hiscores", "retroachievements":
+	case "sdm-vault-example", "obs-studio", "home-assistant", "random-meme", "vlc", "tailscale", "mqtt", "make", "osrs-hiscores", "runescape-hiscores", "retroachievements":
 		return true
 	}
 	return false

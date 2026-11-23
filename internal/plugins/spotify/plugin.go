@@ -14,6 +14,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/StreamDockManager/Plugin-SDK/Go"
@@ -25,6 +26,8 @@ import (
 )
 
 type Plugin struct {
+	spotifyVolumeMu          sync.Mutex
+	spotifyRestoreVolume     float64
 	spotifyDelivery          map[string]time.Time
 	spotifyDeliveredRevision uint64
 	spotifyDefaultInterval   time.Duration
@@ -66,6 +69,7 @@ type spotifyDisplay = pluginDisplay
 type spotifyProbe struct {
 	Status          spotify.SpotifyStatus
 	ArtKey, Artwork string
+	Variants        map[string]string
 	At              time.Time
 	Revision        uint64
 }
@@ -81,18 +85,27 @@ func Factory(base *engine.Engine) engine.Feature { return makePlugin(base).hooks
 
 // Prepare bounded artwork for a device display
 func artwork(ctx context.Context, source string) (string, error) {
+	data, err := readArtwork(ctx, source)
+	if err != nil {
+		return "", err
+	}
+	result, err := sampleartwork.Render(ctx, data, 256, 256)
+	return result.DataURI, err
+}
+
+func readArtwork(ctx context.Context, source string) ([]byte, error) {
 	var data []byte
 	var e error
 	if strings.HasPrefix(source, "data:") {
 		_, encoded, ok := strings.Cut(source, ",")
 		if !ok || len(encoded) > base64.StdEncoding.EncodedLen(sampleartwork.MaxInputBytes) {
-			return "", fmt.Errorf("artwork exceeds limit")
+			return nil, fmt.Errorf("artwork exceeds limit")
 		}
 		data, e = base64.StdEncoding.DecodeString(encoded)
 	} else {
 		u, x := url.Parse(source)
 		if x != nil {
-			return "", x
+			return nil, x
 		}
 		if u.Scheme == "file" && (u.Host == "" || u.Host == "localhost") && filepath.IsAbs(u.Path) {
 			var f *os.File
@@ -114,22 +127,21 @@ func artwork(ctx context.Context, source string) (string, error) {
 			if e == nil {
 				defer r.Body.Close()
 				if r.StatusCode != 200 {
-					return "", fmt.Errorf("artwork HTTP %d", r.StatusCode)
+					return nil, fmt.Errorf("artwork HTTP %d", r.StatusCode)
 				}
 				data, e = io.ReadAll(io.LimitReader(r.Body, sampleartwork.MaxInputBytes+1))
 			}
 		} else {
-			return "", fmt.Errorf("artwork source unavailable")
+			return nil, fmt.Errorf("artwork source unavailable")
 		}
 	}
 	if e != nil {
-		return "", e
+		return nil, e
 	}
 	if len(data) > sampleartwork.MaxInputBytes {
-		return "", fmt.Errorf("artwork exceeds limit")
+		return nil, fmt.Errorf("artwork exceeds limit")
 	}
-	result, err := sampleartwork.Render(ctx, data, 256, 256)
-	return result.DataURI, err
+	return data, nil
 }
 
 // A 256x256 RGBA PNG has at most about 350 KiB of base64 pixel data even
@@ -187,7 +199,7 @@ func (e *Plugin) applyResult(ctx context.Context, c *sdk.Client, result jobResul
 
 	destination := result.ID
 
-	if err := engine.SendDiagnostic(ctx, c, destination, result.Value); err != nil {
+	if err := engine.SendDiagnostic(ctx, c, destination, e.Bindings[destination].Action, result.Value); err != nil {
 		return err
 	}
 
@@ -205,6 +217,23 @@ func (e *Plugin) applySpotify(ctx context.Context, c *sdk.Client, result jobResu
 	probe, ok := result.Value.(spotifyProbe)
 	if !ok {
 		return nil
+	}
+	// Attribute a genuine shared observation failure to one visible action without flooding every key
+	if e.Feature.ObserveFailure != nil && result.Err != nil {
+		id := ""
+		for candidate := range e.Bindings {
+			if e.CanUpdateView(ctx, candidate) && (id == "" || candidate < id) {
+				id = candidate
+			}
+		}
+		if id != "" {
+			e.Feature.ObserveFailure(ctx, c, id, result.Err)
+		}
+	}
+	if result.Err == nil && e.Feature.FilterStatus != nil {
+		for id := range e.Bindings {
+			e.Feature.FilterStatus(ctx, c, id, displayStatus{})
+		}
 	}
 	if result.Err != nil {
 		e.spotifyFailures++
@@ -243,14 +272,25 @@ func (e *Plugin) applySpotify(ctx context.Context, c *sdk.Client, result jobResu
 	if e.spotifyObserved.IsZero() {
 		e.spotifyObserved = time.Now()
 	}
+	if probe.ArtKey != "" {
+		probe.Status.Artwork = probe.ArtKey
+	}
 	e.spotifySample = probe.Status
+	for key, uri := range probe.Variants {
+		_, _ = e.artCache.Put(key, uri, len(uri), 0, 0)
+	}
 	if probe.Artwork != "" {
 		// Admission failure must not discard an otherwise valid display result
 		_, _ = e.artCache.Put(probe.ArtKey, probe.Artwork, len(probe.Artwork), 0, 0)
 	}
 
 	for id := range e.Bindings {
-		if err := e.renderSpotifyArtwork(ctx, c, id, probe.Status, probe.ArtKey, probe.Artwork); err != nil {
+		key, uri := probe.ArtKey, probe.Artwork
+		if probe.Variants != nil {
+			key = artworkVariant(key, artworkSize(e.Bindings[id]))
+			uri = probe.Variants[key]
+		}
+		if err := e.renderSpotifyArtwork(ctx, c, id, probe.Status, key, uri); err != nil {
 			return err
 		}
 	}
@@ -344,10 +384,50 @@ func dialAdjustment(a string, ev sdk.Event, settings map[string]any) (map[string
 // Identify actions that display live Spotify playback state
 func spotifyLive(a string) bool {
 	switch a {
-	case "toggle", "status", "volume", "seek", "volume-display", "progress", "track-info":
+	case "mute-toggle", "toggle", "status", "volume", "seek", "volume-display", "progress", "track-info":
 		return true
 	}
 	return false
+}
+
+// Volume commands and mute read/modify/write share one lock for the single local
+// Spotify playback target. Restoration is session-local, never a binding setting.
+func (e *Plugin) volumeCommand(ctx context.Context, action string, settings map[string]any) (string, error) {
+	e.spotifyVolumeMu.Lock()
+	defer e.spotifyVolumeMu.Unlock()
+	return e.spotify(ctx, action, settings)
+}
+
+func (e *Plugin) toggleMute(ctx context.Context) error {
+	e.spotifyVolumeMu.Lock()
+	defer e.spotifyVolumeMu.Unlock()
+	raw, err := e.spotify(ctx, "status", nil)
+	if err != nil {
+		return err
+	}
+	var status spotify.SpotifyStatus
+	if err = json.Unmarshal([]byte(raw), &status); err != nil {
+		return err
+	}
+	status = status.Normalized()
+	if status.VolumePercent == nil {
+		return fmt.Errorf("Spotify volume is unavailable")
+	}
+	current := *status.VolumePercent
+	target := 0.0
+	if current == 0 {
+		target = e.spotifyRestoreVolume
+		if target <= 0 {
+			target = 50
+		} // Explicit fallback when already muted before this session.
+	}
+	if _, err = e.spotify(ctx, "volume", map[string]any{"volume": target}); err != nil {
+		return err
+	}
+	if current > 0 {
+		e.spotifyRestoreVolume = current
+	}
+	return nil
 }
 
 // Dispatch an activating Spotify input to its action implementation
@@ -358,7 +438,7 @@ func (e *Plugin) handleAction(ctx context.Context, c *sdk.Client, ev sdk.Event, 
 		if !ok {
 			return nil
 		}
-		if _, err := e.spotify(ctx, a, values); err != nil {
+		if _, err := e.volumeCommand(ctx, a, values); err != nil {
 			return err
 		}
 	} else {
@@ -367,6 +447,10 @@ func (e *Plugin) handleAction(ctx context.Context, c *sdk.Client, ev sdk.Event, 
 		}
 		// Status switches its own view; companions refresh without adjusting playback
 		switch a {
+		case "mute-toggle":
+			if err := e.toggleMute(ctx); err != nil {
+				return err
+			}
 		case "status":
 			state := e.state(ev.Context, nil)
 			state.ArtworkOnly = !state.ArtworkOnly
@@ -453,9 +537,13 @@ func (e *Plugin) pollSpotify(ctx context.Context, c *sdk.Client) error {
 	if len(e.Bindings) == 0 {
 		return nil
 	}
+	sizes := map[[2]int]bool{}
 	includeArt := false
 	for _, b := range e.Bindings {
-		includeArt = includeArt || action(b.Action) == "status" || action(b.Action) == "track-info"
+		if action(b.Action) == "status" || action(b.Action) == "track-info" {
+			includeArt = true
+			sizes[artworkSize(b)] = true
+		}
 	}
 	if includeArt != e.spotifyArt {
 		e.CancelJob("spotify-status")
@@ -478,9 +566,27 @@ func (e *Plugin) pollSpotify(ctx context.Context, c *sdk.Client) error {
 			result.Status = result.Status.Normalized()
 			if result.Status.Artwork != "" {
 				result.ArtKey = fmt.Sprintf("spotify:%x", sha256.Sum256([]byte(result.Status.Artwork)))
-				result.Artwork = cached[result.ArtKey]
-				if result.Artwork == "" {
-					result.Artwork, _ = artwork(ctx, result.Status.Artwork)
+				source := result.Status.Artwork
+				result.Status.Artwork = result.ArtKey
+				result.Variants = make(map[string]string, len(sizes))
+				var data []byte
+				for size := range sizes {
+					key := artworkVariant(result.ArtKey, size)
+					uri := cached[key]
+					if uri == "" {
+						if data == nil {
+							data, err = readArtwork(ctx, source)
+							if err != nil {
+								break
+							}
+						}
+						variant, err := sampleartwork.Render(ctx, data, size[0], size[1])
+						if err != nil {
+							continue
+						}
+						uri = variant.DataURI
+					}
+					result.Variants[key] = uri
 				}
 			}
 			return "", result, nil
@@ -504,6 +610,20 @@ func (e *Plugin) artworkSnapshot() map[string]string {
 		snapshot[entry.Key] = entry.Value
 	}
 	return snapshot
+}
+
+func artworkSize(b binding) [2]int {
+	if b.Surface == nil || b.Surface.Width <= 0 || b.Surface.Height <= 0 {
+		return [2]int{256, 256}
+	}
+	return [2]int{min(b.Surface.Width, sampleartwork.MaxDimension), min(b.Surface.Height, sampleartwork.MaxDimension)}
+}
+
+func artworkVariant(key string, size [2]int) string {
+	if size == [2]int{256, 256} {
+		return key
+	}
+	return fmt.Sprintf("%s:%dx%d", key, size[0], size[1])
 }
 
 // Render the binding using the current Spotify status
@@ -536,8 +656,15 @@ func (e *Plugin) renderSpotifyArtwork(ctx context.Context, c *sdk.Client, id str
 	if action(b.Action) == "status" || action(b.Action) == "track-info" {
 		imageKey = "art"
 		if status.Artwork != "" {
-			key := fmt.Sprintf("spotify:%x", sha256.Sum256([]byte(status.Artwork)))
-			encoded, _ := e.artCache.Peek(key, 0)
+			base := status.Artwork
+			if !strings.HasPrefix(base, "spotify:") {
+				base = fmt.Sprintf("spotify:%x", sha256.Sum256([]byte(base)))
+			}
+			key := artworkVariant(base, artworkSize(b))
+			encoded, _ := e.artCache.Get(key, 0)
+			if encoded == "" && key != base {
+				encoded, _ = e.artCache.Get(base, 0)
+			}
 			if artKey == key && artwork != "" {
 				encoded = artwork
 			}
@@ -551,6 +678,7 @@ func (e *Plugin) renderSpotifyArtwork(ctx context.Context, c *sdk.Client, id str
 			}
 		}
 	}
+	view.Image = engine.PortableImage(e.Engine, view.Image)
 	err := e.SendDisplayView(ctx, c, id, view, action(b.Action) == "toggle")
 	if err == nil && !e.spotifyObserved.IsZero() {
 		if e.spotifyDelivery == nil {

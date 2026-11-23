@@ -1,7 +1,8 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 globalThis.window = { StreamDockManagerWorkflows: {} };
-const { createFeatureRegistry } = await import('../../inspectors/inspector-features.js');
+const { createFeatureRegistry, createWeatherFeature } =
+    await import('../../inspectors/inspector-features.js');
 // Create traceable adapters with independently controlled busy states
 function fixture() {
     const trace = [];
@@ -90,4 +91,120 @@ test('duplicate response ownership is rejected', () => {
         () => createFeatureRegistry([{ operation: 'same' }, { operation: 'same' }]),
         /Duplicate/,
     );
+});
+
+// Exercise the actual location controller with a minimal dropdown and trusted parent
+test('Weather lists only the host-shared Vault label and keeps fallback coordinates', () => {
+    const nodes = new Map();
+    const requests = [];
+    let receive;
+    globalThis.Option = class {
+        dataset = {};
+        constructor(text, value) {
+            Object.assign(this, { text, value });
+        }
+    };
+    globalThis.document = {
+        referrer: 'https://manager.invalid/index.html',
+        querySelector(key) {
+            if (key === '#field-use_vault_location') return null;
+            if (!nodes.has(key))
+                nodes.set(key, {
+                    value: '',
+                    options: [],
+                    add(option) {
+                        this.options.push(option);
+                    },
+                    replaceChildren(...children) {
+                        this.options = children;
+                    },
+                    get selectedOptions() {
+                        return this.options.filter((option) => option.value === this.value);
+                    },
+                    addEventListener() {},
+                });
+            return nodes.get(key);
+        },
+        querySelectorAll() {
+            return [];
+        },
+    };
+    const parent = { postMessage: (...message) => requests.push(message) };
+    globalThis.window = { parent, addEventListener: (_, callback) => (receive = callback) };
+    const shell = {
+        context: 'settings-draft:session',
+        action: 'weather',
+        module: { location: true, actions: { weather: [{ key: 'use_vault_location' }] } },
+        settings: { latitude: 1, longitude: 2, location_id: '@vault-location' },
+        collect() {
+            return structuredClone(this.settings);
+        },
+        render() {
+            feature.renderSaved();
+        },
+    };
+    const feature = createWeatherFeature(shell);
+    const choices = document.querySelector('#weather-location-choice');
+    feature.globals({
+        saved_locations: [{ id: '@vault-location', name: 'Local', latitude: 1, longitude: 2 }],
+    });
+    feature.requestVaultLocation();
+    assert.deepEqual(requests, [
+        [
+            { event: 'stream-dock-manager-request-vault-location', context: shell.context },
+            'https://manager.invalid',
+        ],
+    ]);
+    const response = {
+        source: parent,
+        origin: 'https://manager.invalid',
+        data: {
+            event: 'stream-dock-manager-vault-location',
+            context: shell.context,
+            location: { label: 'Home', latitude: 98, longitude: 99 },
+        },
+    };
+    receive({ ...response, source: {} });
+    receive({ ...response, origin: 'https://other.invalid' });
+    receive({ ...response, data: { ...response.data, context: 'settings-draft:old' } });
+    assert.equal(choices.options.length, 2);
+    receive(response);
+    const option = choices.options.find((item) => item.dataset.vaultLocation);
+    assert.equal(option.text, 'Vault · Home');
+    assert.notEqual(option.value, '@vault-location');
+    choices.value = option.value;
+    choices.onchange({ target: choices });
+    assert.deepEqual(shell.settings, {
+        latitude: 1,
+        longitude: 2,
+        location_id: '@vault-location',
+        use_vault_location: true,
+    });
+    assert.equal(document.querySelector('#field-latitude').disabled, true);
+    receive({ ...response, data: { ...response.data, location: null } });
+    assert.equal(choices.selectedOptions[0].text, 'Vault location unavailable');
+    assert.equal(shell.settings.use_vault_location, true);
+    choices.value = '';
+    choices.onchange({ target: choices });
+    assert.deepEqual(shell.settings, { latitude: 1, longitude: 2, use_vault_location: false });
+    assert.equal(document.querySelector('#field-latitude').disabled, false);
+
+    document.referrer = '';
+    feature.reset();
+    feature.renderSaved();
+    feature.requestVaultLocation();
+    assert.deepEqual(requests.at(-1), [
+        { event: 'stream-dock-manager-request-vault-location', context: shell.context },
+        '*',
+    ]);
+    assert.equal(choices.options.length, 1);
+    receive({ ...response, origin: 'null', source: {} });
+    receive({
+        ...response,
+        origin: 'null',
+        data: { ...response.data, context: 'settings-draft:old' },
+    });
+    assert.equal(choices.options.length, 1);
+    receive({ ...response, origin: 'null' });
+    assert.equal(choices.options.find((item) => item.dataset.vaultLocation)?.text, 'Vault · Home');
 });

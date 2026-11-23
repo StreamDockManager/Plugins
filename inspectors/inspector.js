@@ -60,6 +60,8 @@ function collect() {
 }
 // Exclude fields rendered by dedicated feature pickers
 function renderedFields() {
+    if (module?.location && !globalScope && weatherFeature.usesVaultPicker())
+        return fields.filter((field) => field.key !== 'use_vault_location');
     if (module?.microphones && !globalScope)
         return fields.filter((field) => field.key !== 'device');
     return module?.speedtest && globalScope
@@ -99,6 +101,10 @@ const shell = {
     get globalScope() {
         return globalScope;
     },
+    // Expose the scoped action for host picker discovery
+    get action() {
+        return action;
+    },
     // Expose the active action context for scoped messages
     get context() {
         return context;
@@ -123,32 +129,20 @@ const speedFeature = createSpeedFeature(shell);
 const weatherFeature = createWeatherFeature(shell);
 const features = createFeatureRegistry([
     {
-        operation: 'location_results',
-        pendingPriority: 0,
-        errorPriority: 1,
-        // Report whether weather discovery is pending
-        busy: () => weatherFeature.discovery.busy,
         // Collect the weather draft fields
         collect: (next) => weatherFeature.collect(next),
         // Refresh both weather search and saved-location controls
-        render: () => {
-            weatherFeature.render();
-            weatherFeature.renderSaved();
-        },
+        render: () => weatherFeature.renderSaved(),
         // Reset weather state for the new context
         reset: () => weatherFeature.reset(),
         // Forward shared settings to the weather controller
         globals: (value) => weatherFeature.globals(value),
-        // Cancel pending weather discovery
-        cancel: () => weatherFeature.cancel(),
         // Finish weather discovery with the disconnect reason
-        disconnect: (text) => weatherFeature.finish(text),
+        disconnect: (text) => weatherFeature.message(text),
         // Finish weather discovery with the error message
-        error: (text) => weatherFeature.finish(text),
+        error: (text) => weatherFeature.message(text),
         // Display weather feedback
         message: (text) => weatherFeature.message(text),
-        // Deliver a correlated reply to the weather controller
-        receive: (payload) => weatherFeature.receive(payload),
     },
     {
         operation: 'speed_servers',
@@ -232,6 +226,7 @@ const inspector = window.StreamDockManagerInspector({
         document.querySelector('#title').textContent =
             `${module.name} · ${globalScope ? 'Plugin' : 'Action'} settings`;
         const runtime = host.streamDockManager;
+        weatherFeature.requestVaultLocation();
         document.querySelector('#runtime').textContent = runtime?.setup_runtime
             ? 'Setup tools run while this panel is open. Save your settings when you’re ready.'
             : runtime?.enabled === false

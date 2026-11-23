@@ -108,6 +108,9 @@ func TestArtworkDisplaySurvivesCacheAdmissionFailure(t *testing.T) {
 	all := driveDisplays(t, e, []displayStep{{Render: func(ctx context.Context, c *sdk.Client) error {
 		return e.applySpotify(ctx, c, jobResult{Value: spotifyProbe{Status: native.SpotifyStatus{Mode: "playing", Artwork: source}, ArtKey: key, Artwork: artwork}})
 	}}})
+	if e.spotifySample.Artwork != key {
+		t.Fatal("playback snapshot retained the artwork source")
+	}
 	if e.artCache.Len() != 0 {
 		t.Fatal("oversized entry cached")
 	}

@@ -20,7 +20,6 @@ jobs:
         with:
             release_checks: true
             commit: ${{ github.sha }}
-            macos_intel: ${{ inputs.macos_intel || false }}
     packages:
         needs: checks
         if: ${{ !cancelled() && (github.ref == 'refs/heads/package-build' || github.ref == 'refs/heads/release') && (github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && !github.event.created)) && (github.ref == 'refs/heads/package-build' || needs.checks.result == 'success') }}

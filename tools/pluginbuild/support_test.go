@@ -9,7 +9,7 @@ import (
 func TestSupportedPackageMatrixAndExplicitRequests(t *testing.T) {
 	builder := testRunner(t)
 	builder.selected, builder.planSelected = "", nil
-	for platform, count := range map[string]int{"linux": 23, "windows": 24, "darwin": 24} {
+	for platform, count := range map[string]int{"linux": 24, "windows": 25, "darwin": 25} {
 		definitions, err := builder.definitionsFor(platform)
 		if err != nil || len(definitions) != count {
 			t.Fatal(platform, len(definitions), err)

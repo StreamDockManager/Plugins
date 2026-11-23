@@ -2,7 +2,7 @@ package steamlibrary
 
 import "github.com/StreamDockManager/Plugins/internal/engine"
 
-var Definition = engine.Definition{ViewTargets: viewTargets, RuntimeAssets: []string{"icons/bookmark", "icons/busy", "icons/cycle", "icons/latency", "icons/next", "icons/play", "icons/previous"}, Slug: "steam-library", Name: "Steam Library", Version: "0.1.0", MinimumManager: "0.1.0", RequiredCapabilities: []string{"plugin-protocol-v1", "plugin-theme-v1", "plugin-settings-v1", "manager-controls-v1"}, Actions: []string{"launch", "next", "previous", "favorite", "refresh", "playtime"}}
+var Definition = engine.Definition{ViewTargets: viewTargets, RuntimeAssets: []string{"icons/bookmark", "icons/busy", "icons/cycle", "icons/latency", "icons/next", "icons/play", "icons/previous"}, Slug: "steam-library", Name: "Steam Library", Version: "0.1.1", MinimumManager: engine.VaultMinimumManager, RequiredCapabilities: []string{}, Actions: []string{"launch", "next", "previous", "favorite", "refresh", "playtime"}}
 
 // Each target lists the actions allowed to update its physical views
 var viewTargets = []engine.ViewTarget{

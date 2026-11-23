@@ -221,7 +221,7 @@ func (e *Plugin) applyResult(ctx context.Context, c *sdk.Client, result jobResul
 		destination = e.speedContext
 	}
 
-	if err := engine.SendDiagnostic(ctx, c, destination, result.Value); err != nil {
+	if err := engine.SendDiagnostic(ctx, c, destination, e.Bindings[destination].Action, result.Value); err != nil {
 		return err
 	}
 
@@ -367,11 +367,11 @@ func (e *Plugin) extensionInspector(ctx context.Context, c *sdk.Client, ev sdk.E
 	}
 	if p.Op == "discover" {
 
-		return true, c.Send(ctx, sdk.Message("sendToPropertyInspector", ev.Context, map[string]any{"history": e.lookupState("speed-history", nil).SpeedResults}))
+		return true, engine.SendDiagnostic(ctx, c, ev.Context, ev.Action, map[string]any{"history": e.lookupState("speed-history", nil).SpeedResults})
 
 	}
 
-	return true, c.Send(ctx, sdk.Message("sendToPropertyInspector", ev.Context, map[string]any{"message": "Activate a configured action to start its session"}))
+	return true, engine.SendDiagnostic(ctx, c, ev.Context, ev.Action, map[string]any{"message": "Activate a configured action to start its session"})
 }
 
 // Process due internet speed test extension work on the owner loop

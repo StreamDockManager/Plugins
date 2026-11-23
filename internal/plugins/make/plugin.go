@@ -18,7 +18,7 @@ import (
 )
 
 var Icons = map[string]string{"run": "play", "activate": "check", "deactivate": "stop", "status": "network", "execution": "latency", "webhook": "upload"}
-var Definition, visuals = c.Define("make", "Make", Icons, "run", "activate", "deactivate", "status", "execution", "webhook")
+var Definition, visuals = c.DefineVault("make", "Make", Icons, "run", "activate", "deactivate", "status", "execution", "webhook")
 
 // Declare the make global settings fields
 func PluginFields() []settings.Field {
@@ -70,19 +70,24 @@ func (s Sample) TestResult() string {
 }
 
 type Driver struct {
-	HTTP        *c.HTTP
-	BaseURL     string
-	Executions  *operations.Ledger[Execution]
-	Webhooks    *operations.Ledger[string]
-	mu          sync.Mutex
-	active      map[string]bool
-	demandKnown bool
+	vaultSession c.VaultSession
+	HTTP         *c.HTTP
+	BaseURL      string
+	Executions   *operations.Ledger[Execution]
+	Webhooks     *operations.Ledger[string]
+	mu           sync.Mutex
+	active       map[string]bool
+	demandKnown  bool
 }
 
 // Choose the shared make resource identity for these settings
-func (*Driver) Key(s map[string]any) string {
+func (d *Driver) Key(s map[string]any) string {
+	return c.VaultKey(s, Definition.Slug) + d.resourceKey(s)
+}
+func (d *Driver) resourceKey(s map[string]any) string {
 	if c.String(s, "_action", "") == "webhook" {
-		sum := sha256.Sum256([]byte(c.String(s, "webhook", "")))
+		endpoint, _ := c.Secret(s, "webhook")
+		sum := sha256.Sum256([]byte(endpoint))
 		return fmt.Sprintf("webhook:%x", sum)
 	}
 	return "scenario:" + scenarioIdentity(s)
@@ -114,7 +119,7 @@ func (d *Driver) request(ctx context.Context, s map[string]any, method, path str
 	if token == "" {
 		return fmt.Errorf("configure a Make API token")
 	}
-	return d.HTTP.JSON(ctx, method, base+path, map[string]string{"Authorization": "Token " + token, "Content-Type": "application/json"}, body, out)
+	return c.ServiceHTTP(ctx, d.HTTP).JSON(ctx, method, base+path, map[string]string{"Authorization": "Token " + token, "Content-Type": "application/json"}, body, out)
 }
 
 // Validate a required Make identifier setting
@@ -168,6 +173,9 @@ func (d *Driver) scenario(ctx context.Context, s map[string]any) (*Scenario, err
 
 // Read the make resource selected by the binding settings
 func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, d.readService)
+}
+func (d *Driver) readService(ctx context.Context, s map[string]any) (any, error) {
 	if c.String(s, "_action", "") == "webhook" {
 		endpoint, err := c.Secret(s, "webhook")
 		if err != nil {
@@ -251,7 +259,12 @@ func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
 var executionID = regexp.MustCompile(`^[A-Za-z0-9_-]{1,128}$`)
 
 // Execute the selected make command and report its outcome
-func (d *Driver) Command(ctx context.Context, a string, s map[string]any, _ int) (c.Outcome, error) {
+func (d *Driver) Command(ctx context.Context, a string, s map[string]any, ticks int) (c.Outcome, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, func(ctx context.Context, s map[string]any) (c.Outcome, error) {
+		return d.commandService(ctx, a, s, ticks)
+	})
+}
+func (d *Driver) commandService(ctx context.Context, a string, s map[string]any, _ int) (c.Outcome, error) {
 	if a == "status" || a == "execution" {
 		d.refreshExecution(scenarioIdentity(s))
 		return c.Outcome{Message: "Make status refresh requested"}, nil
@@ -275,7 +288,7 @@ func (d *Driver) Command(ctx context.Context, a string, s map[string]any, _ int)
 		if err != nil {
 			return c.Outcome{}, err
 		}
-		_, err = d.HTTP.Do(ctx, "POST", endpoint, map[string]string{"Content-Type": "application/json"}, data)
+		_, err = c.ServiceHTTP(ctx, d.HTTP).Do(ctx, "POST", endpoint, map[string]string{"Content-Type": "application/json"}, data)
 		if err != nil {
 			d.storeWebhook(receiptKey, "Webhook delivery uncertain\nNo automatic retry")
 			return c.Outcome{}, fmt.Errorf("webhook delivery uncertain; check Make before sending again")
@@ -330,6 +343,9 @@ func (d *Driver) Command(ctx context.Context, a string, s map[string]any, _ int)
 
 // List make choices for the property inspector
 func (d *Driver) Discover(ctx context.Context, s map[string]any) ([]c.Choice, error) {
+	return c.WithVault(ctx, s, Definition.Slug, &d.vaultSession, d.Close, d.discoverService)
+}
+func (d *Driver) discoverService(ctx context.Context, s map[string]any) ([]c.Choice, error) {
 	team, err := id(s, "team_id")
 	if err != nil {
 		return nil, err

@@ -2,7 +2,7 @@ package httpwebhooks
 
 import "github.com/StreamDockManager/Plugins/internal/engine"
 
-var Definition = engine.Definition{ViewTargets: viewTargets, RuntimeAssets: []string{"icons/busy", "icons/cancel", "icons/globe", "icons/latency", "icons/list", "icons/request"}, Slug: "http-webhooks", Name: "HTTP & Webhooks", Version: "0.1.0", MinimumManager: "0.1.0", RequiredCapabilities: []string{"plugin-protocol-v1", "plugin-theme-v1", "plugin-settings-v1", "manager-controls-v1"}, Actions: []string{"request", "status", "duration", "field", "cancel"}}
+var Definition = engine.Definition{ViewTargets: viewTargets, RuntimeAssets: []string{"icons/busy", "icons/cancel", "icons/globe", "icons/latency", "icons/list", "icons/request"}, Slug: "http-webhooks", Name: "HTTP & Webhooks", Version: "0.1.1", MinimumManager: engine.VaultMinimumManager, RequiredCapabilities: []string{}, Actions: []string{"request", "status", "duration", "field", "cancel"}}
 
 // Each target lists the actions allowed to update its physical views
 var viewTargets = []engine.ViewTarget{

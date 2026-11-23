@@ -72,7 +72,7 @@ func packageFixture(t *testing.T) *buildRunner {
 		builder.setenv(name, "")
 	}
 	builder.setenv("RELEASE_REPOSITORY", "example/plugins")
-	for _, name := range []string{"go.mod", "inspectors/inspector.html", "inspectors/inspector.js", "inspectors/inspector-features.js", "inspectors/inspector.css", "LICENSE", "THIRD_PARTY_NOTICES.md", "README.md", "examples/new-plugins.json"} {
+	for _, name := range []string{"go.mod", "inspectors/inspector.html", "inspectors/inspector.js", "inspectors/inspector-features.js", "inspectors/inspector.css", "LICENSE", "THIRD_PARTY_NOTICES.md", "README.md", "examples/new-plugins.json", "internal/plugins/sdm-vault-example/README.md", "internal/plugins/sdm-vault-example/variables.json"} {
 		path := filepath.Join(builder.root, name)
 		if err := os.MkdirAll(filepath.Dir(path), 0755); err != nil {
 			t.Fatal(err)

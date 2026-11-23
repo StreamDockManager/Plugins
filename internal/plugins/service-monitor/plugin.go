@@ -11,6 +11,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/StreamDockManager/Plugin-SDK/Go"
@@ -20,13 +21,67 @@ import (
 	"github.com/StreamDockManager/Plugins/internal/engine"
 	process "github.com/StreamDockManager/Plugins/internal/native/command"
 	"github.com/StreamDockManager/Plugins/internal/pollingdisplay"
+	metadata "github.com/StreamDockManager/Plugins/internal/settings"
 )
 
 // Attach service monitor lifecycle and action hooks to the shared engine
 func Factory(base *engine.Engine) engine.Feature { return makePlugin(base).hooks() }
 
+// A poll or refresh-all batch owns one listing, including probes that start after a worker slot opens.
+type listing struct {
+	mu     sync.Mutex
+	flight *listingFlight
+}
+type listingFlight struct {
+	done     chan struct{}
+	cancel   context.CancelFunc
+	waiters  int
+	finished bool
+	services launchdIndex
+	err      error
+}
+
+func (l *listing) read(ctx context.Context, run func(context.Context, string, ...string) (string, error)) (launchdIndex, error) {
+	l.mu.Lock()
+	f := l.flight
+	if f == nil {
+		work, cancel := context.WithTimeout(context.WithoutCancel(ctx), 120*time.Second)
+		f = &listingFlight{done: make(chan struct{}), cancel: cancel}
+		l.flight = f
+		go func(f *listingFlight) {
+			defer cancel()
+			text, err := run(work, "launchctl", "list")
+			f.err = err
+			if err == nil {
+				f.services = indexLaunchd(text)
+			}
+			l.mu.Lock()
+			f.finished = true
+			close(f.done)
+			l.mu.Unlock()
+		}(f)
+	}
+	f.waiters++
+	l.mu.Unlock()
+	defer func() {
+		l.mu.Lock()
+		defer l.mu.Unlock()
+		f.waiters--
+		if f.waiters == 0 && !f.finished && l.flight == f {
+			f.cancel()
+			l.flight = nil
+		}
+	}()
+	select {
+	case <-ctx.Done():
+		return launchdIndex{}, ctx.Err()
+	case <-f.done:
+		return f.services, f.err
+	}
+}
+
 // Check the configured service using its selected probe type
-func checkService(ctx context.Context, kind string, s map[string]any, cache *httpValidatorCache, automatic bool) (string, any, error) {
+func checkService(ctx context.Context, kind string, s map[string]any, cache *httpValidatorCache, automatic bool, lists ...*listing) (string, any, error) {
 	seconds := configvalue.Number(s, "timeout", 5)
 	if seconds <= 0 || seconds > 120 {
 		return "", nil, fmt.Errorf("timeout must be 0–120 seconds")
@@ -46,7 +101,11 @@ func checkService(ctx context.Context, kind string, s map[string]any, cache *htt
 		delete(settings, "fields")
 		delete(settings, "field")
 		var response HTTPResult
-		response, err = requestHTTP(ctx, settings, httpRequestOptions{Cache: cache, Automatic: automatic, StatusOnly: true, NoRedirect: true, AllowUserInfo: true})
+		secret, _ := s["url"].(*sdk.VaultSecret)
+		if configvalue.Bool(s, "use_vault_url") && secret == nil {
+			return "", nil, fmt.Errorf("Choose a Vault service URL")
+		}
+		response, err = requestHTTP(ctx, settings, httpRequestOptions{VaultURL: secret, Cache: cache, Automatic: automatic, StatusOnly: true, NoRedirect: true, AllowUserInfo: secret == nil})
 		available = response.Status >= 200 && response.Status < 400 && (response.Status != 304 || response.Revalidated)
 		data.HTTPStatus = response.Status
 		data.Revalidated = response.Revalidated
@@ -76,8 +135,13 @@ func checkService(ctx context.Context, kind string, s map[string]any, cache *htt
 			text, err = helper(ctx, "sc.exe", "query", name)
 			available, data.Reason, err = localServiceObservation("windows", name, text, err)
 		case "darwin":
-			text, err = helper(ctx, "launchctl", "list")
-			available, data.Reason, err = localServiceObservation("darwin", name, text, err)
+			if len(lists) > 0 && lists[0] != nil {
+				services, readErr := lists[0].read(ctx, helper)
+				available, data.Reason, err = services.status(name, readErr)
+			} else {
+				text, err = helper(ctx, "launchctl", "list")
+				available, data.Reason, err = localServiceObservation("darwin", name, text, err)
+			}
 		default:
 			text, err = helper(ctx, "systemctl", "is-active", "--", name)
 			available, data.Reason, err = localServiceObservation("linux", name, text, err)
@@ -175,7 +239,7 @@ func (e *Plugin) applyResult(ctx context.Context, c *sdk.Client, result jobResul
 
 	destination := result.ID
 
-	if err := engine.SendDiagnostic(ctx, c, destination, result.Value); err != nil {
+	if err := engine.SendDiagnostic(ctx, c, destination, e.Bindings[destination].Action, result.Value); err != nil {
 		return err
 	}
 
@@ -265,11 +329,12 @@ func (e *Plugin) extensionEvent(ctx context.Context, c *sdk.Client, ev sdk.Event
 	{
 
 		if a != "refresh" {
-			e.startService(ctx, id, a, s)
+			e.startServicePolling(ctx, c, id, a, s, false, nil)
 		} else {
+			batch := new(listing)
 			for other, bind := range e.Bindings {
 				if action(bind.Action) != "refresh" {
-					e.startService(ctx, other, action(bind.Action), e.MergedSettings(bind.Settings))
+					e.startServicePolling(ctx, c, other, action(bind.Action), e.MergedSettings(bind.Settings), false, batch)
 				}
 			}
 		}
@@ -310,15 +375,15 @@ func (e *Plugin) extensionInspector(ctx context.Context, c *sdk.Client, ev sdk.E
 			}) {
 				return true, nil
 			}
-			return true, c.Send(ctx, sdk.Message("sendToPropertyInspector", ev.Context, map[string]any{"op": "local_services", "request_id": p.RequestID, "error": "Service discovery is busy. Try again shortly."}))
+			return true, engine.SendDiagnostic(ctx, c, ev.Context, ev.Action, map[string]any{"op": "local_services", "request_id": p.RequestID, "error": "Service discovery is busy. Try again shortly."})
 		}
-		return true, c.Send(ctx, sdk.Message("sendToPropertyInspector", ev.Context, map[string]any{"message": "This action has no runtime discovery"}))
+		return true, engine.SendDiagnostic(ctx, c, ev.Context, ev.Action, map[string]any{"message": "This action has no runtime discovery"})
 
 	}
 
 	{
 
-		e.startService(ctx, ev.Context, a, s)
+		e.startServicePolling(ctx, c, ev.Context, a, s, false, nil)
 		return true, nil
 	}
 
@@ -326,6 +391,7 @@ func (e *Plugin) extensionInspector(ctx context.Context, c *sdk.Client, ev sdk.E
 
 // Process due service monitor extension work on the owner loop
 func (e *Plugin) extensionPoll(ctx context.Context, c *sdk.Client) (bool, error) {
+	batch := new(listing)
 
 	for id, b := range e.Bindings {
 		s := e.MergedSettings(b.Settings)
@@ -333,7 +399,7 @@ func (e *Plugin) extensionPoll(ctx context.Context, c *sdk.Client) (bool, error)
 		{
 
 			if e.automaticRead(id, a, s) && e.pollingDue(id, time.Now()) {
-				e.startServicePolling(ctx, id, a, s, true)
+				e.startServicePolling(ctx, c, id, a, s, true, batch)
 			}
 		}
 
@@ -362,7 +428,19 @@ func (e *Plugin) handleAction(ctx context.Context, c *sdk.Client, ev sdk.Event, 
 
 // Expose the service monitor feature callbacks used by the shared engine
 func (e *Plugin) hooks() engine.Feature {
-	return engine.Feature{Action: e.handleAction, Inspector: e.extensionInspector, Settings: e.settingsFeature, Clear: e.clearFeature, Close: e.closeFeature, Status: e.displayStatus, Deadline: e.nextPoll, Apply: e.applyResult, Visuals: visuals, Poll: e.pollFeature}
+	return engine.Feature{Before: func(_ context.Context, _ *sdk.Client, ev sdk.Event) (bool, error) {
+		if ev.Event == "streamDockManagerPermissionsChanged" {
+			for id, b := range e.Bindings {
+				if configvalue.Bool(e.MergedSettings(b.Settings), "use_vault_url") {
+					e.CancelJob(id)
+					delete(e.Results, id)
+					delete(e.ResultsText, id)
+					delete(e.polling, id)
+				}
+			}
+		}
+		return false, nil
+	}, Action: e.handleAction, Inspector: e.extensionInspector, Settings: e.settingsFeature, Clear: e.clearFeature, Close: e.closeFeature, Status: e.displayStatus, Deadline: e.nextPoll, Apply: e.applyResult, Visuals: visuals, Poll: e.pollFeature}
 }
 
 // Retain useful service monitor output while an automatic refresh is pending
@@ -430,17 +508,21 @@ func (e *Plugin) startJob(ctx context.Context, id string, work func(context.Cont
 	return e.StartJob(ctx, id, work, e.applyResult)
 }
 
-// Schedule an explicit service check for the activating binding
-func (e *Plugin) startService(ctx context.Context, id, a string, s map[string]any) {
-	e.startServicePolling(ctx, id, a, s, false)
-}
-
 // Schedule a service check with explicit or automatic polling ownership
-func (e *Plugin) startServicePolling(ctx context.Context, id, a string, s map[string]any, automatic bool) {
+func (e *Plugin) startServicePolling(ctx context.Context, c *sdk.Client, id, a string, s map[string]any, automatic bool, batch *listing) {
 	s = cloneSettings(s)
 	cache := e.httpCache
 	previousText := e.ResultsText[id]
-	if e.startJob(ctx, id, func(job context.Context) (string, any, error) { return checkService(job, a, s, cache, automatic) }) {
+	if e.startJob(ctx, id, func(job context.Context) (string, any, error) {
+		if configvalue.Bool(s, "use_vault_url") {
+			value, err := metadata.URLCredential(job, c, Definition.Slug, engine.ID(Definition.Slug)+"."+a, a, "url")
+			if err != nil {
+				return "", nil, err
+			}
+			s["url"] = value
+		}
+		return checkService(job, a, s, cache, automatic, batch)
+	}) {
 		e.keepPollingDisplay(id, automatic, previousText)
 		e.attachPolling(id, pollingInterval("service-monitor", a, s))
 	} else {

@@ -20,7 +20,7 @@ jobs:
               with:
                   ref: ${{ inputs.commit }}
                   persist-credentials: false
-            - uses: actions/setup-go@v7.0.0
+            - uses: actions/setup-go@v7.1.0
               with: { go-version: '1.27.4' }
             - uses: actions/setup-python@v7.1.0
               with: { python-version: '3.12' }
@@ -32,9 +32,12 @@ jobs:
                   restore-keys: plugins-cross-${{ runner.os }}-
             - name: Cross-compile and package every supported OS
               run: |
-                  go run ./tools/pluginbuild package --os linux
-                  go run ./tools/pluginbuild package --os windows
-                  go run ./tools/pluginbuild package --os darwin
+                  builder="$(mktemp -d)/pluginbuild"
+                  trap 'rm -f "$builder"; rmdir "$(dirname "$builder")"' EXIT
+                  go build -o "$builder" ./tools/pluginbuild
+                  for platform in linux windows darwin; do
+                    "$builder" package --os "$platform"
+                  done
                   python scripts/validate_packages.py --all-platforms
             - uses: actions/upload-artifact@v7.0.2
               with:
@@ -42,6 +45,7 @@ jobs:
                   path: |
                       dist/packages/linux/*.zip
                       dist/catalog-linux.json
+                  compression-level: 0
                   if-no-files-found: error
             - uses: actions/upload-artifact@v7.0.2
               with:
@@ -49,6 +53,7 @@ jobs:
                   path: |
                       dist/packages/windows/*.zip
                       dist/catalog-windows.json
+                  compression-level: 0
                   if-no-files-found: error
             - uses: actions/upload-artifact@v7.0.2
               with:
@@ -57,4 +62,5 @@ jobs:
                       dist/packages/darwin/arm64/*.zip
                       ${{ inputs.macos_intel && 'dist/packages/darwin/amd64/*.zip' || '' }}
                       dist/catalog-macos.json
+                  compression-level: 0
                   if-no-files-found: error

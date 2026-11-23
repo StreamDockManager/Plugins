@@ -5,17 +5,19 @@ import (
 	"crypto/sha256"
 	"encoding/json"
 	"fmt"
+	sdk "github.com/StreamDockManager/Plugin-SDK/Go"
 	"github.com/StreamDockManager/Plugin-SDK/Go/settings"
 	c "github.com/StreamDockManager/Plugins/internal/connectors"
 	"github.com/StreamDockManager/Plugins/internal/engine"
 	metadata "github.com/StreamDockManager/Plugins/internal/settings"
 	"net/url"
 	"strconv"
+	"strings"
 	"time"
 )
 
 var Icons = map[string]string{"points": "plus", "completion": "check", "recent": "list", "refresh": "cycle"}
-var Definition, visuals = c.Define("retroachievements", "RetroAchievements", Icons, "points", "completion", "recent", "refresh")
+var Definition, visuals = c.DefineVault("retroachievements", "RetroAchievements", Icons, "points", "completion", "recent", "refresh")
 
 // Declare the retroachievements global settings fields
 func PluginFields() []settings.Field {
@@ -32,8 +34,10 @@ func ActionFields(a string) []settings.Field {
 }
 
 var Factory = c.Factory(c.Options{Definition: Definition, Visuals: visuals, SharedKeys: metadata.Keys(PluginFields()), Interval: time.Minute, New: func(chan<- struct{}) c.Driver {
-	return &Driver{HTTP: c.NewHTTP(), BaseURL: "https://retroachievements.org/API/", Now: time.Now}
+	return &Driver{HTTP: c.NewHTTP(), BaseURL: retroAPI, Now: time.Now, vaultHTTP: newVaultHTTP()}
 }})
+
+const retroAPI = "https://retroachievements.org/API/"
 
 type Profile struct {
 	User                string
@@ -87,6 +91,7 @@ type Sample struct {
 }
 type Driver struct {
 	HTTP        *c.HTTP
+	vaultHTTP   *c.HTTP
 	BaseURL     string
 	Now         func() time.Time
 	profile     Profile
@@ -97,42 +102,55 @@ type Driver struct {
 // Choose the shared retroachievements resource identity for these settings
 func (*Driver) Key(s map[string]any) string {
 	a := c.String(s, "_action", "points")
+	prefix := ""
+	if c.Boolean(s, "use_vault_credentials") {
+		prefix = "vault:" + a + ":"
+	}
 	if a == "refresh" {
 		a = "points"
 	}
 	if a == "completion" {
-		return "completion:" + c.String(s, "game_id", "")
+		return prefix + "completion:" + c.String(s, "game_id", "")
 	}
-	return a
+	return prefix + a
 }
 
 // Send a bounded retroachievements service request and decode its response
-func (d *Driver) request(ctx context.Context, s map[string]any, name string, query url.Values, out any) error {
-	key, err := c.Secret(s, "api_key")
-	if err != nil {
-		return err
-	}
-	user := c.String(s, "username", "")
+func (d *Driver) request(ctx context.Context, http *c.HTTP, user, key, name string, query url.Values, out any) error {
 	if key == "" || user == "" {
 		return fmt.Errorf("configure RetroAchievements username and web API key")
 	}
 	query.Set("y", key)
 	query.Set("u", user)
-	return d.HTTP.JSON(ctx, "GET", d.BaseURL+name+".php?"+query.Encode(), nil, nil, out)
+	// The SDK transport uses a bounded body, sanitizes errors, and does not follow redirects
+	return http.JSON(ctx, "GET", d.BaseURL+name+".php?"+query.Encode(), nil, nil, out)
 }
 
-// Read the retroachievements resource selected by the binding settings
+// Read the RetroAchievements resource using explicit portable settings
 func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
-	user := c.String(s, "username", "")
+	if c.Boolean(s, "use_vault_credentials") {
+		return nil, &sdk.RPCError{Code: "operation_unavailable", Message: "Vault requires an authorized Manager connection"}
+	}
 	secret, err := c.Secret(s, "api_key")
 	if err != nil {
 		return nil, err
 	}
+	return d.readAuthorized(ctx, d.HTTP, s, c.String(s, "username", ""), secret)
+}
+
+// Use the selected values without adding them to shared settings or worker state
+func (d *Driver) readAuthorized(ctx context.Context, http *c.HTTP, s map[string]any, user, secret string) (any, error) {
+	if user == "" || secret == "" {
+		return nil, fmt.Errorf("configure RetroAchievements username and web API key")
+	}
 	identity := fmt.Sprintf("%x", sha256.Sum256([]byte(user+"\x00"+secret)))
 	if d.profileUser != identity || d.profileAt.IsZero() || d.Now().Sub(d.profileAt) >= engine.RefreshInterval("retroachievements", "", s, time.Minute) {
 		var p Profile
-		if err := d.request(ctx, s, "API_GetUserProfile", url.Values{}, &p); err != nil {
+		if err := d.request(ctx, http, user, secret, "API_GetUserProfile", url.Values{}, &p); err != nil {
 			return nil, err
+		}
+		if strings.Contains(p.User, secret) {
+			return nil, fmt.Errorf("invalid RetroAchievements response")
 		}
 		if p.User == "" || p.TotalPoints == nil || p.TotalSoftcorePoints == nil || *p.TotalPoints < 0 || *p.TotalSoftcorePoints < 0 {
 			return nil, fmt.Errorf("malformed RetroAchievements profile")
@@ -158,8 +176,11 @@ func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
 			return nil, fmt.Errorf("game ID must be a positive integer")
 		}
 		var p Progress
-		if err := d.request(ctx, s, "API_GetGameInfoAndUserProgress", url.Values{"g": {id}}, &p); err != nil {
+		if err := d.request(ctx, http, user, secret, "API_GetGameInfoAndUserProgress", url.Values{"g": {id}}, &p); err != nil {
 			return nil, err
+		}
+		if strings.Contains(p.Title, secret) {
+			return nil, fmt.Errorf("invalid RetroAchievements response")
 		}
 		if p.ID == 0 || p.Title == "" || p.NumAchievements == nil || p.NumAwardedToUser == nil || p.NumAwardedToUserHardcore == nil {
 			return nil, fmt.Errorf("game progress unavailable or malformed")
@@ -170,10 +191,13 @@ func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
 		sample.Progress = &p
 	}
 	if a == "recent" {
-		if err := d.request(ctx, s, "API_GetUserRecentAchievements", url.Values{"m": {"60"}}, &sample.Unlocks); err != nil {
+		if err := d.request(ctx, http, user, secret, "API_GetUserRecentAchievements", url.Values{"m": {"60"}}, &sample.Unlocks); err != nil {
 			return nil, err
 		}
 		for _, u := range sample.Unlocks {
+			if strings.Contains(u.Title, secret) || strings.Contains(u.GameTitle, secret) || strings.Contains(u.Date, secret) {
+				return nil, fmt.Errorf("invalid RetroAchievements response")
+			}
 			if u.Title == "" || (u.HardcoreMode != 0 && u.HardcoreMode != 1) {
 				return nil, fmt.Errorf("malformed recent unlock")
 			}
@@ -230,4 +254,9 @@ func (*Driver) Display(value any, a string, s map[string]any) string {
 }
 
 // Release the retroachievements driver resources during shutdown
-func (d *Driver) Close() { d.HTTP.Close() }
+func (d *Driver) Close() {
+	d.HTTP.Close()
+	if d.vaultHTTP != nil {
+		d.vaultHTTP.Close()
+	}
+}

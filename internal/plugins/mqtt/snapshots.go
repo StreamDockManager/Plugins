@@ -36,7 +36,8 @@ func (b *messageBudget) release(size int) {
 }
 
 type messageJSON struct {
-	mu           sync.Mutex
+	mu sync.Mutex
+
 	invalid      bool
 	bytes        int
 	fields       map[string]extractedValue
@@ -68,6 +69,10 @@ type extractedValue struct {
 
 // Read a cached JSON path from an immutable message snapshot
 func (message Message) extracted(path string) extractedValue {
+	return message.extractPaths(path, nil)
+}
+
+func (message Message) extractPaths(path string, wanted map[string][]string) extractedValue {
 	parsed := message.parsed
 	if parsed == nil {
 		parsed = &messageJSON{}
@@ -87,6 +92,25 @@ func (message Message) extracted(path string) extractedValue {
 		parsed.invalid = true
 		return extractedValue{text: "Malformed MQTT JSON"}
 	}
+	value := parsed.extractPath(item, path)
+	for filter, paths := range wanted {
+		if parsed.retired || len(parsed.fields) >= 64 {
+			break
+		}
+		if matches(filter, message.Topic) {
+			for _, candidate := range paths {
+				if candidate != path {
+					if _, ok := parsed.fields[candidate]; !ok {
+						parsed.extractPath(item, candidate)
+					}
+				}
+			}
+		}
+	}
+	return value
+}
+
+func (parsed *messageJSON) extractPath(item any, path string) extractedValue {
 	text := "JSON field unavailable"
 	found := true
 	for key := range strings.SplitSeq(path, ".") {

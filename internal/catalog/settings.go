@@ -32,6 +32,17 @@ func ActionFields(slug, a string) []Field {
 			fields = append(fields, metadata.Numeric("update_interval_ms", "Automatic read interval in milliseconds (0 loads once)", float64(policy.DefaultMS), 0, float64(policy.MaximumMS)))
 		}
 	}
+	for _, field := range metadata.VaultFields(slug, a) {
+		fields = append(fields, metadata.Check("use_vault_"+field.Field, "Use Manager Vault for "+field.Field))
+		for i := range fields {
+			if fields[i].Key == field.Field {
+				fields[i].Required = false
+			}
+		}
+	}
+	if slug == "retroachievements" {
+		fields = append(fields, metadata.Check("use_vault_credentials", "Use the username and API key from Manager Vault"))
+	}
 	return fields
 }
 

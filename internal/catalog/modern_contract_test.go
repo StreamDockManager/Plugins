@@ -3,17 +3,27 @@ package catalog
 import (
 	"encoding/json"
 	"path"
+	"slices"
 	"testing"
 )
 
 // Every maintained producer must publish explicit current inspector/layout assets
 func TestEveryOfficialPluginPublishesCurrentContracts(t *testing.T) {
-	if len(Definitions) != 24 {
+	count := 25
+	if len(Definitions) != count {
 		t.Fatal("review the consumer inventory when adding/removing plugins")
 	}
 	for _, d := range Definitions {
 		t.Run(d.Slug, func(t *testing.T) {
 			descriptor, assets := Descriptor(d), PluginAssets(d)
+			required := map[string][]string{
+				"system-monitor":    {"telemetry-v1"},
+				"sdm-vault-example": {"plugin-permissions-v1"},
+				"random-meme":       {"desktop-input-v1"},
+			}[d.Slug]
+			if d.RequiredCapabilities == nil || !slices.Equal(d.RequiredCapabilities, required) || !slices.Equal(descriptor.RequiredCapabilities, required) {
+				t.Fatalf("wrong host requirements: definition %v, descriptor %v, want %v", d.RequiredCapabilities, descriptor.RequiredCapabilities, required)
+			}
 			if descriptor.Version != 1 || descriptor.SettingsProtocol != 1 || descriptor.ID != ID(d.Slug) {
 				t.Fatal("missing canonical managed descriptor")
 			}

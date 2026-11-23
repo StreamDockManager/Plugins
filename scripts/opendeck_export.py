@@ -106,6 +106,15 @@ def export_manifest(manifest, contents, target, *, materialize_aliases=False):
     fields(result, ('Icon', 'CategoryIcon'))
     for action in result.get('Actions', []):
         fields(action, ('Icon',))
+        controllers = action.get('Controllers', [])
+        if not isinstance(controllers, list) or any(not isinstance(c, str) for c in controllers):
+            raise ValueError('OpenAction controllers must be a list of names')
+        vsd_encoders = ('Knob', 'Information', 'SecondaryScreen')
+        if any(c in vsd_encoders for c in controllers):
+            action['Controllers'] = list(dict.fromkeys('Encoder' if c in vsd_encoders else c for c in controllers))
+        if 'Encoder' in action.get('Controllers', []):
+            # OpenDeck applies setFeedbackLayout only to actions with an encoder object.
+            action.setdefault('Encoder', {})
         if action.get('Encoder'):
             fields(action['Encoder'], ('Icon', 'background', 'Background'))
         for state in action.get('States', []):

@@ -1,0 +1,10 @@
+{
+    "description": "Try Vault setup, private secret rotation, reviewed recipes and local HTTP and HTTPS webhook requests.",
+    "author": "Stream Dock Manager contributors",
+    "license": "GPL-3.0-or-later",
+    "tags": ["vault", "example", "webhooks"],
+    "documentation": "https://github.com/StreamDockManager/Plugins/blob/main/internal/plugins/sdm-vault-example/README.md",
+    "dependencies": [],
+    "vsd_craft_compatible": false,
+    "opendeck_compatible": false
+}

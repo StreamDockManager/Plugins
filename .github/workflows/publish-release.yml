@@ -2,6 +2,11 @@ name: Publish Release
 on:
     workflow_dispatch:
         inputs:
+            runner_service:
+                description: Runner service
+                type: choice
+                options: [github, blacksmith]
+                default: github
             prepare_run_id:
                 description: Successful Prepare Release run ID (unexpired artifact)
                 required: true
@@ -17,7 +22,7 @@ jobs:
         permissions:
             actions: read
             contents: write
-        runs-on: ubuntu-24.04
+        runs-on: ${{ inputs.runner_service == 'blacksmith' && 'blacksmith-4vcpu-ubuntu-2404' || 'ubuntu-24.04' }}
         timeout-minutes: 30
         steps:
             - uses: actions/checkout@v7.0.1

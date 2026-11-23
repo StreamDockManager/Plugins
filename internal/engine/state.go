@@ -23,6 +23,7 @@ type managedState struct {
 	target                    any
 	client                    *sdk.Client
 	state                     *managedstate.State
+	images                    *packageImages
 	ready, dirty, unavailable bool
 }
 
@@ -67,7 +68,7 @@ func newManaged(def Definition, factory Factory) *Engine {
 		before, after, poll, closeFeature := feature.Before, feature.After, feature.Poll, feature.Close
 		// Initialize persisted state before exposing an event to the feature handler
 		feature.Before = func(ctx context.Context, c *sdk.Client, ev sdk.Event) (bool, error) {
-			if err := state.initialize(ctx, c); err != nil {
+			if err := state.initialize(ctx, c, def); err != nil {
 				return true, err
 			}
 			if before != nil {
@@ -87,7 +88,7 @@ func newManaged(def Definition, factory Factory) *Engine {
 			return err
 		}
 		feature.Poll = func(ctx context.Context, c *sdk.Client) (bool, error) {
-			if err := state.initialize(ctx, c); err != nil {
+			if err := state.initialize(ctx, c, def); err != nil {
 				return true, err
 			}
 			var handled bool
@@ -106,7 +107,7 @@ func newManaged(def Definition, factory Factory) *Engine {
 			}
 			managedStates.Delete(e)
 		}
-		return feature
+		return withFailureNotifications(def, e, feature)
 	})
 }
 
@@ -147,9 +148,23 @@ func Persist(e *Engine) error {
 }
 
 // initialize initializes the owner state before use
-func (s *managedState) initialize(ctx context.Context, c *sdk.Client) error {
+func (s *managedState) initialize(ctx context.Context, c *sdk.Client, def Definition) error {
 	if s.ready {
 		return nil
+	}
+	if s.client == nil && c != nil && !c.Supports("plugin-protocol-v1") {
+		s.images = installedImages(def, s.engine.Feature.Visuals)
+		if s.images != nil {
+			build := s.engine.Feature.View
+			if build == nil {
+				build = s.engine.BuildDisplayView
+			}
+			s.engine.Feature.View = func(id string, status DisplayStatus) Display {
+				view := build(id, status)
+				view.Image = s.images.image(view.Image)
+				return view
+			}
+		}
 	}
 	s.client = c
 	if s.target == nil || s.kind == "session" {

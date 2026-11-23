@@ -15,8 +15,9 @@ import (
 
 // TestEveryPluginDeclaresViewOwnership verifies every plugin declares view ownership
 func TestEveryPluginDeclaresViewOwnership(t *testing.T) {
-	if len(Definitions) != 24 {
-		t.Fatalf("audited %d plugins, want 24", len(Definitions))
+	want := 25
+	if len(Definitions) != want {
+		t.Fatalf("audited %d plugins, want %d", len(Definitions), want)
 	}
 	for _, def := range Definitions {
 		t.Run(def.Slug, func(t *testing.T) {

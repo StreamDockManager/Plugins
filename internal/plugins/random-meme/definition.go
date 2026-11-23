@@ -23,6 +23,7 @@ const CaptionSVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100
 
 // Declare meme runtime assets and explicitly shared view targets
 func init() {
+	Definition.RequiredCapabilities = []string{"desktop-input-v1"}
 	Definition.RuntimeAssets = []string{"display/meme.json", CaptionAsset}
 	for i := range Definition.ViewTargets {
 		Definition.ViewTargets[i].Shared = true

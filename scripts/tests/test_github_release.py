@@ -51,6 +51,22 @@ class FakeGitHub:
 
 
 class GitHubReleaseTests(unittest.TestCase):
+    # Verify the same executable builds all targets without losing optional Intel support
+    def test_build_packages_reuses_host_executable(self):
+        for intel in (False, True):
+            with self.subTest(intel=intel), patch.object(release.subprocess, 'run') as run, \
+                    patch.object(release.catalog, 'source_records', return_value=[{'id': 'test.plugin'}]) as records:
+                self.assertEqual(release.build_packages({}, 4, macos_intel=intel), [{'id': 'test.plugin'}])
+                build, *packages = [call.args[0] for call in run.call_args_list]
+                self.assertEqual(build[:5], ['go', 'build', '-p', '1', '-o'])
+                self.assertEqual(build[6:], ['./tools/pluginbuild'])
+                records.assert_called_once_with(env={}, builder=Path(build[5]))
+                suffix = ['--macos-intel'] if intel else []
+                self.assertEqual(packages, [
+                    [build[5], 'package', '--os', platform, '--jobs', '4', *suffix]
+                    for platform in ('linux', 'windows', 'darwin')
+                ])
+
     # Create a local release bundle fixture with matching catalog and checksums
     def staging(self,folder,channel='stable'):
         folder=Path(folder);tag=f'plugins-{channel}-fixture';repo='test/plugins';commit='a'*40

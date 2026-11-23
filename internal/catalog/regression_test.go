@@ -78,8 +78,9 @@ func TestRetiredPluginsAreNotOffered(t *testing.T) {
 
 // TestOfficialAssetAndSettingsCoverage verifies official asset and settings coverage
 func TestOfficialAssetAndSettingsCoverage(t *testing.T) {
-	if len(Definitions) != 24 {
-		t.Fatal("expected 24 plugins", len(Definitions))
+	count := 25
+	if len(Definitions) != count {
+		t.Fatalf("expected %d plugins, got %d", count, len(Definitions))
 	}
 	seen := map[string]string{}
 	for _, definition := range Definitions {
@@ -113,11 +114,16 @@ func TestOfficialAssetAndSettingsCoverage(t *testing.T) {
 				}
 			}
 		}
-		if definition.Version != "0.1.0" || definition.MinimumManager != "0.1.0" {
-			t.Fatalf("%s must retain the unreleased 0.1.0 baseline", definition.Slug)
+		version := "0.1.1"
+		if definition.Slug == "sdm-vault-example" {
+			version = "0.1.0"
+		}
+		minimumManager := "0.1.1"
+		if definition.Version != version || definition.MinimumManager != minimumManager || descriptor.MinimumManager != minimumManager {
+			t.Fatalf("%s version or minimum Manager differs from its expected release", definition.Slug)
 		}
 	}
-	if len(ActionFields("battery-power", "status")) != 0 || len(PluginFields("battery-power")) != 0 || len(PluginFields("weather")) == 0 {
+	if len(ActionFields("battery-power", "status")) != 0 || len(PluginFields("battery-power")) != 0 {
 		t.Fatal("functional settings scopes inaccurate")
 	}
 }

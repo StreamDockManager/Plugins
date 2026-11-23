@@ -2,6 +2,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"crypto/sha256"
 	"encoding/base64"
@@ -101,7 +102,8 @@ func (builder *buildRunner) binary(osname, arch, slug string) string {
 
 // binaryEnvironment constructs the target-specific compiler environment
 func (builder *buildRunner) binaryEnvironment(osname, arch string) []string {
-	return append(append([]string{}, builder.environment...), "CGO_ENABLED=0", "GOMAXPROCS=1", "GOOS="+osname, "GOARCH="+arch)
+	env := append(append([]string{}, builder.environment...), "CGO_ENABLED=0", "GOMAXPROCS=1", "GOOS="+osname, "GOARCH="+arch)
+	return env
 }
 
 // binaryArguments constructs the target-specific compiler arguments
@@ -355,6 +357,12 @@ func (builder *buildRunner) packPackages(osname string, noticeFor func(official.
 			metadata := manifest["StreamDockManager"].(map[string]any)
 			metadata["ManifestDialect"] = "vsd"
 			metadata["Capabilities"] = official.Descriptor(d)
+			if slots := official.PackageSetupSlots(d.Slug); slots != nil {
+				metadata["SetupSlots"] = slots
+			}
+			if permissions := official.PackagePermissions(d.Slug); permissions != nil {
+				metadata["Permissions"] = permissions
+			}
 			mb, _ := json.MarshalIndent(manifest, "", "    ")
 			files := map[string]packageFile{"manifest.json": {data: mb}, entry: {path: path}}
 			assets, err := builder.inspectorAssets(d)
@@ -366,6 +374,18 @@ func (builder *buildRunner) packPackages(osname string, noticeFor func(official.
 			}
 			for _, name := range []string{"LICENSE", "README.md", "examples/new-plugins.json"} {
 				files[name] = packageFile{path: filepath.Join(builder.root, name)}
+			}
+			if d.Slug == "sdm-vault-example" {
+				files["README.md"] = packageFile{path: filepath.Join(builder.root, "internal", "plugins", d.Slug, "README.md")}
+				inputs, err := builder.prepareArchive(io.Discard, map[string]packageFile{"profiles.json": {path: filepath.Join(builder.root, "internal", "plugins", d.Slug, "variables.json")}})
+				if err != nil {
+					return err
+				}
+				var macros bytes.Buffer
+				if err = builder.archiveTo(&macros, "", inputs, "", ""); err != nil {
+					return err
+				}
+				files["examples/vault-variables.zip"] = packageFile{data: macros.Bytes()}
 			}
 			files["THIRD_PARTY_LICENSES.txt"] = packageFile{data: notices}
 			files["THIRD_PARTY_NOTICES.md"] = packageFile{data: packageNotices(d)}
@@ -501,13 +521,19 @@ func (builder *buildRunner) run() error {
 		}
 		// A full regeneration owns this output tree. Drop retired modules so
 		// local pickers and inspector checks cannot rediscover stale packages
-		if builder.selected == "" {
-			if err := os.RemoveAll(filepath.Join(builder.root, "dist", "ui")); err != nil {
+		ui := filepath.Join(builder.root, "dist", "ui")
+		if builder.assetsOutput != "" {
+			ui = builder.assetsOutput
+			if err := os.Mkdir(ui, 0755); err != nil {
+				return err
+			}
+		} else if builder.selected == "" {
+			if err := os.RemoveAll(ui); err != nil {
 				return err
 			}
 		}
 		for _, d := range ds {
-			folder := filepath.Join(builder.root, "dist", "ui", d.Slug)
+			folder := filepath.Join(ui, d.Slug)
 			files, err := builder.inspectorAssets(d)
 			if err != nil {
 				return err
@@ -528,7 +554,7 @@ func (builder *buildRunner) run() error {
 				}
 			}
 		}
-		fmt.Fprintf(builder.stdout, "Staged %d plugin UI modules in dist/ui\n", len(ds))
+		fmt.Fprintf(builder.stdout, "Staged %d plugin UI modules in %s\n", len(ds), ui)
 		return nil
 	case "build":
 		return builder.compile(runtime.GOOS, runtime.GOARCH)

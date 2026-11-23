@@ -107,8 +107,8 @@ func (index *steamIndex) discover(ctx context.Context, root, account string) ([]
 			if installed != entry.data.installed {
 				index.changed()
 				entry.data.installed = installed
+				_, _ = index.files.Put(path, entry, int(entry.bytes), 0, 0)
 			}
-			_, _ = index.files.Put(path, entry, int(entry.bytes), 0, 0)
 			return entry.data, nil
 		}
 		index.forget(path)

@@ -321,6 +321,57 @@ func TestWeatherCancellationDoesNotReturnCachedSuccess(t *testing.T) {
 	}
 }
 
+// Verify inspector and runtime defaults agree without overriding an explicit refusal
+func TestWeatherNoncommercialDefaults(t *testing.T) {
+	for _, action := range []string{"conditions", "forecast", "sun"} {
+		found := false
+		for _, field := range ActionFields(action) {
+			if field.Key == "noncommercial" {
+				found = true
+				if field.Default != true {
+					t.Fatalf("%s noncommercial default = %v", action, field.Default)
+				}
+			}
+		}
+		if !found {
+			t.Fatalf("%s is missing the noncommercial field", action)
+		}
+	}
+	for _, tc := range []struct {
+		name      string
+		endpoint  string
+		value     any
+		present   bool
+		wantError bool
+	}{
+		{name: "absent defaults true"},
+		{name: "explicit true", value: true, present: true},
+		{name: "explicit false", value: false, present: true, wantError: true},
+		{name: "null is not missing", present: true, wantError: true},
+		{name: "string is invalid", value: "true", present: true, wantError: true},
+		{name: "case insensitive host", endpoint: "https://API.OPEN-METEO.COM/v1/forecast", value: false, present: true, wantError: true},
+		{name: "custom endpoint has independent terms", endpoint: "https://weather.example/forecast", value: false, present: true},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			settings := weatherSettings()
+			delete(settings, "noncommercial")
+			if tc.present {
+				settings["noncommercial"] = tc.value
+			}
+			if tc.endpoint != "" {
+				settings["endpoint"] = tc.endpoint
+			}
+			_, err := weatherURL(settings)
+			if (err != nil) != tc.wantError {
+				t.Fatalf("weatherURL error = %v, want error %v", err, tc.wantError)
+			}
+			if _, present := settings["noncommercial"]; present != tc.present {
+				t.Fatal("URL validation mutated saved settings")
+			}
+		})
+	}
+}
+
 // Verify weather consent types locations and shared response cache
 func TestWeatherConsentTypesLocationsAndSharedResponseCache(t *testing.T) {
 	e := New(filepath.Join(t.TempDir(), "state.json"))

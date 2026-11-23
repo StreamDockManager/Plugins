@@ -34,6 +34,9 @@ func CollectSample(e *Engine, id, key string, previous SampledStatus, now func()
 
 // StaleSample marks a previously collected sample as stale
 func StaleSample(status DisplayStatus) DisplayStatus {
+	if status.Unavailable {
+		return status
+	}
 	return DisplayStatus{Text: "Stale\n" + status.Text, Unavailable: true}
 }
 

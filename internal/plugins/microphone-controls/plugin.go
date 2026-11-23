@@ -165,7 +165,7 @@ func (e *Plugin) extensionInspector(ctx context.Context, c *sdk.Client, ev sdk.E
 		return true, e.discoverMicrophones(ctx, c, ev)
 	}
 
-	return true, c.Send(ctx, sdk.Message("sendToPropertyInspector", ev.Context, map[string]any{"message": "Activate a configured action to start its session"}))
+	return true, engine.SendDiagnostic(ctx, c, ev.Context, ev.Action, map[string]any{"message": "Activate a configured action to start its session"})
 }
 
 // Dispatch an activating microphone controls input to its action implementation

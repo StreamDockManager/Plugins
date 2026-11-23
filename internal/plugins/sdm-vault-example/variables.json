@@ -1,0 +1,87 @@
+{
+    "schema_version": 1,
+    "minimum_manager": "0.1.0",
+    "configuration_revision": 0,
+    "active_profile": "",
+    "profiles": [],
+    "saved_macros": [
+        {
+            "id": "sdm-vault-example-scalar",
+            "name": "Copy a Vault scalar",
+            "action": {
+                "kind": "macro",
+                "actions": [
+                    {
+                        "kind": "builtin",
+                        "action": {
+                            "kind": "set_clipboard",
+                            "text": "${vault.unlinked}",
+                            "template": true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": "sdm-vault-example-path",
+            "name": "Reveal a Vault path",
+            "action": {
+                "kind": "macro",
+                "actions": [
+                    {
+                        "kind": "builtin",
+                        "action": {
+                            "kind": "reveal_file",
+                            "path": "${vault.unlinked}",
+                            "template": true
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": "sdm-vault-example-compare",
+            "name": "Compare clipboard JSON with a Vault entry",
+            "action": {
+                "kind": "macro",
+                "actions": [
+                    {
+                        "kind": "builtin",
+                        "action": {
+                            "kind": "conditional",
+                            "condition": {
+                                "source": "clipboard",
+                                "subject": "",
+                                "operator": "matches_vault_json",
+                                "value": "${vault.unlinked}"
+                            },
+                            "children": [
+                                {
+                                    "kind": "builtin",
+                                    "action": {
+                                        "kind": "set_clipboard",
+                                        "text": "Matched",
+                                        "template": false
+                                    }
+                                },
+                                {
+                                    "kind": "builtin",
+                                    "action": {
+                                        "kind": "set_clipboard",
+                                        "text": "Different",
+                                        "template": false
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ],
+    "rules": [],
+    "history": {
+        "undo": [],
+        "redo": []
+    }
+}

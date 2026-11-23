@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"sync/atomic"
 	"testing"
 	"time"
 
@@ -36,9 +37,11 @@ func TestForecastCacheSurvivesRestartAndHonorsIntervals(t *testing.T) {
 	client, events := sdk.NewLocalClient(info, "weather-cache-test")
 	done := make(chan struct{})
 	defer close(done)
-	records := map[string]json.RawMessage{}
+	namespaces := map[string]map[string]json.RawMessage{}
+	revisions := map[string]int{}
+	var unrelatedReads atomic.Int32
+	unrelated := "https://weather.invalid/unselected"
 	go func() {
-		revision := 0
 		for {
 			select {
 			case <-done:
@@ -46,6 +49,13 @@ func TestForecastCacheSurvivesRestartAndHonorsIntervals(t *testing.T) {
 			case event := <-events:
 				var payload map[string]any
 				json.Unmarshal(event.Payload, &payload)
+				namespace := payload["namespace"].(string)
+				records := namespaces[namespace]
+				if records == nil {
+					records = map[string]json.RawMessage{}
+					namespaces[namespace] = records
+				}
+				revision := revisions[namespace]
 				result := map[string]any{"generation": "1", "revision": fmt.Sprint(revision)}
 				switch event.Method {
 				case "listKeys":
@@ -56,6 +66,9 @@ func TestForecastCacheSurvivesRestartAndHonorsIntervals(t *testing.T) {
 					sort.Strings(keys)
 					result["keys"] = keys
 				case "get":
+					if namespace == forecastCacheNamespace && payload["key"] == forecastKey(unrelated) {
+						unrelatedReads.Add(1)
+					}
 					data, ok := records[payload["key"].(string)]
 					result["found"] = ok
 					if ok {
@@ -72,6 +85,7 @@ func TestForecastCacheSurvivesRestartAndHonorsIntervals(t *testing.T) {
 						}
 					}
 					revision++
+					revisions[namespace] = revision
 					result["revision"] = fmt.Sprint(revision)
 					result["committed"] = true
 					result["operation_id"] = payload["operation_id"]
@@ -91,6 +105,8 @@ func TestForecastCacheSurvivesRestartAndHonorsIntervals(t *testing.T) {
 	endpoint, _ := weatherURL(settings)
 	first.weather[endpoint] = weatherCache{At: time.Now().Add(-30 * time.Minute), Data: data}
 	first.persistForecast(context.Background(), endpoint)
+	first.weather[unrelated] = first.weather[endpoint]
+	first.persistForecast(context.Background(), unrelated)
 	first.Close()
 	second := New(filepath.Join(t.TempDir(), "state.json"))
 	defer second.Close()
@@ -103,6 +119,9 @@ func TestForecastCacheSurvivesRestartAndHonorsIntervals(t *testing.T) {
 	settings["update_interval_ms"] = 60000
 	if _, err := second.weatherText(context.Background(), "conditions", settings); err != nil || calls != 1 {
 		t.Fatal("custom interval did not refresh", err, calls)
+	}
+	if unrelatedReads.Load() != 0 {
+		t.Fatal("selected location caused an unrelated forecast to be loaded")
 	}
 	settings["update_interval_ms"] = 0
 	cached := second.weather[endpoint]
@@ -125,6 +144,10 @@ func TestForecastCacheSurvivesRestartAndHonorsIntervals(t *testing.T) {
 	third := New(filepath.Join(t.TempDir(), "state.json"))
 	defer third.Close()
 	third.loadForecastCache(context.Background(), client)
+	if len(third.weather) != 0 {
+		t.Fatal("forecast decoded before demand")
+	}
+	third.restoreForecast(context.Background(), endpoint)
 	third.weatherClient = second.weatherClient
 	cached = third.weather[endpoint]
 	cached.Refresh = true
@@ -143,8 +166,8 @@ func TestForecastCacheEvictsLeastRecentlyUsedAndBoundsBytes(t *testing.T) {
 	for i := range 129 {
 		key := fmt.Sprintf("https://weather.invalid/%d", i)
 		e.weather[key] = weatherCache{At: time.Now(), Used: time.Unix(int64(i), 0), Data: map[string]any{"value": i}}
+		e.persistForecast(context.Background(), key)
 	}
-	e.persistForecast(context.Background(), "https://weather.invalid/128")
 	if len(e.weather) != 128 {
 		t.Fatal(len(e.weather))
 	}
@@ -154,8 +177,8 @@ func TestForecastCacheEvictsLeastRecentlyUsedAndBoundsBytes(t *testing.T) {
 	for key, value := range e.weather {
 		value.Data = map[string]any{"padding": strings.Repeat("x", 200000)}
 		e.weather[key] = value
+		e.persistForecast(context.Background(), key)
 	}
-	e.persistForecast(context.Background(), "https://weather.invalid/128")
 	total := len(forecastCacheNamespace)
 	for key, value := range e.weather {
 		data, _ := json.Marshal(storedForecast{key, value})
@@ -201,5 +224,17 @@ func TestGlobalLocationEditInvalidatesOnlyLinkedBindings(t *testing.T) {
 	e.beforeEvent(context.Background(), nil, event)
 	if e.Effective["home"] != nil || resolveLocation(e.Bindings["home"].Settings, e.Global)["latitude"] != 51.5 {
 		t.Fatal("deletion did not restore portable snapshot")
+	}
+}
+
+func TestVaultForecastNeverFallsBackToSavedOrPerBindingCoordinates(t *testing.T) {
+	binding := map[string]any{"latitude": 43.21, "longitude": 12.34, "location_id": "old", "use_vault_location": true, "vault_location": "${vault.unlinked}"}
+	global := map[string]any{"saved_locations": []map[string]any{{"id": "old", "latitude": 1.0, "longitude": 2.0}}}
+	result := resolveLocation(binding, global)
+	if _, ok := result["latitude"]; ok {
+		t.Fatal("private binding inherited old coordinates")
+	}
+	if endpoint, err := weatherURL(result); err == nil || endpoint != "" {
+		t.Fatal("private binding selected an unreviewed endpoint")
 	}
 }

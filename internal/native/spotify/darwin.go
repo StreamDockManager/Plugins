@@ -16,9 +16,6 @@ func Spotify(ctx context.Context, action string, s map[string]any) (string, erro
 	if err != nil {
 		return "", err
 	}
-	if running, e := process.Command(ctx, "osascript", "-e", `application "Spotify" is running`); e != nil || running != "true" {
-		return "", fmt.Errorf("Spotify is not running")
-	}
 	script := ""
 	switch action {
 	case "toggle":
@@ -76,6 +73,7 @@ return sdMode & sdSeparator & sdPosition & sdSeparator & sdDuration & sdSeparato
 if value > maximum then return maximum
 return value
 end minPosition
+if application "Spotify" is not running then error "Spotify is not running"
 tell application "Spotify"`+"\n"+script+"\nend tell")
 	if err != nil || action != "status" {
 		return output, err

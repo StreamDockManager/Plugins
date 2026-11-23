@@ -38,3 +38,10 @@ func TestClipboardAndCopyPasteMetadata(t *testing.T) {
 		}
 	}
 }
+
+// Verify the new Roll All action uses its human-readable name in the packaged action list
+func TestRandomizerRollAllActionName(t *testing.T) {
+	if got := ActionName("randomizer-dice", "roll-all"); got != "Roll All" {
+		t.Fatalf("Roll All action label = %q", got)
+	}
+}

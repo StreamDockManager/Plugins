@@ -513,3 +513,34 @@ func TestNullSnapshotsAndServiceRegistriesRemainUnavailable(t *testing.T) {
 		t.Fatal("malformed registry was cached", err)
 	}
 }
+
+func TestSelectedStateChangePreservesDeliveredSnapshot(t *testing.T) {
+	d := NewDriver(make(chan struct{}, 1))
+	id := "light.selected"
+	d.Demand([]map[string]any{{"entity": id}})
+	original := Sample{Entities: map[string]entity{id: {ID: id, State: "off"}}}
+	d.snapshot.Store(&original, d.revision, time.Now())
+	push := func(id string, state any) {
+		t.Helper()
+		data, _ := json.Marshal(map[string]any{"type": "event", "event": map[string]any{"event_type": "state_changed", "data": map[string]any{"entity_id": id, "new_state": state}}})
+		if _, err := d.routeNotifications(data, nil); err != nil {
+			t.Fatal(err)
+		}
+	}
+	push("light.other", map[string]any{"entity_id": "light.other", "state": "on"})
+	if d.snapshot.Value != &original {
+		t.Fatal("unbound entity replaced the snapshot")
+	}
+	push(id, map[string]any{"entity_id": id, "state": "on"})
+	if original.Entities[id].State != "off" || d.snapshot.Value.Entities[id].State != "on" || d.snapshot.Revision != d.revision {
+		t.Fatal("update lost or mutated the delivered sample")
+	}
+	push(id, nil)
+	if len(d.snapshot.Value.Entities) != 0 || d.snapshot.Revision != d.revision {
+		t.Fatal("removed entity still retained")
+	}
+	push(id, map[string]any{})
+	if d.snapshot.Revision == d.revision {
+		t.Fatal("incomplete event should require an authoritative read")
+	}
+}

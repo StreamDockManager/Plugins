@@ -56,6 +56,7 @@ type Mapping struct {
 	ActivityIDs        []int
 }
 type Driver struct {
+	vaultSession   c.VaultSession
 	Game           *Game
 	HTTP           *c.HTTP
 	Boards         map[string]string
@@ -73,7 +74,8 @@ func New(boards map[string]string, mapping *Mapping) *Driver {
 }
 
 // Key derives the identity used to share service observations
-func (*Driver) Key(s map[string]any) string {
+func (d *Driver) Key(s map[string]any) string { return c.VaultKey(s, d.vaultSlug()) + d.resourceKey(s) }
+func (d *Driver) resourceKey(s map[string]any) string {
 	return strings.ToLower(playerName(s)) + ":" + c.String(s, "board", "normal")
 }
 
@@ -107,6 +109,9 @@ var username = regexp.MustCompile(`^[A-Za-z0-9 _-]{1,12}$`)
 
 // Read reads the requested data through the owned adapter
 func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
+	return c.WithVault(ctx, s, d.vaultSlug(), &d.vaultSession, d.Close, d.readService)
+}
+func (d *Driver) readService(ctx context.Context, s map[string]any) (any, error) {
 	player := playerName(s)
 	if player == "" {
 		return nil, &Failure{Label: "Set player", Detail: "Enter a player name in Action settings, apply settings, then save the binding."}
@@ -123,11 +128,11 @@ func (d *Driver) Read(ctx context.Context, s map[string]any) (any, error) {
 		return nil, historyFull()
 	}
 	endpoint += "?player=" + url.QueryEscape(player)
-	data, err := d.HTTP.Do(ctx, "GET", endpoint, nil, nil)
+	data, err := c.ServiceHTTP(ctx, d.HTTP).Do(ctx, "GET", endpoint, nil, nil)
 	csvResponse := false
 	if failure, ok := err.(*c.HTTPError); ok && failure.Status == 404 && d.Mapping != nil {
 		if fallback := d.FallbackBoards[c.String(s, "board", "normal")]; fallback != "" {
-			data, err = d.HTTP.Do(ctx, "GET", fallback+"?player="+url.QueryEscape(player), nil, nil)
+			data, err = c.ServiceHTTP(ctx, d.HTTP).Do(ctx, "GET", fallback+"?player="+url.QueryEscape(player), nil, nil)
 			csvResponse = true
 		}
 	}
@@ -258,7 +263,12 @@ func ParseCSV(data []byte, m Mapping) (Sample, error) {
 }
 
 // Command dispatches the requested command through the adapter
-func (d *Driver) Command(_ context.Context, a string, s map[string]any, _ int) (c.Outcome, error) {
+func (d *Driver) Command(ctx context.Context, a string, s map[string]any, ticks int) (c.Outcome, error) {
+	return c.WithVault(ctx, s, d.vaultSlug(), &d.vaultSession, d.Close, func(ctx context.Context, s map[string]any) (c.Outcome, error) {
+		return d.commandService(ctx, a, s, ticks)
+	})
+}
+func (d *Driver) commandService(_ context.Context, a string, s map[string]any, _ int) (c.Outcome, error) {
 	if a == "reset-baseline" {
 		key := d.Key(s)
 		latest, ok := d.Latest[key]
@@ -274,6 +284,9 @@ func (d *Driver) Command(_ context.Context, a string, s map[string]any, _ int) (
 
 // Discover returns the available inspector choices
 func (d *Driver) Discover(ctx context.Context, s map[string]any) ([]c.Choice, error) {
+	return c.WithVault(ctx, s, d.vaultSlug(), &d.vaultSession, d.Close, d.discoverService)
+}
+func (d *Driver) discoverService(ctx context.Context, s map[string]any) ([]c.Choice, error) {
 	value, err := d.Read(ctx, s)
 	if err != nil {
 		return nil, err
@@ -355,3 +368,10 @@ func number(n *int64) string {
 
 // Close releases the owned resources and pending work
 func (d *Driver) Close() { d.HTTP.Close() }
+
+func (d *Driver) vaultSlug() string {
+	if d.Game != nil {
+		return d.Game.Slug
+	}
+	return ""
+}

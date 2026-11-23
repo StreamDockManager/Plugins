@@ -15,6 +15,7 @@ import (
 	configvalue "github.com/StreamDockManager/Plugin-SDK/Go/settings"
 	"github.com/StreamDockManager/Plugins/internal/engine"
 	"github.com/StreamDockManager/Plugins/internal/pollingdisplay"
+	metadata "github.com/StreamDockManager/Plugins/internal/settings"
 )
 
 // Attach HTTP webhook lifecycle and action hooks to the shared engine
@@ -22,7 +23,7 @@ func Factory(base *engine.Engine) engine.Feature { return makePlugin(base).hooks
 
 // Initialize HTTP webhook state around the shared engine
 func makePlugin(base *engine.Engine) *Plugin {
-	e := &Plugin{Engine: base, httpCache: newHTTPValidatorCache(), polling: map[string]pollingState{}}
+	e := &Plugin{Engine: base, inspectors: map[string]bool{}, explicit: map[string]bool{}, httpCache: newHTTPValidatorCache(), polling: map[string]pollingState{}}
 	return e
 }
 
@@ -61,10 +62,11 @@ func (e *Plugin) applyResult(ctx context.Context, c *sdk.Client, result jobResul
 		e.Results[result.ID] = value
 	}
 
-	destination := result.ID
-
-	if err := engine.SendDiagnostic(ctx, c, destination, result.Value); err != nil {
-		return err
+	if e.preview(result.ID) {
+		delete(e.explicit, result.ID)
+		if err := engine.SendDiagnostic(ctx, c, result.ID, e.Bindings[result.ID].Action, result.Value); err != nil {
+			return err
+		}
 	}
 
 	if _, ok := e.Bindings[result.ID]; ok {
@@ -87,7 +89,7 @@ func (e *Plugin) attachPolling(id string, interval time.Duration) {
 }
 
 // Release transient HTTP webhook state belonging to one binding
-func (e *Plugin) clearFeature(id string) { delete(e.polling, id) }
+func (e *Plugin) clearFeature(id string) { delete(e.polling, id); delete(e.explicit, id) }
 
 // Clear HTTP webhook transient resources during feature shutdown
 func (e *Plugin) closeFeature() { e.httpCache.Reset(); clear(e.polling) }
@@ -149,7 +151,7 @@ func (e *Plugin) extensionEvent(ctx context.Context, c *sdk.Client, ev sdk.Event
 			e.CancelJob(id)
 			e.ResultsText[id] = "Cancelled"
 		} else {
-			e.startHTTP(ctx, id, s)
+			e.startRequest(ctx, c, id, b.Action, s, false)
 		}
 	}
 
@@ -174,13 +176,14 @@ func (e *Plugin) extensionInspector(ctx context.Context, c *sdk.Client, ev sdk.E
 	}
 	if p.Op == "discover" {
 
-		return true, c.Send(ctx, sdk.Message("sendToPropertyInspector", ev.Context, map[string]any{"message": "This action has no runtime discovery"}))
+		return true, engine.SendDiagnostic(ctx, c, ev.Context, ev.Action, map[string]any{"message": "This action has no runtime discovery"})
 
 	}
 
 	{
 
-		e.startHTTP(ctx, ev.Context, s)
+		e.explicit[ev.Context] = true
+		e.startRequest(ctx, c, ev.Context, ev.Action, s, false)
 		return true, nil
 	}
 
@@ -195,7 +198,7 @@ func (e *Plugin) extensionPoll(ctx context.Context, c *sdk.Client) (bool, error)
 		{
 
 			if e.automaticRead(id, a, s) && e.pollingDue(id, time.Now()) {
-				e.startHTTPPolling(ctx, id, s, true)
+				e.startRequest(ctx, c, id, b.Action, s, true)
 			}
 		}
 
@@ -241,8 +244,38 @@ func (e *Plugin) handleAction(ctx context.Context, c *sdk.Client, ev sdk.Event, 
 }
 
 // Expose the HTTP webhook feature callbacks used by the shared engine
+func (e *Plugin) preview(id string) bool { return !e.lifecycle || e.inspectors[id] || e.explicit[id] }
+
+func (e *Plugin) observeInspector(_ context.Context, c *sdk.Client, ev sdk.Event) (bool, error) {
+	if !e.hostChecked && c != nil {
+		var info struct {
+			Lifecycle bool `json:"inspector_lifecycle"`
+		}
+		_ = json.Unmarshal(c.Host().Raw["streamDockManager"], &info)
+		e.lifecycle, e.hostChecked = info.Lifecycle, true
+	}
+	switch ev.Event {
+	case "streamDockManagerPermissionsChanged":
+		for id, b := range e.Bindings {
+			if configvalue.Bool(e.MergedSettings(b.Settings), "use_vault_webhook") {
+				e.CancelJob(id)
+				delete(e.Results, id)
+				delete(e.ResultsText, id)
+				delete(e.Last, id)
+				delete(e.polling, id)
+			}
+		}
+	case "propertyInspectorDidAppear":
+		e.inspectors[ev.Context] = true
+	case "propertyInspectorDidDisappear":
+		delete(e.inspectors, ev.Context)
+		delete(e.explicit, ev.Context)
+	}
+	return false, nil
+}
+
 func (e *Plugin) hooks() engine.Feature {
-	return engine.Feature{Action: e.handleAction, Inspector: e.extensionInspector, Settings: e.settingsFeature, Clear: e.clearFeature, Close: e.closeFeature, Status: e.displayStatus, Deadline: e.nextPoll, Apply: e.applyResult, Visuals: visuals, Poll: e.pollFeature}
+	return engine.Feature{Before: e.observeInspector, Action: e.handleAction, Inspector: e.extensionInspector, Settings: e.settingsFeature, Clear: e.clearFeature, Close: e.closeFeature, Status: e.displayStatus, Deadline: e.nextPoll, Apply: e.applyResult, Visuals: visuals, Poll: e.pollFeature}
 }
 
 // Retain useful HTTP webhook output while an automatic refresh is pending
@@ -326,11 +359,31 @@ func (e *Plugin) startHTTP(ctx context.Context, id string, s map[string]any) {
 
 // Schedule an HTTP request with explicit or automatic polling ownership
 func (e *Plugin) startHTTPPolling(ctx context.Context, id string, s map[string]any, automatic bool) {
+	e.startRequest(ctx, nil, id, e.Bindings[id].Action, s, automatic)
+}
+
+func (e *Plugin) startRequest(ctx context.Context, client *sdk.Client, id, uuid string, s map[string]any, automatic bool) {
 	s = cloneSettings(s)
 	cache := e.httpCache
 	previousText := e.ResultsText[id]
+	options := httpRequestOptions{Cache: cache, Automatic: automatic}
+	fetch := func(job context.Context, settings map[string]any) (HTTPResult, error) {
+		return requestHTTP(job, settings, options)
+	}
+	if display, ok := any(options).(interface {
+		DisplayRequest(context.Context, map[string]any) (HTTPResult, error)
+	}); ok && !e.preview(id) {
+		fetch = display.DisplayRequest
+	}
 	started := e.startJob(ctx, id, func(job context.Context) (string, any, error) {
-		result, err := requestHTTP(job, s, httpRequestOptions{Cache: cache, Automatic: automatic})
+		if configvalue.Bool(s, "use_vault_webhook") {
+			result, err := vaultWebhook(job, client, uuid, s, automatic)
+			if err != nil {
+				return "", result, err
+			}
+			return fmt.Sprintf("HTTP %d · %d ms", result.Status, result.DurationMS), result, nil
+		}
+		result, err := fetch(job, s)
 		if err != nil {
 			return "", result, err
 		}
@@ -362,6 +415,8 @@ func (e *Plugin) startJob(ctx context.Context, id string, work func(context.Cont
 type HTTPResult = httpclient.HTTPResult
 
 type Plugin struct {
+	inspectors, explicit   map[string]bool
+	lifecycle, hostChecked bool
 	*engine.Engine
 	polling   map[string]pollingState
 	httpCache *httpValidatorCache
@@ -433,3 +488,15 @@ func pollingInterval(slug, action string, settings map[string]any) time.Duration
 var retryDelay = httpclient.RetryDelay
 
 const maximumPollBackoff = httpclient.MaximumPollBackoff
+
+func vaultWebhook(ctx context.Context, client *sdk.Client, uuid string, s map[string]any, automatic bool) (HTTPResult, error) {
+	name := action(uuid)
+	if uuid != engine.ID(Definition.Slug)+"."+name {
+		return HTTPResult{}, fmt.Errorf("Choose a webhook for this action")
+	}
+	value, err := metadata.URLCredential(ctx, client, Definition.Slug, uuid, name, "webhook")
+	if err != nil {
+		return HTTPResult{}, err
+	}
+	return httpclient.Request(ctx, s, httpclient.Options{VaultURL: value, Automatic: automatic})
+}

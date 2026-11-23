@@ -2,6 +2,7 @@ package networkvpn
 
 import (
 	"context"
+	"github.com/StreamDockManager/Plugins/internal/native/observation"
 	"net"
 	"reflect"
 	"strings"
@@ -135,7 +136,7 @@ func (e *Plugin) handleAction(ctx context.Context, c *sdk.Client, ev sdk.Event, 
 		return nil
 	}
 
-	return e.Render(ctx, c, ev.Context)
+	return e.Render(observation.Refresh(ctx), c, ev.Context)
 }
 
 // Expose the network vpn feature callbacks used by the shared engine

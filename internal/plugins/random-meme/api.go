@@ -29,6 +29,7 @@ type Meme struct {
 	PostLink      string `json:"postLink"`
 	NSFW          bool   `json:"nsfw"`
 	Spoiler       bool   `json:"spoiler"`
+	png           []byte
 	Image         string `json:"-"`
 	Width, Height int    `json:"-"`
 }
@@ -78,7 +79,7 @@ func (a *API) open(ctx context.Context, address string) (io.ReadCloser, error) {
 	if err != nil {
 		return nil, fmt.Errorf("invalid meme request")
 	}
-	req.Header.Set("User-Agent", "stream-dock-manager-RandomMeme/0.1.0")
+	req.Header.Set("User-Agent", "stream-dock-manager-RandomMeme/0.1.1")
 	response, err := a.Client.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("meme provider request failed")
@@ -170,7 +171,6 @@ func thumbnailSizeContext(ctx context.Context, data []byte, w, h int, requireOpa
 		w, h = thumbnailDimensions(cfg)
 	}
 	var source image.Image
-	sampled := !requireOpaque
 	if requireOpaque {
 		// Optional previews already have a 1MP admission limit. Inspect every pixel
 		// for opacity: opacity of only the selected samples cannot establish that
@@ -185,11 +185,13 @@ func thumbnailSizeContext(ctx context.Context, data []byte, w, h int, requireOpa
 	if err != nil {
 		return "", 0, 0, fmt.Errorf("unsupported meme image: %w", err)
 	}
-	if requireOpaque {
-		opaque, ok := source.(interface{ Opaque() bool })
-		if !ok || !opaque.Opaque() {
-			return "", 0, 0, fmt.Errorf("preview changed image opacity")
-		}
+	if !requireOpaque {
+		uri, err := artwork.DataURI(ctx, source)
+		return uri, w, h, err
+	}
+	opaque, ok := source.(interface{ Opaque() bool })
+	if !ok || !opaque.Opaque() {
+		return "", 0, 0, fmt.Errorf("preview changed image opacity")
 	}
 	if err := ctx.Err(); err != nil {
 		return "", 0, 0, err
@@ -198,11 +200,7 @@ func thumbnailSizeContext(ctx context.Context, data []byte, w, h int, requireOpa
 	bounds := source.Bounds()
 	for y := 0; y < h; y++ {
 		for x := 0; x < w; x++ {
-			if sampled {
-				thumb.Set(x, y, source.At(x, y))
-			} else {
-				thumb.Set(x, y, source.At(bounds.Min.X+x*cfg.Width/w, bounds.Min.Y+y*cfg.Height/h))
-			}
+			thumb.Set(x, y, source.At(bounds.Min.X+x*cfg.Width/w, bounds.Min.Y+y*cfg.Height/h))
 		}
 	}
 	uri, err := artwork.DataURI(ctx, thumb)

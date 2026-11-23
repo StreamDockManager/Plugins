@@ -357,7 +357,7 @@ def main():
         parser.error('seconds and repeats must be positive; bindings must be 1..32')
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
-    slugs = args.plugins or sorted(path.name for path in (ROOT / 'cmd').iterdir() if path.is_dir() and path.name != 'weather-geocoding-proxy')
+    slugs = args.plugins or sorted(path.name for path in (ROOT / 'cmd').iterdir() if path.is_dir())
     if args.active and set(slugs) - READ_ONLY.keys():
         parser.error('active fixtures are limited to: ' + ', '.join(READ_ONLY))
     env = os.environ.copy()

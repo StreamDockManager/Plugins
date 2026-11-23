@@ -11,6 +11,12 @@ import (
 	"syscall"
 )
 
+// VaultMinimumManager is the first Manager version with plugin Vault support
+const VaultMinimumManager = "0.1.1"
+
+// NotificationsMinimumManager is the first Manager version accepting permission declarations
+const NotificationsMinimumManager = "0.1.1"
+
 type Definition = authoring.Definition
 type ViewTarget = authoring.ViewTarget
 type Binding = authoring.Binding
